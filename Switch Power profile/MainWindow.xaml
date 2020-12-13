@@ -6,16 +6,7 @@
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
         Title="Power Manager" Height="500" Width="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Background="#FF63BCD6" SizeToContent="Width">
-    <tb:TaskbarIcon x:Name="myNotifyIcon"
-                    Visibility="Visible"
-                    ToolTipText="Fallback ToolTip for Windows xp"
-                    IconSource="/Images/TrayIcons/Logo.ico"
-                    ContextMenu="{StaticResource TrayMenu}"
-                    MenuActivation="LeftOrRightClick"
-                    TrayPopup="{StaticResoure TrayStatusPopup}"
-                    PopupActivation="DoubleClick"
-                    TrayToolTip="{StaticResource TrayToolTip}"
-      />
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20" />
@@ -27,6 +18,8 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -53,7 +46,10 @@
         <Label Name="LabelLow" Grid.Column="1" Content="Selected" Grid.Row="2" HorizontalAlignment="Center"  FontFamily="Segoe UI" FontSize="12" Background="#FF7FEEA8" />
         <Label Name="LabelBalanced" Grid.Column="2" Content="Selected" Grid.Row="2" HorizontalAlignment="Center"  FontFamily="Segoe UI" FontSize="12" Background="#FFFFC500" Visibility="Hidden" />
         <Label Name="LabelHigh" Grid.Column="3" Content="Selected" Grid.Row="2" HorizontalAlignment="Center"  FontFamily="Segoe UI" FontSize="12" Background="#FFFF3C3C" Visibility="Hidden" />
-        <ListBox Name="ListBoxProcesses" Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="20" />
-        <Button Grid.Row="3" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Get Processes" Click="Button_Click_3"/>
+        <ListBox Name="ListBoxProcesses" Grid.Row="3" Grid.Column="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="20" />
+        <Button Grid.Row="3" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Get Processes (refresh)" Click="Button_Click_3"/>
+        <Button Grid.Row="4" Grid.Column="3" Width="150" Height="39" Margin="20,0" Content="Add Monitor" Click="Button_Click_3"/>
+        <Button Grid.Row="5" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Edit Monitor List" Click="Button_Click_3"/>
+        <TextBlock Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" Text="Advanced Power Management" VerticalAlignment="Center" />
     </Grid>
 </Window>

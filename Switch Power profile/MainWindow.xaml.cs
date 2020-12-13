@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Diagnostics;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace Switch_Power_profile
 {
@@ -27,7 +29,7 @@ namespace Switch_Power_profile
             
             InitializeComponent();
             
-            
+            // scan to see what its on when the prog starts
 
         }
 
@@ -110,15 +112,43 @@ namespace Switch_Power_profile
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            Process[] processCollection = Process.GetProcesses();
-            foreach (Process p in processCollection)
+
+            Task task = new Task(() =>
             {
-                if(p.ProcessName.ToLower() != "svchost")
+                
+                List<string> processlist = new List<string>();
+
+                Process[] processCollection = Process.GetProcesses();
+                foreach (Process p in processCollection)
                 {
-                    ListBoxProcesses.Items.Add(p.ProcessName);
+                    if (p.ProcessName.ToLower() != "svchost")
+                    {
+                        processlist.Add(p.ProcessName);
+                    }
+
                 }
-               
-            }
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    ListBoxProcesses.Items.Clear();
+                });
+                    
+
+                processlist.Sort();
+                foreach (var process in processlist)
+                {
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        ListBoxProcesses.Items.Add(process);
+                    });
+                        
+                }
+                processlist.Clear();
+                Thread.Sleep(1000);
+                
+            });
+            task.Start();
+            
         }
     }
 }
