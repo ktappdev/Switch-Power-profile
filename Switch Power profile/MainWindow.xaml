@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
-        Title="Power Manager" Height="500" Width="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Background="#FF63BCD6" SizeToContent="Width">
+        Title="Power Manager" Height="500" Width="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Background="#FF5EB8D3" SizeToContent="Width">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -50,6 +50,5 @@
         <Button Grid.Row="3" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Get Processes (refresh)" Click="Button_Click_3"/>
         <Button Grid.Row="4" Grid.Column="3" Width="150" Height="39" Margin="20,0" Content="Add Monitor" Click="Button_Click_3"/>
         <Button Grid.Row="5" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Edit Monitor List" Click="Button_Click_3"/>
-        <TextBlock Grid.Row="6" Grid.Column="3" HorizontalAlignment="Center" Text="Advanced Power Management" VerticalAlignment="Center" />
     </Grid>
 </Window>
