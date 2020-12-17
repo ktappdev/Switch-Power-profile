@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
-        Title="Power Manager" Height="500" Width="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Background="#FF5EB8D3" SizeToContent="Width">
+        Title="Power Manager" Height="500" Width="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" SizeToContent="Width" Background="#FFE6E6E6">
     
     <Grid>
         <Grid.ColumnDefinitions>

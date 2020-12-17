@@ -1,49 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Diagnostics;
-using System.ComponentModel;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Threading;
 using System.Management;
 
 namespace Switch_Power_profile
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        static public string LowGUID = "b75672a1-4a7f-4485-9a64-0445bab63964";
+
+
+        public Dictionary<string, string> GetAllPowerProfiles() // working on this 
+        {
+            Dictionary<string, string> AllProfiles = new Dictionary<string, string>();
+
+            {
+                ProcessStartInfo ps = new ProcessStartInfo();
+                ps.CreateNoWindow = true;
+                ps.UseShellExecute = false;
+                ps.FileName = "cmd.exe";
+                ps.Arguments = $@"/c powercfg -list";
+                ps.RedirectStandardOutput = true;
+                var proc = Process.Start(ps);
+
+                string s = proc.StandardOutput.ReadToEnd();
+                string[] result = s.Split(new string[] { "\\n" }, StringSplitOptions.None);
+
+                for(var i=0; i<result.Length; i++)
+                {
+                    AllProfiles.Add($"{i}", result[i]);
+                    
+                }
+
+                MessageBox.Show(AllProfiles["1"]);
+
+                return AllProfiles;
+            }
+        }
+        static public string LowGUID = "64a64f24-65b9-4b56-befd-5ec1eaced9b3";
         static public string BalancedGUID = "381b4222-f694-41f0-9685-ff5bb260df2e";
-        static public string HighGUID = "ca85b8be-8830-40df-94f7-86fe770005f1";
+        static public string HighGUID = "6fecc5ae-f350-48a5-b669-b472cb895ccf";
+
 
         public MainWindow()
         {
             
             InitializeComponent();
             ReadAndUpdateUi();
+            GetAllPowerProfiles();
 
+            //GetChargingStatus();
 
-
-            var ts = new ThreadStart(GetChargingStatus);
-            var backgroundThread = new Thread(ts);
-            backgroundThread.Start();
-
-            //MessageBox.Show($"{GetChargingStatus()}\nCurrent Profile = {GetCurrentPowerProfile()}");
-
-
-            // scan to see what its on when the prog starts
+                //var ts = new ThreadStart(SetProfileOnConnect);
+                //var backgroundThread = new Thread(ts);
+                //backgroundThread.Start();
 
         }
 
@@ -146,7 +159,7 @@ namespace Switch_Power_profile
         }
 
 
-        public void GetChargingStatus()
+        public Boolean GetChargingStatus() //Work in progress, not really implimented
         {
             SelectQuery Sq = new SelectQuery("Win32_Battery");
             ManagementObjectSearcher objOSDetails = new ManagementObjectSearcher(Sq);
@@ -155,27 +168,44 @@ namespace Switch_Power_profile
 
             Boolean Charging = false;
 
+            //ListBoxProcesses.Items.Add(osDetailsCollection);
+
             foreach (ManagementObject mo in osDetailsCollection)
             {
                 if ((ushort)mo["BatteryStatus"] == 2)
                 {
-                    Charging = true;
-                    if(GetCurrentPowerProfile() != 3)
-                    {
-
-                        SetBalancedProfile();
-                    }
-                    
+                    return Charging = true;
                 }
                 else
                 {
-                    Charging = false;
-                    SetLowProfile();
+                    //SetLowProfile();
+                    return Charging = false;
                 }
+
             }
-           
+            return Charging;
+
         }
 
+
+
+        public void SetProfileOnConnect()
+        {
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                if (GetChargingStatus() == true)
+                {
+                    if (GetCurrentPowerProfile() != 3)
+                    {
+                        SetBalancedProfile();
+                    }
+                }
+                else if (GetChargingStatus() == false)
+                {
+                    SetLowProfile();
+                }
+            }));
+        }
 
         public int GetCurrentPowerProfile()
         {
@@ -250,7 +280,6 @@ namespace Switch_Power_profile
             GetProcessesList();
             
         }
-
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
