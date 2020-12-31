@@ -5,50 +5,48 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
-        Title="Power Manager" Height="500" Width="620" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" SizeToContent="Width" Background="#FFE6E6E6">
-    
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <ColumnDefinition Width="auto" />
-            <!--<ColumnDefinition Width="*" />-->
-            <ColumnDefinition Width="20" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
+        Title="MainWindow" Height="500" Width="600" ResizeMode="CanMinimize">
+    <Grid Background="#FFECECEC">
+        <Button Content="Low Power" HorizontalAlignment="Left" Margin="80,49,0,0" VerticalAlignment="Top" Width="80" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled"/>
+        <Button Content="Balanced" HorizontalAlignment="Left" Margin="240,49,0,0" VerticalAlignment="Top" Width="80" Click="SetBalancedButton" ToolTip="Manually set power scheme to Balanced, MONITOR mode will be disabled"/>
+        <Button Content="High" HorizontalAlignment="Left" Margin="400,49,0,0" VerticalAlignment="Top" Width="80" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled"/>
+        <ListBox HorizontalAlignment="Left" Height="260" Margin="20,144,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxProcesses"/>
+        <ListBox HorizontalAlignment="Left" Height="260" Margin="342,144,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxMonProcesses"/>
+        <Label Content="Monitor List" HorizontalAlignment="Left" Margin="380,103,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center"/>
+        <Label Content="Running Processes" HorizontalAlignment="Left" Margin="58,103,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center"/>
+        <Button Content="Get Processes" HorizontalAlignment="Left" Margin="240,164,0,0" VerticalAlignment="Top" Width="80" Click="GetProcessButton" Visibility="Hidden"/>
+        <Button Content="Add Monitor" HorizontalAlignment="Left" Margin="240,222,0,0" VerticalAlignment="Top" Width="80" Click="Add_Monitor" ToolTip="Add a program from processes list to be monitored"/>
+        <Button Content="Remove" HorizontalAlignment="Left" Margin="240,284,0,0" VerticalAlignment="Top" Width="80" Click="RemoveMonitorButton" ToolTip="Remove selected program from monitor list"/>
+        <CheckBox x:Name="MonitorMode" Content="Monitor mode" HorizontalAlignment="Left" Margin="400,409,0,0" VerticalAlignment="Top" IsChecked="True" FontWeight="Bold" Checked="MonitorMode_Checked" ToolTip="Enable or disable the monitor mode. Is disabled if monitor list is empty"/>
+        <Label Content="" HorizontalAlignment="Left" Margin="80,23,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Name="LabelLow" Background="#FF78FF71" Visibility="Hidden" Width="80"/>
+        <Label Content="" HorizontalAlignment="Left" Margin="240,23,0,0" VerticalAlignment="Top" Width="80" HorizontalContentAlignment="Center" Name="LabelBalanced" Background="#FF4FACF9" Visibility="Hidden"/>
+        <Label Content="" HorizontalAlignment="Left" Margin="400,23,0,0" VerticalAlignment="Top" Width="80" HorizontalContentAlignment="Center" Name="LabelHigh" Background="#FFF73B3B" Visibility="Hidden"/>
+        <Separator HorizontalAlignment="Left" Height="26" Margin="429,120,0,0" VerticalAlignment="Top" Width="16" RenderTransformOrigin="0.5,0.5">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+        <Separator HorizontalAlignment="Left" Height="26" Margin="110,120,0,0" VerticalAlignment="Top" Width="16" RenderTransformOrigin="0.5,0.5">
+            <Separator.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-90"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Separator.RenderTransform>
+        </Separator>
+        <Image HorizontalAlignment="Left" Height="37" Margin="260,244,0,0" VerticalAlignment="Top" Width="40" Source="images/arr.png"/>
+        <Button Content="" HorizontalAlignment="Left" Margin="88,409,0,0" VerticalAlignment="Top" Width="25" Height="25" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="GetProcessButton" ToolTip="Manually refresh the running processes list">
+            <Button.Background>
+                <ImageBrush ImageSource="images/ref.png" Stretch="Uniform"/>
+            </Button.Background>
+        </Button>
 
-        <Button Grid.Row="1" Grid.Column="1" Width="150" Height="39" Margin="20" Content="Low Power" FontSize="18" Background="#FF7FEEA8" Click="Button_Click" >
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button Grid.Row="1" Grid.Column="2" Width="150" Height="39" Margin="20" Content="Balanced" FontSize="18" Background="#FFFFC500" Click="Button_Click_1" >
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-        <Button Grid.Row="1" Grid.Column="3" Width="150" Height="39" Margin="20" Content="High" FontSize="18" Background="#FFFF3C3C" Click="Button_Click_2" >
-            <Button.Effect>
-                <DropShadowEffect/>
-            </Button.Effect>
-        </Button>
-
-        <Label Name="LabelLow" Grid.Column="1" Content="Selected" Grid.Row="2" HorizontalAlignment="Center"  FontFamily="Segoe UI" FontSize="12" Background="#FF7FEEA8" />
-        <Label Name="LabelBalanced" Grid.Column="2" Content="Selected" Grid.Row="2" HorizontalAlignment="Center"  FontFamily="Segoe UI" FontSize="12" Background="#FFFFC500" Visibility="Hidden" />
-        <Label Name="LabelHigh" Grid.Column="3" Content="Selected" Grid.Row="2" HorizontalAlignment="Center"  FontFamily="Segoe UI" FontSize="12" Background="#FFFF3C3C" Visibility="Hidden" />
-        <ListBox Name="ListBoxProcesses" Grid.Row="3" Grid.Column="1" Grid.RowSpan="4" Grid.ColumnSpan="2" Margin="20" />
-        <Button Grid.Row="3" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Get Processes (refresh)" Click="Button_Click_3"/>
-        <Button Grid.Row="4" Grid.Column="3" Width="150" Height="39" Margin="20,0" Content="Add Monitor" Click="Button_Click_3"/>
-        <Button Grid.Row="5" Grid.Column="3" Width="150" Height="39" Margin="20" Content="Edit Monitor List" Click="Button_Click_3"/>
     </Grid>
 </Window>

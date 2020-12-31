@@ -96,10 +96,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Maad 97 logo 3-01.png" />
+    <Resource Include="images\arr.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Copy of Gamer Logo - Made with PosterMyWall.png" />
+    <Resource Include="images\ref.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
