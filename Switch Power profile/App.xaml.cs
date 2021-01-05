@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Switch_Power_profile
+namespace AutomaticPowerManager
 {
     /// <summary>
     /// Interaction logic for App.xaml

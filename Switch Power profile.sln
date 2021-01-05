@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Switch Power profile", "Switch Power profile\Switch Power profile.csproj", "{CA468395-738A-464B-B4DD-6AF5FF5C76B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticPowerManager", "Switch Power profile\AutomaticPowerManager.csproj", "{CA468395-738A-464B-B4DD-6AF5FF5C76B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

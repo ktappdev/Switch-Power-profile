@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 
-namespace Switch_Power_profile.Properties
+namespace AutomaticPowerManager.Properties
 {
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.

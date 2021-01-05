@@ -1,17 +1,17 @@
-﻿<Window x:Class="Switch_Power_profile.MainWindow"
+﻿<Window x:Class="AutomaticPowerManager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Switch_Power_profile"
+        xmlns:local="clr-namespace:AutomaticPowerManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="600" ResizeMode="CanMinimize">
-    <Grid Background="#FFECECEC">
+        Title="Automatic Power Manager" Height="500" Width="600" ResizeMode="CanMinimize">
+    <Grid Background="White">
         <Button Content="Low Power" HorizontalAlignment="Left" Margin="80,49,0,0" VerticalAlignment="Top" Width="80" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled"/>
         <Button Content="Balanced" HorizontalAlignment="Left" Margin="240,49,0,0" VerticalAlignment="Top" Width="80" Click="SetBalancedButton" ToolTip="Manually set power scheme to Balanced, MONITOR mode will be disabled"/>
         <Button Content="High" HorizontalAlignment="Left" Margin="400,49,0,0" VerticalAlignment="Top" Width="80" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled"/>
-        <ListBox HorizontalAlignment="Left" Height="260" Margin="20,144,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxProcesses"/>
-        <ListBox HorizontalAlignment="Left" Height="260" Margin="342,144,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxMonProcesses"/>
+        <ListBox HorizontalAlignment="Left" Height="260" Margin="20,144,0,0" VerticalAlignment="Top" Width="201" Name="ListBoxProcesses" BorderBrush="#FF82A1FF"/>
+        <ListBox HorizontalAlignment="Left" Height="260" Margin="342,144,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxMonProcesses" FontWeight="Bold" FontStyle="Italic" FontFamily="Segoe UI Black" Foreground="Black" BorderBrush="#FFFF3232"/>
         <Label Content="Monitor List" HorizontalAlignment="Left" Margin="380,103,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center"/>
         <Label Content="Running Processes" HorizontalAlignment="Left" Margin="58,103,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center"/>
         <Button Content="Get Processes" HorizontalAlignment="Left" Margin="240,164,0,0" VerticalAlignment="Top" Width="80" Click="GetProcessButton" Visibility="Hidden"/>
@@ -47,6 +47,7 @@
                 <ImageBrush ImageSource="images/ref.png" Stretch="Uniform"/>
             </Button.Background>
         </Button>
+        <Button Content="Clear Monitor List" HorizontalAlignment="Left" Margin="380,429,0,0" VerticalAlignment="Top" Width="140" Click="Button_Click"/>
 
     </Grid>
 </Window>

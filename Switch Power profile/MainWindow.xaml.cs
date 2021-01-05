@@ -6,11 +6,13 @@ using System.Windows;
 using System.Diagnostics;
 using System.Threading;
 using System.Management;
+using System.IO;
 
-namespace Switch_Power_profile
+namespace AutomaticPowerManager
 {
     public partial class MainWindow : Window
     {
+
         static public string LowGUID = "64a64f24-65b9-4b56-befd-5ec1eaced9b3";
         static public string BalancedGUID = "381b4222-f694-41f0-9685-ff5bb260df2e";
         static public string HighGUID = "6fecc5ae-f350-48a5-b669-b472cb895ccf";
@@ -21,8 +23,10 @@ namespace Switch_Power_profile
             
             InitializeComponent();
             ReadAndUpdateUi();
-            GetAllPowerProfiles();
+            Functions.GetAllPowerProfiles();
             GetProcessesList();
+            UpdateMonListBox(Functions.Readdb());
+            MonitorPrograms();
             //GetChargingStatus();
 
             //var ts = new ThreadStart(SetProfileOnConnect);
@@ -31,56 +35,11 @@ namespace Switch_Power_profile
 
         }
 
-        public Dictionary<string, string> GetAllPowerProfiles() // working on this 
-        {
-            Dictionary<string, string> AllProfiles = new Dictionary<string, string>();
-
-            ProcessStartInfo ps = new ProcessStartInfo();
-            ps.CreateNoWindow = true;
-            ps.UseShellExecute = false;
-            ps.FileName = "cmd.exe";
-            ps.Arguments = $@"/c powercfg -list";
-            ps.RedirectStandardOutput = true;
-            var proc = Process.Start(ps);
-
-            string s = proc.StandardOutput.ReadToEnd();
-            string[] result = s.Split('\n');
-
-            for (var i = 0; i < result.Length; i++)
-            {
-
-                if (!result[i].ToLower().Contains("power saver")
-                    || result[i].ToLower().Contains("balanced")
-                    || result[i].ToLower().Contains("high performance")
-                    || result[i].ToLower().Contains("ultimate performance"))
-                {
-                    
-                }
-
-                if (result[i].ToLower().Contains("power saver") 
-                    || result[i].ToLower().Contains("balanced") 
-                    || result[i].ToLower().Contains("high performance") 
-                    || result[i].ToLower().Contains("ultimate performance"))
-                {
-                    string[] parts = result[i].Split();
-
-                    //MessageBox.Show($"{parts[5]} {parts[6]} {parts[3]}");
-                    AllProfiles.Add($"{parts[5]} {parts[6]}", parts[3]);
-                }
-                    
-
-                //AllProfiles.Add($"{i}", result[i]);
-
-            }
-
-            
-
-            return AllProfiles;
-        }
+        
 
         public void ReadAndUpdateUi()
         {
-            int State = GetCurrentPowerProfile();
+            int State = Functions.GetCurrentPowerProfile();
 
             switch (State)
             {
@@ -177,33 +136,7 @@ namespace Switch_Power_profile
         }
 
 
-        public Boolean GetChargingStatus() //Work in progress, not really implimented
-        {
-            SelectQuery Sq = new SelectQuery("Win32_Battery");
-            ManagementObjectSearcher objOSDetails = new ManagementObjectSearcher(Sq);
-            ManagementObjectCollection osDetailsCollection = objOSDetails.Get();
-            StringBuilder sb = new StringBuilder();
-
-            Boolean Charging = false;
-
-            //ListBoxProcesses.Items.Add(osDetailsCollection);
-
-            foreach (ManagementObject mo in osDetailsCollection)
-            {
-                if ((ushort)mo["BatteryStatus"] == 2)
-                {
-                    return Charging = true;
-                }
-                else
-                {
-                    //SetLowProfile();
-                    return Charging = false;
-                }
-
-            }
-            return Charging;
-
-        }
+        
 
 
 
@@ -211,45 +144,45 @@ namespace Switch_Power_profile
         {
             this.Dispatcher.Invoke((Action)(() =>
             {
-                if (GetChargingStatus() == true)
+                if (Functions.GetChargingStatus() == true)
                 {
-                    if (GetCurrentPowerProfile() != 3)
+                    if (Functions.GetCurrentPowerProfile() != 3)
                     {
                         SetBalancedProfile();
                     }
                 }
-                else if (GetChargingStatus() == false)
+                else if (Functions.GetChargingStatus() == false)
                 {
                     SetLowProfile();
                 }
             }));
         }
 
-        public int GetCurrentPowerProfile()
+
+
+        public void UpdateMonListBox(List<string> lines)
         {
-            ProcessStartInfo ps = new ProcessStartInfo();
-            ps.CreateNoWindow = true;
-            ps.UseShellExecute = false;
-            ps.FileName = "cmd.exe";
-            ps.Arguments = @"/c powercfg -getactivescheme";
-            ps.RedirectStandardOutput = true;
-            var proc = Process.Start(ps);
-
-            string s = proc.StandardOutput.ReadToEnd();
-
-            if (s.Contains(LowGUID))
+            ListBoxMonProcesses.Items.Clear();
+            foreach (string line in lines)
             {
-                return 1;
-            }
-            else if (s.Contains(BalancedGUID))
-            {
-                return 2;
-            }
-            else
-            {
-                return 3;
+                ListBoxMonProcesses.Items.Add(line); // populate a listbox or setup a return
             }
 
+            //foreach (string line in lines)
+            //{
+                
+            //    //ListBoxMonProcesses.Items.Add(line);
+            //    foreach (string item in ListBoxMonProcesses.Items)
+            //    {
+            //        if (item != line)
+            //        {
+
+            //            ListBoxMonProcesses.Items.Add(line); // populate a listbox or setup a return
+            //        }
+
+            //    }
+
+            //}
         }
 
 
@@ -263,26 +196,34 @@ namespace Switch_Power_profile
                 Process[] processCollection = Process.GetProcesses();
                 foreach (Process p in processCollection)
                 {
-                    if (p.ProcessName.ToLower() != "svchost" 
-                    && p.ProcessName.ToLower() != "taskmgr" 
+
+                    if (p.ProcessName.ToLower() != "svchost"
+                    && p.ProcessName.ToLower() != "taskmgr"
                     && p.ProcessName.ToLower() != "spoolsv"
                     && p.ProcessName.ToLower() != "lsass"
                     && p.ProcessName.ToLower() != "csrss"
                     && p.ProcessName.ToLower() != "smss"
                     && p.ProcessName.ToLower() != "winlogon"
                     && p.ProcessName.ToLower() != "services"
+                    && p.ProcessName.ToLower() != "rundll32"
+                    && p.ProcessName.ToLower() != "system"
+                    && p.ProcessName.ToLower() != "name of this program"
                     && !processlist.Contains(p.ProcessName))
                     {
                         processlist.Add(p.ProcessName);
                     }
                 }
-
+                foreach (string item in ListBoxMonProcesses.Items)
+                {
+                    if (processlist.Contains(item))
+                    {
+                        processlist.Remove(item);
+                    }
+                }
                 this.Dispatcher.Invoke(() =>
                 {
                     ListBoxProcesses.Items.Clear();
                 });
-
-
                 processlist.Sort();
                 foreach (var process in processlist)
                 {
@@ -296,6 +237,8 @@ namespace Switch_Power_profile
                     });
 
                 }
+                // load up monitor list
+                
                 processlist.Clear();
                 //Thread.Sleep(1000);
 
@@ -303,6 +246,65 @@ namespace Switch_Power_profile
             task.Start();
         }
 
+
+
+
+
+        public void MonitorPrograms() // works
+        {
+            Task task = new Task(() =>
+            {
+                while (true)
+                {
+                    Process[] processCollection = Process.GetProcesses();
+                    foreach (Process p in processCollection)
+                    {
+                        foreach (string item in ListBoxMonProcesses.Items)
+                        {
+                            if(p.ProcessName == item)
+                            {
+                                MessageBox.Show($"{p.ProcessName} running");
+                            }
+                        }
+                    }
+                    Thread.Sleep(20000);
+
+                    this.Dispatcher.Invoke(() =>
+                {
+                    SetHighProfile();
+                    });
+                }
+                
+                
+               
+            });
+            task.Start();
+        }
+
+
+
+
+
+
+
+
+        private void Add_Monitor(object sender, RoutedEventArgs e)
+        {
+            if (ListBoxProcesses.SelectedItem != null)
+            {
+                ListBoxMonProcesses.Items.Add(ListBoxProcesses.SelectedItem);
+                Functions.Writedb(ListBoxProcesses.SelectedItem.ToString()); // write to db
+
+
+                ListBoxProcesses.Items.Remove(ListBoxProcesses.SelectedItem);
+                
+                
+            }
+            else
+            {
+                MessageBox.Show("Please select a process to monitor");
+            }
+        }
 
 
         private void SetLowButton(object sender, RoutedEventArgs e)
@@ -320,32 +322,34 @@ namespace Switch_Power_profile
             SetHighProfile();
         }
 
-
-
-        private void Add_Monitor(object sender, RoutedEventArgs e)
-        {
-            if (ListBoxProcesses.SelectedItem != null)
-            {
-                ListBoxMonProcesses.Items.Add(ListBoxProcesses.SelectedItem);
-                ListBoxProcesses.Items.Remove(ListBoxProcesses.SelectedItem);
-            }
-            else
-            {
-                MessageBox.Show("Please select a process to monitor");
-            }
-        }
+        
 
         private void GetProcessButton(object sender, RoutedEventArgs e)
         {
             GetProcessesList();
+
         }
+
+
 
         private void RemoveMonitorButton(object sender, RoutedEventArgs e)
         {
+            List<string> NewMonItems = new List<string>();
+
             if (ListBoxMonProcesses.SelectedItem != null)
             {
+                //ListBoxProcesses.Items.Add(ListBoxMonProcesses.SelectedItem); //re-add the process to the running processes list
                 ListBoxMonProcesses.Items.Remove(ListBoxMonProcesses.SelectedItem);
-                //ListBoxProcesses.Items.Remove(ListBoxProcesses.SelectedItem);
+                //File.WriteAllText(Functions.path, ListBoxMonProcesses.Items.ToString());
+                
+                foreach (string item in ListBoxMonProcesses.Items) // create a temp list of current items in listbox
+                {                    
+                    NewMonItems.Add(item);
+                }
+
+                File.Delete(Functions.path);
+                File.AppendAllLines(Functions.path, NewMonItems.ToArray()); //make a new file with the items from the listbox
+                //UpdateMonListBox(Functions.Readdb());
             }
             else
             {
@@ -353,8 +357,23 @@ namespace Switch_Power_profile
             }
         }
 
+
+
         private void MonitorMode_Checked(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            //present a warning messagebox yes/no
+            if (MessageBox.Show("Clear Monitor List?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                ListBoxMonProcesses.Items.Clear();
+                File.Delete(Functions.path);
+            }
+            
+            
 
         }
     }
