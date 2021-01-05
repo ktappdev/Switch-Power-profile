@@ -256,23 +256,42 @@ namespace AutomaticPowerManager
             {
                 while (true)
                 {
-                    Process[] processCollection = Process.GetProcesses();
-                    foreach (Process p in processCollection)
+                    try
                     {
-                        foreach (string item in ListBoxMonProcesses.Items)
+                        Process[] processCollection = Process.GetProcesses();
+                        foreach (Process p in processCollection)
                         {
-                            if(p.ProcessName == item)
+                            foreach (string item in ListBoxMonProcesses.Items)
                             {
-                                MessageBox.Show($"{p.ProcessName} running");
+                                if (p.ProcessName == item)
+                                {
+                                    MessageBox.Show($"{p.ProcessName} running");
+
+
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+                                        SetHighProfile();
+                                    });
+                                    Thread.Sleep(10000);
+
+                                }
+                               
                             }
+
                         }
                     }
-                    Thread.Sleep(20000);
+                    catch(Exception e)
+                    {
 
-                    this.Dispatcher.Invoke(() =>
-                {
-                    SetHighProfile();
-                    });
+                    }
+
+                    
+                    Thread.Sleep(10000);
+
+                    //    this.Dispatcher.Invoke(() =>
+                    //{
+                    //    SetHighProfile();
+                    //    });
                 }
                 
                 
