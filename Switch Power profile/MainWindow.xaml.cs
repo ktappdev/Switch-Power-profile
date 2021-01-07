@@ -29,6 +29,7 @@ namespace AutomaticPowerManager
             MonitorPrograms();
             //GetChargingStatus();
 
+
             //var ts = new ThreadStart(SetProfileOnConnect);
             //var backgroundThread = new Thread(ts);
             //backgroundThread.Start();
@@ -60,7 +61,9 @@ namespace AutomaticPowerManager
 
         public void SetLowProfile()
         {
-            if (LabelLow.Visibility != Visibility.Visible)
+            int State = Functions.GetCurrentPowerProfile();
+
+            if (LabelLow.Visibility != Visibility.Visible && State != 1)
             {
                 ProcessStartInfo ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
@@ -81,13 +84,18 @@ namespace AutomaticPowerManager
             else
             {
                 LabelLow.Content = "SELECTED";
+                LabelLow.Visibility = Visibility.Visible;
+                LabelBalanced.Visibility = Visibility.Hidden;
+                LabelHigh.Visibility = Visibility.Hidden;
             }
         }
 
 
         public void SetBalancedProfile()
         {
-            if (LabelBalanced.Visibility != Visibility.Visible)
+            int State = Functions.GetCurrentPowerProfile();
+
+            if (LabelBalanced.Visibility != Visibility.Visible && State != 2)
             {
                 ProcessStartInfo ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
@@ -107,12 +115,16 @@ namespace AutomaticPowerManager
             else
             {
                 LabelBalanced.Content = "SELECTED";
+                LabelBalanced.Visibility = Visibility.Visible;
+                LabelHigh.Visibility = Visibility.Hidden;
+                LabelLow.Visibility = Visibility.Hidden;
             }
         }
 
         public void SetHighProfile()
         {
-            if (LabelHigh.Visibility != Visibility.Visible)
+            int State = Functions.GetCurrentPowerProfile();
+            if (LabelHigh.Visibility != Visibility.Visible && State != 3)
             {
 
                 ProcessStartInfo ps = new ProcessStartInfo();
@@ -132,6 +144,9 @@ namespace AutomaticPowerManager
             else
             {
                 LabelHigh.Content = "SELCETED";
+                LabelHigh.Visibility = Visibility.Visible;
+                LabelLow.Visibility = Visibility.Hidden;
+                LabelBalanced.Visibility = Visibility.Hidden;
             }
         }
 
@@ -263,18 +278,20 @@ namespace AutomaticPowerManager
                         {
                             foreach (string item in ListBoxMonProcesses.Items)
                             {
-                                if (p.ProcessName == item)
+                                if(p.ProcessName == item)
                                 {
                                     MessageBox.Show($"{p.ProcessName} running");
 
-
+                                    
                                     this.Dispatcher.Invoke(() =>
                                     {
                                         SetHighProfile();
                                     });
-                                    Thread.Sleep(10000);
+                                    //Thread.Sleep(10000);
+                                    break;
 
                                 }
+                                
                                
                             }
 
@@ -303,10 +320,6 @@ namespace AutomaticPowerManager
 
 
 
-
-
-
-
         private void Add_Monitor(object sender, RoutedEventArgs e)
         {
             if (ListBoxProcesses.SelectedItem != null)
@@ -314,10 +327,8 @@ namespace AutomaticPowerManager
                 ListBoxMonProcesses.Items.Add(ListBoxProcesses.SelectedItem);
                 Functions.Writedb(ListBoxProcesses.SelectedItem.ToString()); // write to db
 
-
                 ListBoxProcesses.Items.Remove(ListBoxProcesses.SelectedItem);
-                
-                
+
             }
             else
             {
