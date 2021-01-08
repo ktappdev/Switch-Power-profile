@@ -24,8 +24,9 @@ namespace AutomaticPowerManager
             
 
             InitializeComponent();
+            Functions.GetAllPowerProfiles();
             ReadAndUpdateUi();
-            //Functions.GetAllPowerProfiles();
+            
             GetProcessesList();
             UpdateMonListBox(Functions.Readdb());
             MonitorPrograms();
@@ -420,7 +421,7 @@ namespace AutomaticPowerManager
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            Functions.CreateMissingSchemes("MakeLow", "null", "MakeHigh");
+            //Functions.CreateMissingSchemes("MakeLow", "null", "MakeHigh");
         }
     }
 }

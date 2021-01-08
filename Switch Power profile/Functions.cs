@@ -15,12 +15,12 @@ namespace AutomaticPowerManager
         public static string path = ".\\Test1";
 
 
-         
 
 
-        public static void CreateMissingSchemes(string power="null", string balanced="null", string high="null")
+
+        public static void CreateMissingSchemes(string schemeName)
         {
-            if(power == "MakePower")
+            if(schemeName == "MakePower")
             {
                 ProcessStartInfo ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
@@ -30,7 +30,7 @@ namespace AutomaticPowerManager
                 ps.RedirectStandardOutput = true;
                 var proc = Process.Start(ps);   
             }
-            if(balanced == "MakeBalanced")
+            if(schemeName == "MakeBalanced")
             {
                 ProcessStartInfo ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
@@ -40,7 +40,7 @@ namespace AutomaticPowerManager
                 ps.RedirectStandardOutput = true;
                 var proc = Process.Start(ps);
             }
-            if(high == "MakeHigh")
+            if(schemeName == "MakeHigh")
             {
                 ProcessStartInfo ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
@@ -225,21 +225,24 @@ namespace AutomaticPowerManager
 
             //foreach (string item in AllProfiles.Keys)
             //{
-            //    if(item)
+            //    MessageBox.Show(item);
             //}
 
 
             if (!AllProfiles.Keys.Contains("Power"))
             {
-                CreateMissingSchemes("MakePower", "null", "null");
+                CreateMissingSchemes("MakePower");
+
             }
-            if (!AllProfiles.Keys.Contains("balanced"))
+            if (!AllProfiles.Keys.Contains("Balanced"))
             {
-                CreateMissingSchemes("null", "MakeBalanced", "null");
+                CreateMissingSchemes("MakeBalanced");
+
             }
             if (!AllProfiles.Keys.Contains("High"))
             {
-                CreateMissingSchemes("MakePower", "null", "High");
+                CreateMissingSchemes("MakeHigh");
+
             }
 
             return AllProfiles;
