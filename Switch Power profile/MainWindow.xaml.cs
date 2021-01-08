@@ -421,7 +421,7 @@ namespace AutomaticPowerManager
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //Functions.CreateMissingSchemes("MakeLow", "null", "MakeHigh");
+            
         }
     }
 }
