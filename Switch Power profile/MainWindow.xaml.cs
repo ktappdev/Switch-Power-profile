@@ -12,21 +12,24 @@ namespace AutomaticPowerManager
 {
     public partial class MainWindow : Window
     {
+        //static Dictionary<string, string> guids = Functions.GetAllPowerProfiles();
 
-        static public string LowGUID = "64a64f24-65b9-4b56-befd-5ec1eaced9b3";
-        static public string BalancedGUID = "381b4222-f694-41f0-9685-ff5bb260df2e";
-        static public string HighGUID = "6fecc5ae-f350-48a5-b669-b472cb895ccf";
+        //static public string LowGUID = guids["Power"];
+        //static public string BalancedGUID = guids["Balanced"];
+        //static public string HighGUID = guids["High"];
 
 
         public MainWindow()
         {
             
+
             InitializeComponent();
             ReadAndUpdateUi();
-            Functions.GetAllPowerProfiles();
+            //Functions.GetAllPowerProfiles();
             GetProcessesList();
             UpdateMonListBox(Functions.Readdb());
             MonitorPrograms();
+
             //GetChargingStatus();
 
 
@@ -62,32 +65,40 @@ namespace AutomaticPowerManager
         public void SetLowProfile()
         {
             int State = Functions.GetCurrentPowerProfile();
-
-            if (LabelLow.Visibility != Visibility.Visible && State != 1)
+            try
             {
-                ProcessStartInfo ps = new ProcessStartInfo();
-                ps.CreateNoWindow = true;
-                ps.UseShellExecute = false;
-                ps.FileName = "cmd.exe";
-                ps.Arguments = $@"/c powercfg -setactive {LowGUID}";
-                ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);
+                if (LabelLow.Visibility != Visibility.Visible && State != 1)
+                {
+                    ProcessStartInfo ps = new ProcessStartInfo();
+                    ps.CreateNoWindow = true;
+                    ps.UseShellExecute = false;
+                    ps.FileName = "cmd.exe";
+                    ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["Power"]}";
+                    ps.RedirectStandardOutput = true;
+                    var proc = Process.Start(ps);
 
-                string s = proc.StandardOutput.ReadToEnd();
-                
+                    //string s = proc.StandardOutput.ReadToEnd();
+                    //MessageBox.Show(s);
 
-                LabelLow.Content = $"Selected";
-                LabelLow.Visibility = Visibility.Visible;
-                LabelBalanced.Visibility = Visibility.Hidden;
-                LabelHigh.Visibility = Visibility.Hidden;
+                    LabelLow.Content = $"Selected";
+                    LabelLow.Visibility = Visibility.Visible;
+                    LabelBalanced.Visibility = Visibility.Hidden;
+                    LabelHigh.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    LabelLow.Content = "SELECTED";
+                    LabelLow.Visibility = Visibility.Visible;
+                    LabelBalanced.Visibility = Visibility.Hidden;
+                    LabelHigh.Visibility = Visibility.Hidden;
+                }
             }
-            else
+            catch (Exception e)
             {
-                LabelLow.Content = "SELECTED";
-                LabelLow.Visibility = Visibility.Visible;
-                LabelBalanced.Visibility = Visibility.Hidden;
-                LabelHigh.Visibility = Visibility.Hidden;
+
+                throw;
             }
+            
         }
 
 
@@ -101,12 +112,12 @@ namespace AutomaticPowerManager
                 ps.CreateNoWindow = true;
                 ps.UseShellExecute = false;
                 ps.FileName = "cmd.exe";
-                ps.Arguments = $@"/c powercfg -setactive {BalancedGUID}";
+                ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["Balanced"]}";
                 ps.RedirectStandardOutput = true;
                 var proc = Process.Start(ps);
-
+                
                 //string s = proc.StandardOutput.ReadToEnd();
-
+                //MessageBox.Show(s);
                 LabelBalanced.Content = "Selected";
                 LabelBalanced.Visibility = Visibility.Visible;
                 LabelHigh.Visibility = Visibility.Hidden;
@@ -131,11 +142,11 @@ namespace AutomaticPowerManager
                 ps.CreateNoWindow = true;
                 ps.UseShellExecute = false;
                 ps.FileName = "cmd.exe";
-                ps.Arguments = $@"/c powercfg -setactive {HighGUID}";
+                ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["High"]}";
                 ps.RedirectStandardOutput = true;
                 var proc = Process.Start(ps);
                 //string s = proc.StandardOutput.ReadToEnd();
-
+                //MessageBox.Show(s);
                 LabelHigh.Content = "Selected";
                 LabelHigh.Visibility = Visibility.Visible;
                 LabelLow.Visibility = Visibility.Hidden;
@@ -405,6 +416,11 @@ namespace AutomaticPowerManager
             
             
 
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Functions.CreateMissingSchemes("MakeLow", "null", "MakeHigh");
         }
     }
 }

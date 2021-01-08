@@ -15,6 +15,43 @@ namespace AutomaticPowerManager
         public static string path = ".\\Test1";
 
 
+         
+
+
+        public static void CreateMissingSchemes(string power="null", string balanced="null", string high="null")
+        {
+            if(power == "MakePower")
+            {
+                ProcessStartInfo ps = new ProcessStartInfo();
+                ps.CreateNoWindow = true;
+                ps.UseShellExecute = false;
+                ps.FileName = "cmd.exe";
+                ps.Arguments = @"/c powercfg -duplicatescheme a1841308-3541-4fab-bc81-f71556f20b4a";
+                ps.RedirectStandardOutput = true;
+                var proc = Process.Start(ps);   
+            }
+            if(balanced == "MakeBalanced")
+            {
+                ProcessStartInfo ps = new ProcessStartInfo();
+                ps.CreateNoWindow = true;
+                ps.UseShellExecute = false;
+                ps.FileName = "cmd.exe";
+                ps.Arguments = @"/c powercfg /duplicatescheme 381b4222-f694-41f0-9685-ff5bb260df2e";
+                ps.RedirectStandardOutput = true;
+                var proc = Process.Start(ps);
+            }
+            if(high == "MakeHigh")
+            {
+                ProcessStartInfo ps = new ProcessStartInfo();
+                ps.CreateNoWindow = true;
+                ps.UseShellExecute = false;
+                ps.FileName = "cmd.exe";
+                ps.Arguments = @"/c powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
+                ps.RedirectStandardOutput = true;
+                var proc = Process.Start(ps);
+            }
+        }
+
 
         public static string Writedb(string prog)
         {
@@ -91,18 +128,19 @@ namespace AutomaticPowerManager
 
             string s = proc.StandardOutput.ReadToEnd();
 
-            if (s.Contains(MainWindow.LowGUID))
+            if (s.Contains(GetAllPowerProfiles()["Power"]))
             {
                 return 1;
             }
-            else if (s.Contains(MainWindow.BalancedGUID))
+            else if (s.Contains(GetAllPowerProfiles()["Balanced"]))
             {
                 return 2;
             }
-            else
+            else if (s.Contains(GetAllPowerProfiles()["High"]))
             {
                 return 3;
             }
+            return 0;
 
         }
 
@@ -152,33 +190,58 @@ namespace AutomaticPowerManager
 
             string s = proc.StandardOutput.ReadToEnd();
             string[] result = s.Split('\n');
-
+           
             for (var i = 0; i < result.Length; i++)
             {
-
-                if (!result[i].ToLower().Contains("power saver")
-                    || result[i].ToLower().Contains("balanced")
-                    || result[i].ToLower().Contains("high performance")
-                    || result[i].ToLower().Contains("ultimate performance"))
+                try
                 {
-                    // add something here
+                    if (result[i].ToLower().Contains("power saver")
+                    || result[i].ToLower().Replace(")", "").Contains("balanced")
+                    || result[i].ToLower().Contains("high performance"))
+                    {
+                        
+                        
+
+                        string[] parts = result[i].Split();
+
+                        if (!AllProfiles.Keys.Contains(parts[5].Remove(0, 1).Replace(")", ""))) // if the current one to add does not exist then
+                        {
+                            AllProfiles.Add($"{parts[5].Remove(0, 1).Replace(")", "")}", parts[3]); //did some clean upwith replcae and remove
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw;
+                    
                 }
 
-                if (result[i].ToLower().Contains("power saver")
-                    || result[i].ToLower().Contains("balanced")
-                    || result[i].ToLower().Contains("high performance")
-                    || result[i].ToLower().Contains("ultimate performance"))
-                {
-                    string[] parts = result[i].Split();
-
-                    //MessageBox.Show($"{parts[5]} {parts[6]} {parts[3]}");
-                    AllProfiles.Add($"{parts[5]} {parts[6]}", parts[3]);
-                }
 
 
                 //AllProfiles.Add($"{i}", result[i]);
 
             }
+
+
+            //foreach (string item in AllProfiles.Keys)
+            //{
+            //    if(item)
+            //}
+
+
+            if (!AllProfiles.Keys.Contains("Power"))
+            {
+                CreateMissingSchemes("MakePower", "null", "null");
+            }
+            if (!AllProfiles.Keys.Contains("balanced"))
+            {
+                CreateMissingSchemes("null", "MakeBalanced", "null");
+            }
+            if (!AllProfiles.Keys.Contains("High"))
+            {
+                CreateMissingSchemes("MakePower", "null", "High");
+            }
+
             return AllProfiles;
         }
     }
