@@ -8,20 +8,13 @@
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize">
     <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6">
         <Grid.Background>
-            <ImageBrush ImageSource="images/Gradient-Background-Free-Image.png" TileMode="Tile"/>
+            <ImageBrush ImageSource="images/Gradient Abstract Shapes Background Colorful-01.jpg" TileMode="Tile"/>
         </Grid.Background>
         <Image HorizontalAlignment="Left" Height="170" Margin="-3,24,0,0" VerticalAlignment="Top" Width="185" Source="images/logo.png" Stretch="Fill"/>
 
-        <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Background="White" Foreground="#FF464646" FontWeight="Bold">
-            <GroupBox.Effect>
-                <DropShadowEffect/>
-            </GroupBox.Effect>
-        </GroupBox>
-        <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" FontWeight="Bold" Background="White" Foreground="#FF4F4F4F">
-            <GroupBox.Effect>
-                <DropShadowEffect/>
-            </GroupBox.Effect>
-            <Button Content="Button" HorizontalAlignment="Left" Height="20" Margin="115,100,0,-2.4" VerticalAlignment="Top" Width="50" Click="Button_Click_1"/>
+        <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="White" Background="#FFA3C9DE"/>
+        <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="White" OpacityMask="Black" Background="#FF7ED4E3">
+            <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="34,83,0,0" VerticalAlignment="Top" Width="100" Minimum="5" Maximum="20" TickPlacement="BottomRight" Foreground="#FFE5E5E5" Value="10" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="5" LargeChange="5" IsSnapToTickEnabled="True"/>
         </GroupBox>
 
         <Button Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"/>
@@ -33,8 +26,8 @@
         <Label Content="Running Processes" HorizontalAlignment="Left" Margin="58,190,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" Foreground="White"/>
         <Button Content="Get Processes" HorizontalAlignment="Left" Margin="240,164,0,0" VerticalAlignment="Top" Width="80" Click="GetProcessButton" Visibility="Hidden"/>
         <Button Content="Add --&gt;" HorizontalAlignment="Left" Margin="240,309,0,0" VerticalAlignment="Top" Width="80" Click="Add_Monitor" ToolTip="Add a program from processes list to be monitored" FontWeight="Bold" Background="White"/>
-        <Button Content="&lt;--Remove" HorizontalAlignment="Left" Margin="240,371,0,0" VerticalAlignment="Top" Width="80" Click="RemoveMonitorButton" ToolTip="Remove selected program from monitor list" FontWeight="Bold" Background="White"/>
-        <CheckBox x:Name="MonitorMode" Content="Monitor mode" HorizontalAlignment="Left" Margin="376,74,0,0" VerticalAlignment="Top" Checked="MonitorMode_Checked" ToolTip="Enable or disable the monitor mode. Is disabled if monitor list is empty" IsChecked="True" Height="15"/>
+        <Button Content="Remove" HorizontalAlignment="Left" Margin="240,371,0,0" VerticalAlignment="Top" Width="80" Click="RemoveMonitorButton" ToolTip="Remove selected program from monitor list" FontWeight="Bold" Background="White"/>
+        <CheckBox x:Name="MonitorMode" Content="Enable monitor mode" HorizontalAlignment="Left" Margin="376,74,0,0" VerticalAlignment="Top" ToolTip="Enable or disable the monitor mode." Height="15" IsChecked="True" Checked="MonitorMode_Checked" Unchecked="MonitorMode_Unchecked"/>
         <Label Content="" HorizontalAlignment="Left" Margin="250,134,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Name="LabelLow" Background="#FF78FF71" Width="70" Height="20" FontSize="8" FontWeight="Bold"/>
         <Label Content="" HorizontalAlignment="Left" Margin="250,94,0,0" VerticalAlignment="Top" Width="70" HorizontalContentAlignment="Center" Name="LabelBalanced" Background="#FF4FACF9" Height="20" ScrollViewer.VerticalScrollBarVisibility="Auto" FontWeight="Bold" FontSize="8"/>
         <Label Content="" HorizontalAlignment="Left" Margin="250,54,0,0" VerticalAlignment="Top" Width="70" HorizontalContentAlignment="Center" Name="LabelHigh" Background="#FFFF6C6C" Height="20" FontSize="8" FontWeight="Bold"/>
@@ -65,8 +58,7 @@
             </Button.Background>
         </Button>
         <Button Content="Clear Monitor List" HorizontalAlignment="Left" Margin="380,496,0,0" VerticalAlignment="Top" Width="140" Click="Button_Click" BorderBrush="{x:Null}" Background="White"/>
-        <CheckBox x:Name="Checkbox2" Content="CheckBox 2" HorizontalAlignment="Left" Margin="376,99,0,0" VerticalAlignment="Top" Checked="MonitorMode_Checked" ToolTip="Enable or disable the monitor mode. Is disabled if monitor list is empty" IsChecked="True" Height="15"/>
-        <CheckBox x:Name="Checkbox2_Copy" Content="CheckBox 2" HorizontalAlignment="Left" Margin="376,124,0,0" VerticalAlignment="Top" Checked="MonitorMode_Checked" ToolTip="Enable or disable the monitor mode. Is disabled if monitor list is empty" IsChecked="True" Height="15"/>
+        <Label x:Name="RateLabel" Content="Update rate, default is 10 seconds" HorizontalAlignment="Left" Margin="376,108,0,0" VerticalAlignment="Top" FontSize="9"/>
 
     </Grid>
 </Window>

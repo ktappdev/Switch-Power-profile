@@ -217,17 +217,7 @@ namespace AutomaticPowerManager
                 }
 
 
-
-                //AllProfiles.Add($"{i}", result[i]);
-
             }
-
-
-            //foreach (string item in AllProfiles.Keys)
-            //{
-            //    MessageBox.Show(item);
-            //}
-
 
             if (!AllProfiles.Keys.Contains("Power"))
             {
