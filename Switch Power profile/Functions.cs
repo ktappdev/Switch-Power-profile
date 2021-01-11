@@ -14,9 +14,34 @@ namespace AutomaticPowerManager
 {
     class Functions
     {
-        public static string watchlistPath = ".\\watchlist";
-        public static string SettingsPath = ".\\settings.cfg";
+        public static string DirPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\AppData\Local\Automatic Power Manager";
+        public static string watchlistPath = $@"{DirPath}\watchlist";
+        public static string SettingsPath = $@"{DirPath}\settings.cfg";
 
+        public static void CreateAppDir()
+        {
+            try
+            {
+                //directory exists or nah.
+                if (Directory.Exists(DirPath))
+                {
+                    Console.WriteLine("That path exists already.");
+                    return;
+                }
+
+                //create the directory.
+                DirectoryInfo dir = Directory.CreateDirectory(DirPath);
+                Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(DirPath));
+
+                // Delete the directory.
+                //dir.Delete();
+                //Console.WriteLine("The directory was deleted successfully.");
+            }
+            catch (Exception e)
+            {
+            }
+            finally { }
+        }
 
         public static void AddApplicationToStartup(Boolean startup)
             {

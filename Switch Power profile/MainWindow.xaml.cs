@@ -30,10 +30,9 @@ namespace AutomaticPowerManager
             
 
             InitializeComponent();
-            
+            Functions.CreateAppDir();
             Functions.GetAllPowerProfiles();
             ReadAndUpdateUi();
-
             GetProcessesList();
             UpdateMonListBox(Functions.ReadWatchlist());
             MonitorPrograms();
@@ -519,7 +518,16 @@ namespace AutomaticPowerManager
 
             monitormodestatus = (bool)MonitorMode.IsChecked;
             //startupstatus = (bool)Startup.IsChecked;
-            File.Delete(Functions.SettingsPath);
+            try
+            {
+                File.Delete(Functions.SettingsPath);
+            }
+            catch (Exception)
+            {
+
+                Functions.CreateAppDir();
+            }
+            
             Functions.WriteSettings($"startup_with_windows={startupstatus}");
             Functions.WriteSettings($"monitor_mode={monitormodestatus}");
 
@@ -547,7 +555,15 @@ namespace AutomaticPowerManager
                 {
                     startupstatus = Startup.IsChecked.Value;
                     monitormodestatus = MonitorMode.IsChecked.Value;
-                    File.Delete(Functions.SettingsPath);
+                    try
+                    {
+                        File.Delete(Functions.SettingsPath);
+                    }
+                    catch (Exception)
+                    {
+
+                        Functions.CreateAppDir();
+                    }
                     Functions.WriteSettings($"startup_with_windows={startupstatus}");
                     Functions.WriteSettings($"monitor_mode={monitormodestatus}");
                 }
@@ -564,7 +580,15 @@ namespace AutomaticPowerManager
             {
                 startupstatus = Startup.IsChecked.Value;
                 monitormodestatus = MonitorMode.IsChecked.Value;
-                File.Delete(Functions.SettingsPath);
+                try
+                {
+                    File.Delete(Functions.SettingsPath);
+                }
+                catch (Exception)
+                {
+
+                    Functions.CreateAppDir();
+                }
                 Functions.WriteSettings($"startup_with_windows={startupstatus}");
                 Functions.WriteSettings($"monitor_mode={monitormodestatus}");
             }
@@ -578,7 +602,15 @@ namespace AutomaticPowerManager
             {
                 startupstatus = Startup.IsChecked.Value;
                 monitormodestatus = MonitorMode.IsChecked.Value;
-                File.Delete(Functions.SettingsPath);
+                try
+                {
+                    File.Delete(Functions.SettingsPath);
+                }
+                catch (Exception)
+                {
+
+                    Functions.CreateAppDir();
+                }
                 Functions.WriteSettings($"startup_with_windows={startupstatus}");
                 Functions.WriteSettings($"monitor_mode={monitormodestatus}");
             }
