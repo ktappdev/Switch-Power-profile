@@ -17,7 +17,13 @@ namespace AutomaticPowerManager
         //static public string LowGUID = guids["Power"];
         //static public string BalancedGUID = guids["Balanced"];
         //static public string HighGUID = guids["High"];
-        Boolean ManualSet = false;
+
+
+        public Boolean startupstatus = true;
+        public Boolean monitormodestatus = true;
+
+
+        //Boolean ManualSet = false;
 
         public MainWindow()
         {
@@ -29,16 +35,48 @@ namespace AutomaticPowerManager
             ReadAndUpdateUi();
 
             GetProcessesList();
-            UpdateMonListBox(Functions.Readdb());
+            UpdateMonListBox(Functions.ReadWatchlist());
             MonitorPrograms();
+            Functions.AddApplicationToStartup(true);
 
-            //GetChargingStatus();
+            //GetChargingStatus(); //do this later
 
 
             //var ts = new ThreadStart(SetProfileOnConnect);
             //var backgroundThread = new Thread(ts);
             //backgroundThread.Start();
 
+        }
+
+        public void GetSettingsAndUpdate(List<string> settingsData)
+        {
+            try
+            {
+                if (settingsData[1].Contains("True"))
+                {
+                    MonitorMode.IsChecked = true;
+                }
+                else
+                {
+                    MonitorMode.IsChecked = false;
+                }
+
+                if (settingsData[0].Contains("True"))
+                {
+                    Startup.IsChecked = true;
+                }
+                else
+                {
+                    Startup.IsChecked = false;
+                }
+            }
+            catch (Exception e)
+            {
+
+                
+            }
+            
+            
         }
 
         
@@ -63,7 +101,10 @@ namespace AutomaticPowerManager
 
                     break;
             }
+
+            GetSettingsAndUpdate(Functions.ReadSettings());
         }
+
 
         public void SetLowProfile()
         {
@@ -197,21 +238,7 @@ namespace AutomaticPowerManager
                 ListBoxMonProcesses.Items.Add(line); // populate a listbox or setup a return
             }
 
-            //foreach (string line in lines)
-            //{
-                
-            //    //ListBoxMonProcesses.Items.Add(line);
-            //    foreach (string item in ListBoxMonProcesses.Items)
-            //    {
-            //        if (item != line)
-            //        {
 
-            //            ListBoxMonProcesses.Items.Add(line); // populate a listbox or setup a return
-            //        }
-
-            //    }
-
-            //}
         }
 
 
@@ -236,7 +263,10 @@ namespace AutomaticPowerManager
                     && p.ProcessName.ToLower() != "services"
                     && p.ProcessName.ToLower() != "rundll32"
                     && p.ProcessName.ToLower() != "system"
-                    && p.ProcessName.ToLower() != "name of this program"
+                    && p.ProcessName.ToLower() != "automatic power manager"
+                    && p.ProcessName.ToLower() != "idle"
+                    && p.ProcessName.ToLower() != "systemsettings"
+                    && p.ProcessName.ToLower() != "wininit"
                     && !processlist.Contains(p.ProcessName))
                     {
                         processlist.Add(p.ProcessName);
@@ -285,7 +315,7 @@ namespace AutomaticPowerManager
             //{
             //    return;
             //}
-                
+            List<string> CurrentlyRunningList = new List<string>();
             Boolean ListEmpty = false;
             Boolean MonitorModeOnOrOff = true;
             //Boolean NoRunningProgram = false;
@@ -312,6 +342,7 @@ namespace AutomaticPowerManager
                             }
                             if (ListBoxMonProcesses.Items.Count > 0)
                             {
+                                CurrentlyRunningList.Clear(); 
                                 ListEmpty = false;
                                 Process[] processCollection = Process.GetProcesses();
                                 foreach (Process p in processCollection)
@@ -320,17 +351,20 @@ namespace AutomaticPowerManager
                                     {
                                         if (p.ProcessName == item)
                                         {
+                                            CurrentlyRunningList.Add(item);
 
                                             //if the item in the list is running then set to high performance
-                                            this.Dispatcher.Invoke(() =>
-                                            {
-                                                SetHighProfile();
-                                                
-                                            });
-                                            
+                                            //this.Dispatcher.Invoke(() =>
+                                            //{
+                                            //    SetHighProfile();
+                                            //    a = true;
+
+                                            //});
+
                                             break;
 
                                         }
+                                        
 
 
                                     }
@@ -340,13 +374,22 @@ namespace AutomaticPowerManager
                             }
                             
 
-                            if (ListEmpty == true)
+                            if (ListEmpty == true || CurrentlyRunningList.Count == 0)
                             {
                                 this.Dispatcher.Invoke(() =>
                                 {
 
                                     SetBalancedProfile();
                                     //ListEmpty = true;
+                                });
+                            }
+                            else
+                            {
+                                this.Dispatcher.Invoke(() =>
+                                {
+                                    SetHighProfile();
+                                   
+
                                 });
                             }
 
@@ -389,7 +432,7 @@ namespace AutomaticPowerManager
             if (ListBoxProcesses.SelectedItem != null)
             {
                 ListBoxMonProcesses.Items.Add(ListBoxProcesses.SelectedItem);
-                Functions.Writedb(ListBoxProcesses.SelectedItem.ToString()); // write to db
+                Functions.WriteWatchlist(ListBoxProcesses.SelectedItem.ToString()); // write to db
 
                 ListBoxProcesses.Items.Remove(ListBoxProcesses.SelectedItem);
 
@@ -444,8 +487,8 @@ namespace AutomaticPowerManager
                     NewMonItems.Add(item);
                 }
 
-                File.Delete(Functions.path);
-                File.AppendAllLines(Functions.path, NewMonItems.ToArray()); //make a new file with the items from the listbox
+                File.Delete(Functions.watchlistPath);
+                File.AppendAllLines(Functions.watchlistPath, NewMonItems.ToArray()); //make a new file with the items from the listbox
                 //UpdateMonListBox(Functions.Readdb());
             }
             else
@@ -462,29 +505,83 @@ namespace AutomaticPowerManager
             if (MessageBox.Show("Clear Monitor List?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 ListBoxMonProcesses.Items.Clear();
-                File.Delete(Functions.path);
+                File.Delete(Functions.watchlistPath);
             }
-            
-            
 
         }
+
 
         private void MonitorMode_Checked(object sender, RoutedEventArgs e)
         {
-            ManualSet = false;
+
+            //ManualSet = false;
+
+
+            monitormodestatus = (bool)MonitorMode.IsChecked;
+            //startupstatus = (bool)Startup.IsChecked;
+            File.Delete(Functions.SettingsPath);
+            Functions.WriteSettings($"startup_with_windows={startupstatus}");
+            Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+
+            //if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
+            //{
+            //    startupstatus = Startup.IsChecked.Value;
+            //    monitormodestatus = MonitorMode.IsChecked.Value;
+            //    File.Delete(Functions.SettingsPath);
+            //    Functions.WriteSettings($"startup_with_windows={startupstatus}");
+            //    Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+            //}
+
+
+
         }
+
+
 
         private void MonitorMode_Unchecked(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Enable Manual Power Managemant? \nYou can re-enable monitor mode in options", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                
-                ManualSet = true;
+
+                if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
+                {
+                    startupstatus = Startup.IsChecked.Value;
+                    monitormodestatus = MonitorMode.IsChecked.Value;
+                    File.Delete(Functions.SettingsPath);
+                    Functions.WriteSettings($"startup_with_windows={startupstatus}");
+                    Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+                }
 
             }
             
         }
 
 
+        private void startup_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Functions.AddApplicationToStartup(false); // writes to the registry
+            if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
+            {
+                startupstatus = Startup.IsChecked.Value;
+                monitormodestatus = MonitorMode.IsChecked.Value;
+                File.Delete(Functions.SettingsPath);
+                Functions.WriteSettings($"startup_with_windows={startupstatus}");
+                Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+            }
+
+        }
+
+        private void startup_Checked(object sender, RoutedEventArgs e)
+        {
+            Functions.AddApplicationToStartup(true);
+            if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
+            {
+                startupstatus = Startup.IsChecked.Value;
+                monitormodestatus = MonitorMode.IsChecked.Value;
+                File.Delete(Functions.SettingsPath);
+                Functions.WriteSettings($"startup_with_windows={startupstatus}");
+                Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+            }
+        }
     }
 }

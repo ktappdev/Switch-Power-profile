@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,14 +9,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
+
 namespace AutomaticPowerManager
 {
     class Functions
     {
-        public static string path = ".\\Test1";
+        public static string watchlistPath = ".\\watchlist";
+        public static string SettingsPath = ".\\settings.cfg";
 
 
+        public static void AddApplicationToStartup(Boolean startup)
+            {
+                string AppPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                    {
+                        if(key.GetValue("KTAD - APM") == null && startup == true)
+                        {
+                            key.SetValue("KTAD - APM", AppPath);
+                            key.Close();
+                        }
+                        if(startup == false)
+                        {
+                    key.DeleteValue("KTAD - APM", false);
+                        }
+                        
+
+                    }
+
+            }
 
 
         public static void CreateMissingSchemes(string schemeName)
@@ -53,7 +75,7 @@ namespace AutomaticPowerManager
         }
 
 
-        public static string Writedb(string prog)
+        public static void WriteWatchlist(string prog)
         {
 
             //https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/read-write-text-file
@@ -61,7 +83,7 @@ namespace AutomaticPowerManager
             try
             {
                 //Open the File
-                StreamWriter sw = new StreamWriter(path, true); // creates file if it dosen't exist
+                StreamWriter sw = new StreamWriter(watchlistPath, true); // creates file if it dosen't exist
 
                 sw.WriteLine(prog);
                 //close the file
@@ -73,20 +95,20 @@ namespace AutomaticPowerManager
             }
             finally
             {
-                Console.WriteLine("Executing finally block.");
+                
             }
-            return "";
+            
         }
 
 
-        public static List<string> Readdb()
+        public static List<string> ReadWatchlist()
         {
             var lines = new List<string>();
             string line;
             try
             {
                 //Pass the file path and file name to the StreamReader constructor
-                StreamReader sr = new StreamReader(path);
+                StreamReader sr = new StreamReader(watchlistPath);
                 //Read the first line of text
                 line = sr.ReadLine();
                 //Continue to read until you reach end of file
@@ -99,6 +121,9 @@ namespace AutomaticPowerManager
                 }
                 //close the file
                 sr.Close();
+
+
+                
             }
             catch (Exception e)
             {
@@ -107,7 +132,80 @@ namespace AutomaticPowerManager
             }
             finally
             {
-                // Console.WriteLine("Executing finally block.");
+              
+                //lines.Add("Please add a program");
+            }
+
+
+
+            return lines;
+        }
+
+
+
+
+
+        public static void WriteSettings(string setting)
+        {
+
+            //https://docs.microsoft.com/en-us/troubleshoot/dotnet/csharp/read-write-text-file
+            //int x;
+            try
+            {
+                //Open the File
+                StreamWriter sw = new StreamWriter(SettingsPath, true); // creates file if it dosen't exist
+
+                sw.WriteLine(setting);
+                //close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+            finally
+            {
+
+            }
+
+        }
+
+
+        public static List<string> ReadSettings()
+        {
+            var lines = new List<string>();
+            string line;
+            try
+            {
+                //Pass the file path and file name to the StreamReader constructor
+                StreamReader sr = new StreamReader(SettingsPath);
+                //Read the first line of text
+                line = sr.ReadLine();
+                //Continue to read until you reach end of file
+                while (line != null)
+                {
+                    //add lines to list
+                    lines.Add(line);
+                    //Read the next line
+                    line = sr.ReadLine();
+                }
+                if (line == null)
+                {
+                    lines.Add("True");
+                    lines.Add("True");
+                }
+                
+                //close the file
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                
+            }
+            finally
+            {
+                
+                
             }
 
 
