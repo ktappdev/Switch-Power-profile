@@ -287,7 +287,8 @@ namespace AutomaticPowerManager
             //}
                 
             Boolean ListEmpty = false;
-            Boolean MonitorModeOnOrOff = true; ;
+            Boolean MonitorModeOnOrOff = true;
+            //Boolean NoRunningProgram = false;
             int t = 10000;
             Task task = new Task(() => //run these commands on another thread
             {
@@ -309,33 +310,37 @@ namespace AutomaticPowerManager
                             {
                                 ListEmpty = true; //check to see if the list is empty and set this to true if it is
                             }
-                            Process[] processCollection = Process.GetProcesses();
-                            foreach (Process p in processCollection)
+                            if (ListBoxMonProcesses.Items.Count > 0)
                             {
-                                foreach (string item in ListBoxMonProcesses.Items)
+                                ListEmpty = false;
+                                Process[] processCollection = Process.GetProcesses();
+                                foreach (Process p in processCollection)
                                 {
-                                    if (p.ProcessName == item)
+                                    foreach (string item in ListBoxMonProcesses.Items)
                                     {
-                                        //MessageBox.Show($"{p.ProcessName} running");
-
-                                        //if the item in the list is running then set to high performance
-                                        this.Dispatcher.Invoke(() =>
+                                        if (p.ProcessName == item)
                                         {
-                                            SetHighProfile();
-                                            ListEmpty = false;
-                                        });
-                                        //Thread.Sleep(10000);
-                                        break;
+
+                                            //if the item in the list is running then set to high performance
+                                            this.Dispatcher.Invoke(() =>
+                                            {
+                                                SetHighProfile();
+                                                
+                                            });
+                                            
+                                            break;
+
+                                        }
+
 
                                     }
-
-
 
                                 }
 
                             }
-                            // if the list is empty then set the system to run on balanced mode
-                            if (ListEmpty == true && ManualSet == false)
+                            
+
+                            if (ListEmpty == true)
                             {
                                 this.Dispatcher.Invoke(() =>
                                 {
@@ -345,14 +350,17 @@ namespace AutomaticPowerManager
                                 });
                             }
 
-
-
                         }
+
                         catch (Exception e)
                         {
                             //currently not doing anything with the error, there really isnt any error i can think of o_o
                         }
                     }
+                    //else
+                    //{
+                    //    // monitor mode off functions can go here
+                    //}
 
 
 
@@ -395,39 +403,20 @@ namespace AutomaticPowerManager
 
         private void SetLowButton(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Enable Manual Power Managemant? \nYou can re-enable monitor mode in options", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                SetLowProfile();
-                ManualSet = true;
-                MonitorMode.IsChecked = false;
-                MonitorMode.Content = "Enable monitor mode";
-            }
-            
-
+            SetLowProfile();
+      
         }
 
         private void SetBalancedButton(object sender, RoutedEventArgs e)
         {
-            
-            if (MessageBox.Show("Enable Manual Power Managemant? \nYou can re-enable monitor mode in options", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                SetBalancedProfile();
-                ManualSet = true;
-                MonitorMode.IsChecked = false;
-                MonitorMode.Content = "Enable monitor mode";
-            }
+            SetBalancedProfile();
+
         }
 
         private void SetHighButton(object sender, RoutedEventArgs e)
         {
-            
-            if (MessageBox.Show("Enable Manual Power Managemant? \nYou can re-enable monitor mode in options", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                SetHighProfile();
-                ManualSet = true;
-                MonitorMode.IsChecked = false;
-                MonitorMode.Content = "Enable monitor mode";
-            }
+            SetHighProfile();
+
         }
 
         
@@ -496,18 +485,6 @@ namespace AutomaticPowerManager
             
         }
 
-        
-
-        //private void MonitorMode_Click(object sender, RoutedEventArgs e)
-        //{
-
-        //        MonitorMode.IsChecked = false;
-        //        c
-
-        //        MonitorMode.IsChecked = true;
-        //        ManualSet = false;
-
-        //}
 
     }
 }

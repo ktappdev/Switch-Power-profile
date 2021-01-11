@@ -53,7 +53,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>images\96.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>AutomaticPowerManager.App</StartupObject>
@@ -145,16 +145,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Gradient-Background-Free-Image.png" />
+    <Resource Include="images\96.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="images\Gradient Abstract Shapes Background Purple-01.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\Gradient Abstract Shapes Background Colorful-01.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="images\Gradient Abstract Shapes Background Grey-01.jpg" />
+    <Resource Include="images\logo2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

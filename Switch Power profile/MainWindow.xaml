@@ -6,14 +6,11 @@
         xmlns:local="clr-namespace:AutomaticPowerManager"
         mc:Ignorable="d"
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize">
-    <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6">
-        <Grid.Background>
-            <ImageBrush ImageSource="images/Gradient Abstract Shapes Background Colorful-01.jpg" TileMode="Tile"/>
-        </Grid.Background>
-        <Image HorizontalAlignment="Left" Height="170" Margin="-3,24,0,0" VerticalAlignment="Top" Width="185" Source="images/logo.png" Stretch="Fill"/>
+    <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFF1F1F1">
+        <Image HorizontalAlignment="Left" Height="170" Margin="-3,15,0,0" VerticalAlignment="Top" Width="185" Source="images/logo2.png" Stretch="Fill"/>
 
-        <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="White" Background="#FFA3C9DE"/>
-        <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="White" OpacityMask="Black" Background="#FF7ED4E3">
+        <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" Background="#FFA3C9DE"/>
+        <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" OpacityMask="Black" Background="#FF7ED4E3">
             <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="34,83,0,0" VerticalAlignment="Top" Width="100" Minimum="5" Maximum="20" TickPlacement="BottomRight" Foreground="#FFE5E5E5" Value="10" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="5" LargeChange="5" IsSnapToTickEnabled="True"/>
         </GroupBox>
 
@@ -22,8 +19,8 @@
         <Button Content="High" HorizontalAlignment="Left" Margin="180,54,0,0" VerticalAlignment="Top" Width="70" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled" Height="20"/>
         <ListBox HorizontalAlignment="Left" Height="260" Margin="20,231,0,0" VerticalAlignment="Top" Width="201" Name="ListBoxProcesses" BorderBrush="Black" Background="White" Foreground="Black" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
         <ListBox HorizontalAlignment="Left" Height="260" Margin="342,231,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxMonProcesses" FontWeight="Bold" FontStyle="Italic" FontFamily="Segoe UI Black" Foreground="Black" BorderBrush="Black" Background="White" BorderThickness="0"/>
-        <Label Content="Monitor List" HorizontalAlignment="Left" Margin="380,190,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" Foreground="White"/>
-        <Label Content="Running Processes" HorizontalAlignment="Left" Margin="58,190,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" Foreground="White"/>
+        <Label Content="Monitor List" HorizontalAlignment="Left" Margin="380,209,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" Foreground="#FF797979" FontWeight="Bold"/>
+        <Label Content="Running Processes" HorizontalAlignment="Left" Margin="58,208,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" Foreground="#FF797979" FontWeight="Bold"/>
         <Button Content="Get Processes" HorizontalAlignment="Left" Margin="240,164,0,0" VerticalAlignment="Top" Width="80" Click="GetProcessButton" Visibility="Hidden"/>
         <Button Content="Add --&gt;" HorizontalAlignment="Left" Margin="240,309,0,0" VerticalAlignment="Top" Width="80" Click="Add_Monitor" ToolTip="Add a program from processes list to be monitored" FontWeight="Bold" Background="White"/>
         <Button Content="Remove" HorizontalAlignment="Left" Margin="240,371,0,0" VerticalAlignment="Top" Width="80" Click="RemoveMonitorButton" ToolTip="Remove selected program from monitor list" FontWeight="Bold" Background="White"/>
@@ -31,26 +28,6 @@
         <Label Content="" HorizontalAlignment="Left" Margin="250,134,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Name="LabelLow" Background="#FF78FF71" Width="70" Height="20" FontSize="8" FontWeight="Bold"/>
         <Label Content="" HorizontalAlignment="Left" Margin="250,94,0,0" VerticalAlignment="Top" Width="70" HorizontalContentAlignment="Center" Name="LabelBalanced" Background="#FF4FACF9" Height="20" ScrollViewer.VerticalScrollBarVisibility="Auto" FontWeight="Bold" FontSize="8"/>
         <Label Content="" HorizontalAlignment="Left" Margin="250,54,0,0" VerticalAlignment="Top" Width="70" HorizontalContentAlignment="Center" Name="LabelHigh" Background="#FFFF6C6C" Height="20" FontSize="8" FontWeight="Bold"/>
-        <Separator HorizontalAlignment="Left" Height="26" Margin="429,207,0,0" VerticalAlignment="Top" Width="16" RenderTransformOrigin="0.5,0.5">
-            <Separator.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Separator.RenderTransform>
-        </Separator>
-        <Separator HorizontalAlignment="Left" Height="26" Margin="110,207,0,0" VerticalAlignment="Top" Width="16" RenderTransformOrigin="0.5,0.5">
-            <Separator.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-90"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Separator.RenderTransform>
-        </Separator>
         <Image HorizontalAlignment="Left" Height="37" Margin="260,331,0,0" VerticalAlignment="Top" Width="40" Source="images/arr.png"/>
         <Button Content="" HorizontalAlignment="Left" Margin="88,496,0,0" VerticalAlignment="Top" Width="25" Height="25" BorderBrush="{x:Null}" Foreground="{x:Null}" Click="GetProcessButton" ToolTip="Manually refresh the running processes list">
             <Button.Background>
