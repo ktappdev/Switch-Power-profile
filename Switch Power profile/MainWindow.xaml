@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:AutomaticPowerManager"
         mc:Ignorable="d"
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize">
-    <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFF1F1F1">
+    <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="LightGray">
         <Image HorizontalAlignment="Left" Height="146" Margin="10,34,0,0" VerticalAlignment="Top" Width="159" Source="images/logo2.png" Stretch="Fill"/>
 
         <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" Background="#FFA3C9DE"/>
         <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" OpacityMask="Black" Background="#FF7ED4E3">
-            <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="39,91,0,0" VerticalAlignment="Top" Width="100" Minimum="5" Maximum="20" TickPlacement="BottomRight" Foreground="#FFE5E5E5" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="5" LargeChange="5" IsSnapToTickEnabled="True"/>
+            <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="39,91,0,0" VerticalAlignment="Top" Width="100" Minimum="5" Maximum="20" TickPlacement="BottomRight" Foreground="#FFE5E5E5" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="5" LargeChange="5" IsSnapToTickEnabled="True" ValueChanged="RateSlider_ValueChanged"/>
         </GroupBox>
 
         <Button Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"/>

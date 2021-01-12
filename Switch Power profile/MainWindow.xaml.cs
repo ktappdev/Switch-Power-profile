@@ -69,17 +69,6 @@ namespace AutomaticPowerManager
                     Startup.IsChecked = false;
                 }
 
-                try
-                {
-                    MessageBox.Show(settingsData[2]);
-                    RateSlider.Value = Convert.ToDouble(settingsData[2]);
-                }
-                catch (Exception e)
-                {
-
-                    RateSlider.Value = 20.0;
-                }
-
 
             }
             catch (Exception e)
@@ -87,8 +76,18 @@ namespace AutomaticPowerManager
 
                 
             }
-            
-            
+            try
+            {
+                MessageBox.Show(settingsData[2]);
+                RateSlider.Value = Convert.ToDouble(settingsData[2]);
+            }
+            catch (Exception e)
+            {
+
+                RateSlider.Value = 20.0;
+            }
+
+
         }
 
         
@@ -645,5 +644,6 @@ namespace AutomaticPowerManager
             Functions.WriteSettings(RateSlider.Value.ToString());
 
         }
+
     }
 }
