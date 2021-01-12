@@ -15,7 +15,7 @@ namespace AutomaticPowerManager
     class Functions
     {
         public static string DirPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\AppData\Local\Automatic Power Manager";
-        public static string watchlistPath = $@"{DirPath}\watchlist";
+        public static string watchlistPath = $@"{DirPath}\watchlist.cfg";
         public static string SettingsPath = $@"{DirPath}\settings.cfg";
 
         public static void CreateAppDir()
@@ -49,7 +49,7 @@ namespace AutomaticPowerManager
 
                 using (RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
                     {
-                        if(key.GetValue("KTAD - APM") == null && startup == true)
+                        if(startup == true)
                         {
                             key.SetValue("KTAD - APM", AppPath);
                             key.Close();
@@ -218,6 +218,7 @@ namespace AutomaticPowerManager
                 {
                     lines.Add("True");
                     lines.Add("True");
+                    lines.Add("10");
                 }
                 
                 //close the file

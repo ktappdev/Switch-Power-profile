@@ -68,6 +68,19 @@ namespace AutomaticPowerManager
                 {
                     Startup.IsChecked = false;
                 }
+
+                try
+                {
+                    MessageBox.Show(settingsData[2]);
+                    RateSlider.Value = Convert.ToDouble(settingsData[2]);
+                }
+                catch (Exception e)
+                {
+
+                    RateSlider.Value = 20.0;
+                }
+
+
             }
             catch (Exception e)
             {
@@ -373,7 +386,7 @@ namespace AutomaticPowerManager
                             }
                             
 
-                            if (ListEmpty == true || CurrentlyRunningList.Count == 0)
+                            if (ListEmpty == true || CurrentlyRunningList.Count == 0) // Boss logic :) so simple don't need a list tho
                             {
                                 this.Dispatcher.Invoke(() =>
                                 {
@@ -530,15 +543,9 @@ namespace AutomaticPowerManager
             
             Functions.WriteSettings($"startup_with_windows={startupstatus}");
             Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+            Functions.WriteSettings(RateSlider.Value.ToString());
 
-            //if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
-            //{
-            //    startupstatus = Startup.IsChecked.Value;
-            //    monitormodestatus = MonitorMode.IsChecked.Value;
-            //    File.Delete(Functions.SettingsPath);
-            //    Functions.WriteSettings($"startup_with_windows={startupstatus}");
-            //    Functions.WriteSettings($"monitor_mode={monitormodestatus}");
-            //}
+
 
 
 
@@ -566,6 +573,7 @@ namespace AutomaticPowerManager
                     }
                     Functions.WriteSettings($"startup_with_windows={startupstatus}");
                     Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+                    Functions.WriteSettings(RateSlider.Value.ToString());
                 }
 
             }
@@ -591,6 +599,7 @@ namespace AutomaticPowerManager
                 }
                 Functions.WriteSettings($"startup_with_windows={startupstatus}");
                 Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+                Functions.WriteSettings(RateSlider.Value.ToString());
             }
 
         }
@@ -613,7 +622,28 @@ namespace AutomaticPowerManager
                 }
                 Functions.WriteSettings($"startup_with_windows={startupstatus}");
                 Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+                Functions.WriteSettings(RateSlider.Value.ToString());
             }
+        }
+
+        private void RateSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            //startupstatus = Startup.IsChecked.Value;
+            //monitormodestatus = MonitorMode.IsChecked.Value;
+            try
+            {
+                File.Delete(Functions.SettingsPath);
+            }
+            catch (Exception)
+            {
+
+                Functions.CreateAppDir();
+            }
+            Functions.WriteSettings($"startup_with_windows={startupstatus}");
+            Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+            Functions.WriteSettings(RateSlider.Value.ToString());
+
         }
     }
 }
