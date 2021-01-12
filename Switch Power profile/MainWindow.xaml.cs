@@ -30,6 +30,9 @@ namespace AutomaticPowerManager
             
 
             InitializeComponent();
+            RateSlider.Value = Convert.ToDouble(Functions.ReadSettings()[2]); //This piece of shit took me two hours
+            RateSlider.Minimum = 5.0;
+            RateSlider.Maximum = 20.0;
             Functions.CreateAppDir();
             Functions.GetAllPowerProfiles();
             ReadAndUpdateUi();
@@ -68,7 +71,7 @@ namespace AutomaticPowerManager
                 {
                     Startup.IsChecked = false;
                 }
-
+                RateSlider.Value = Convert.ToDouble(settingsData[2]);
 
             }
             catch (Exception e)
@@ -76,16 +79,16 @@ namespace AutomaticPowerManager
 
                 
             }
-            try
-            {
-                MessageBox.Show(settingsData[2]);
-                RateSlider.Value = Convert.ToDouble(settingsData[2]);
-            }
-            catch (Exception e)
-            {
+            //try
+            //{
+            //    MessageBox.Show(settingsData[2]);
+            //    RateSlider.Value = Convert.ToDouble(settingsData[2]);
+            //}
+            //catch (Exception e)
+            //{
 
-                RateSlider.Value = 20.0;
-            }
+            //    RateSlider.Value = 20.0;
+            //}
 
 
         }
@@ -644,6 +647,7 @@ namespace AutomaticPowerManager
             Functions.WriteSettings(RateSlider.Value.ToString());
 
         }
+
 
     }
 }

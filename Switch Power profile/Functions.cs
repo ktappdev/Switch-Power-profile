@@ -214,19 +214,21 @@ namespace AutomaticPowerManager
                     //Read the next line
                     line = sr.ReadLine();
                 }
-                if (line == null)
-                {
-                    lines.Add("True");
-                    lines.Add("True");
-                    lines.Add("10");
-                }
+                //if (line == null)
+                //{
+                //    lines.Add("True");
+                //    lines.Add("True");
+                //    lines.Add("10");
+                //}
                 
                 //close the file
                 sr.Close();
             }
             catch (Exception e)
             {
-                
+                lines.Add("True");
+                lines.Add("True");
+                lines.Add("10");
             }
             finally
             {
