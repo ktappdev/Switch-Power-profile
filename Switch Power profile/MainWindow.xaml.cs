@@ -16,28 +16,21 @@ namespace AutomaticPowerManager
     {
         //static Dictionary<string, string> guids = Functions.GetAllPowerProfiles();
 
-
-
         Forms.NotifyIcon notifyIcon = new Forms.NotifyIcon();
-
-
         public MainWindow()
         {
-            
             notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\256.ico");
             notifyIcon.Visible = true;
             notifyIcon.Text = "Automatic Power Manager - KTAD";
+            //notifyIcon.Click += Notify_Click;
             notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
-            notifyIcon.ContextMenuStrip.Items.Add("one", null, TrayIconToggleMonitorModeClicked);
+            //notifyIcon.ContextMenuStrip.Items.Add("Toggle Monitor Mode", null, TrayIconToggleMonitorModeClicked);
+            notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Toggle Monitor Mode", null, TrayIconToggleMonitorModeClicked));
 
 
             InitializeComponent();
             Functions.CreateAppDir();
             GetSettingsAndUpdate(Functions.ReadSettings());
-            
-
-
-
             Functions.GetAllPowerProfiles();
             ReadAndUpdateUi();
             GetProcessesList();
@@ -49,15 +42,14 @@ namespace AutomaticPowerManager
             //GetChargingStatus(); //do this later
 
 
-            //var ts = new ThreadStart(SetProfileOnConnect);
-            //var backgroundThread = new Thread(ts);
-            //backgroundThread.Start();
-
         }
+
+
 
         private void TrayIconToggleMonitorModeClicked(object sender, EventArgs e)
         {
             MonitorMode.IsChecked = !MonitorMode.IsChecked.Value;
+            
         }
 
         public void GetSettingsAndUpdate(List<string> settingsData)
@@ -337,10 +329,14 @@ namespace AutomaticPowerManager
             {
                 while (true)
                 {
+                    
+
                     this.Dispatcher.Invoke(() =>
                     {
+                        
                         MonitorModeOnOrOff = (bool)MonitorMode.IsChecked;
                         
+
                     });
 
                     
@@ -541,7 +537,7 @@ namespace AutomaticPowerManager
 
                 Functions.CreateAppDir();
             }
-            
+
             Functions.WriteSettings(Startup.IsChecked.Value.ToString());
             Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
             Functions.WriteSettings(RateSlider.Value.ToString());

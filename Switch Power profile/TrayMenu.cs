@@ -13,6 +13,8 @@ namespace AutomaticPowerManager
             throw new NotImplementedException();
         }
 
+      
+
 
     }
 }
