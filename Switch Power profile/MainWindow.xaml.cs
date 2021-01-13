@@ -7,6 +7,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.Management;
 using System.IO;
+using Forms = System.Windows.Forms;
+using System.Drawing;
 
 namespace AutomaticPowerManager
 {
@@ -14,32 +16,35 @@ namespace AutomaticPowerManager
     {
         //static Dictionary<string, string> guids = Functions.GetAllPowerProfiles();
 
-        //static public string LowGUID = guids["Power"];
-        //static public string BalancedGUID = guids["Balanced"];
-        //static public string HighGUID = guids["High"];
 
 
-        public Boolean startupstatus = true;
-        public Boolean monitormodestatus = true;
+        Forms.NotifyIcon notifyIcon = new Forms.NotifyIcon();
 
-
-        //Boolean ManualSet = false;
 
         public MainWindow()
         {
             
+            notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\256.ico");
+            notifyIcon.Visible = true;
+            notifyIcon.Text = "Automatic Power Manager - KTAD";
+            notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
+            notifyIcon.ContextMenuStrip.Items.Add("one", null, TrayIconToggleMonitorModeClicked);
+
 
             InitializeComponent();
-            RateSlider.Value = Convert.ToDouble(Functions.ReadSettings()[2]); //This piece of shit took me two hours
-            RateSlider.Minimum = 5.0;
-            RateSlider.Maximum = 20.0;
             Functions.CreateAppDir();
+            GetSettingsAndUpdate(Functions.ReadSettings());
+            
+
+
+
             Functions.GetAllPowerProfiles();
             ReadAndUpdateUi();
             GetProcessesList();
             UpdateMonListBox(Functions.ReadWatchlist());
+            Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
             MonitorPrograms();
-            Functions.AddApplicationToStartup(true);
+            
 
             //GetChargingStatus(); //do this later
 
@@ -50,50 +55,44 @@ namespace AutomaticPowerManager
 
         }
 
+        private void TrayIconToggleMonitorModeClicked(object sender, EventArgs e)
+        {
+            MonitorMode.IsChecked = !MonitorMode.IsChecked.Value;
+        }
+
         public void GetSettingsAndUpdate(List<string> settingsData)
         {
             try
             {
-                if (settingsData[1].Contains("True"))
+                if (settingsData[1] == "True")
                 {
                     MonitorMode.IsChecked = true;
                 }
-                else
+                else if (settingsData[1] == "False")
                 {
                     MonitorMode.IsChecked = false;
                 }
 
-                if (settingsData[0].Contains("True"))
+                if (settingsData[0] == "True")
                 {
                     Startup.IsChecked = true;
                 }
-                else
+                else if (settingsData[0] == "False")
                 {
                     Startup.IsChecked = false;
                 }
                 RateSlider.Value = Convert.ToDouble(settingsData[2]);
+                RateSlider.Minimum = 5.0;
+                RateSlider.Maximum = 20.0;
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
-                
             }
-            //try
-            //{
-            //    MessageBox.Show(settingsData[2]);
-            //    RateSlider.Value = Convert.ToDouble(settingsData[2]);
-            //}
-            //catch (Exception e)
-            //{
-
-            //    RateSlider.Value = 20.0;
-            //}
-
 
         }
 
-        
+
 
         public void ReadAndUpdateUi()
         {
@@ -116,7 +115,7 @@ namespace AutomaticPowerManager
                     break;
             }
 
-            GetSettingsAndUpdate(Functions.ReadSettings());
+            
         }
 
 
@@ -531,7 +530,7 @@ namespace AutomaticPowerManager
             //ManualSet = false;
 
 
-            monitormodestatus = (bool)MonitorMode.IsChecked;
+            //monitormodestatus = (bool)MonitorMode.IsChecked;
             //startupstatus = (bool)Startup.IsChecked;
             try
             {
@@ -543,8 +542,8 @@ namespace AutomaticPowerManager
                 Functions.CreateAppDir();
             }
             
-            Functions.WriteSettings($"startup_with_windows={startupstatus}");
-            Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
+            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
             Functions.WriteSettings(RateSlider.Value.ToString());
 
 
@@ -557,26 +556,22 @@ namespace AutomaticPowerManager
 
         private void MonitorMode_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Enable Manual Power Managemant? \nYou can re-enable monitor mode in options", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Disable Automatic Power Management?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
 
-                if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
+                try
                 {
-                    startupstatus = Startup.IsChecked.Value;
-                    monitormodestatus = MonitorMode.IsChecked.Value;
-                    try
-                    {
-                        File.Delete(Functions.SettingsPath);
-                    }
-                    catch (Exception)
-                    {
-
-                        Functions.CreateAppDir();
-                    }
-                    Functions.WriteSettings($"startup_with_windows={startupstatus}");
-                    Functions.WriteSettings($"monitor_mode={monitormodestatus}");
-                    Functions.WriteSettings(RateSlider.Value.ToString());
+                    File.Delete(Functions.SettingsPath);
                 }
+                catch (Exception)
+                {
+
+                    Functions.CreateAppDir();
+                }
+
+                Functions.WriteSettings(Startup.IsChecked.Value.ToString());
+                Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
+                Functions.WriteSettings(RateSlider.Value.ToString());
 
             }
             
@@ -586,53 +581,6 @@ namespace AutomaticPowerManager
         private void startup_Unchecked(object sender, RoutedEventArgs e)
         {
             Functions.AddApplicationToStartup(false); // writes to the registry
-            if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
-            {
-                startupstatus = Startup.IsChecked.Value;
-                monitormodestatus = MonitorMode.IsChecked.Value;
-                try
-                {
-                    File.Delete(Functions.SettingsPath);
-                }
-                catch (Exception)
-                {
-
-                    Functions.CreateAppDir();
-                }
-                Functions.WriteSettings($"startup_with_windows={startupstatus}");
-                Functions.WriteSettings($"monitor_mode={monitormodestatus}");
-                Functions.WriteSettings(RateSlider.Value.ToString());
-            }
-
-        }
-
-        private void startup_Checked(object sender, RoutedEventArgs e)
-        {
-            Functions.AddApplicationToStartup(true);
-            if (Startup.IsChecked != null && MonitorMode.IsChecked != null)
-            {
-                startupstatus = Startup.IsChecked.Value;
-                monitormodestatus = MonitorMode.IsChecked.Value;
-                try
-                {
-                    File.Delete(Functions.SettingsPath);
-                }
-                catch (Exception)
-                {
-
-                    Functions.CreateAppDir();
-                }
-                Functions.WriteSettings($"startup_with_windows={startupstatus}");
-                Functions.WriteSettings($"monitor_mode={monitormodestatus}");
-                Functions.WriteSettings(RateSlider.Value.ToString());
-            }
-        }
-
-        private void RateSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
-            //startupstatus = Startup.IsChecked.Value;
-            //monitormodestatus = MonitorMode.IsChecked.Value;
             try
             {
                 File.Delete(Functions.SettingsPath);
@@ -642,12 +590,61 @@ namespace AutomaticPowerManager
 
                 Functions.CreateAppDir();
             }
-            Functions.WriteSettings($"startup_with_windows={startupstatus}");
-            Functions.WriteSettings($"monitor_mode={monitormodestatus}");
+
+            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
+            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
             Functions.WriteSettings(RateSlider.Value.ToString());
 
         }
 
+        private void startup_Checked(object sender, RoutedEventArgs e)
+        {
+            Functions.AddApplicationToStartup(true);
+            try
+            {
+                File.Delete(Functions.SettingsPath);
+            }
+            catch (Exception)
+            {
 
+                Functions.CreateAppDir();
+            }
+
+            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
+            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
+            Functions.WriteSettings(RateSlider.Value.ToString());
+        }
+
+        private void RateSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+
+            try
+            {
+                File.Delete(Functions.SettingsPath);
+            }
+            catch (Exception)
+            {
+
+                Functions.CreateAppDir();
+            }
+
+            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
+            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
+            Functions.WriteSettings(RateSlider.Value.ToString());
+
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            notifyIcon.Dispose();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to exit? Click \"No\" to minimize to system tray", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }

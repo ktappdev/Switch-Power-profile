@@ -25,17 +25,16 @@ namespace AutomaticPowerManager
                 //directory exists or nah.
                 if (Directory.Exists(DirPath))
                 {
-                    Console.WriteLine("That path exists already.");
+                    
                     return;
                 }
 
                 //create the directory.
                 DirectoryInfo dir = Directory.CreateDirectory(DirPath);
-                Console.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime(DirPath));
 
                 // Delete the directory.
                 //dir.Delete();
-                //Console.WriteLine("The directory was deleted successfully.");
+
             }
             catch (Exception e)
             {
@@ -202,41 +201,22 @@ namespace AutomaticPowerManager
             string line;
             try
             {
-                //Pass the file path and file name to the StreamReader constructor
                 StreamReader sr = new StreamReader(SettingsPath);
-                //Read the first line of text
                 line = sr.ReadLine();
-                //Continue to read until you reach end of file
                 while (line != null)
                 {
-                    //add lines to list
                     lines.Add(line);
-                    //Read the next line
                     line = sr.ReadLine();
                 }
-                //if (line == null)
-                //{
-                //    lines.Add("True");
-                //    lines.Add("True");
-                //    lines.Add("10");
-                //}
-                
-                //close the file
+
                 sr.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 lines.Add("True");
                 lines.Add("True");
                 lines.Add("10");
             }
-            finally
-            {
-                
-                
-            }
-
-
 
             return lines;
         }
