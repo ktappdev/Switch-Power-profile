@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Management;
-using System.Text;
-using System.Threading.Tasks;
+//using System.Management;
+//using System.Text;
+//using System.Threading.Tasks;
 using System.Windows;
 using Forms = System.Windows.Forms;
 
@@ -293,7 +293,6 @@ namespace AutomaticPowerManager
                 //MessageBox.Show("Running on Power");
                 return true;
             }
-                
 
         }
 
