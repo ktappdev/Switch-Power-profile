@@ -31,8 +31,12 @@ Three power profiles required to function properly, (Low,Balanced and High) if a
 
 Ableton and other apps that require real-time effects can stutter while playing the simplest of projects even though you might have a very powerful Laptop. 
 Reason is simple, the balanced profile on your laptop will ramp up and down the CPU core clock to keep laptop cool and efficient.
-When doing a task like music production the CPU clocks can’t/shouldn’t do this ramp up or down, this is how the clips and blips happen.
+When doing a task like music production the CPU clocks shouldn’t be allowed to do this ramp up or down, this is how the clips and blips happen.
+You can manually set your laptop to High performance mode when doing these tasks but you will either forget to set it up before starting a recording and probably ruin a good take 
+or forget to set your system back to an efficient power profile like 'Balanced' when done. 
+This app fixes that issue for you automatically. 
 
+  
 <b>Requirements: Laptop running Windows 10.</b>
 
 
