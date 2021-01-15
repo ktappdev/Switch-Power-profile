@@ -29,3 +29,7 @@ Ableton and other apps that require real-time effects can stutter while playing 
 Reason is simple, the balanced profile on your laptop will ramp up and down the CPU core clock to keep laptop cool and efficient.
 When doing a task like music production the CPU clocks can’t/shouldn’t do this ramp up or down, this is how the clips and blips happen.
 
+<b>Download Here</b>
+
+https://github.com/KTAppDev/Switch-Power-profile/releases/tag/alpha
+
