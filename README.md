@@ -16,9 +16,9 @@ Rate Slider – This chooses how fast the auto switching happens, between 5 seco
 
 <b>Current Features</b>
 
-Will switch to low powered mode instead of balanced when on battery and no monitored apps are running running.
+Will switch to Low powered mode instead of Balanced when on battery power and no monitored apps are running.
 
-Notifications when switching power profiles.
+Notifications when switching between power profiles.
 
 Three power profiles required to function properly, (Low,Balanced and High) if any of these don't exist the app will create the missing profiles.
 
