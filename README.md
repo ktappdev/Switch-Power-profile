@@ -7,7 +7,7 @@ Now when you run this program in the future your laptop will automatically switc
 
 There are currently 3 options in this section.
 
-Monitor mode enable or disabled – Enable or disables auto switching of power profile.
+Monitor mode enabled or disabled – Enable or disables auto switching of power profile.
 
 Start up with Windows – This disable or enable auto startup with windows.
 
