@@ -16,16 +16,19 @@ namespace AutomaticPowerManager
     {
         //static Dictionary<string, string> guids = Functions.GetAllPowerProfiles();
 
-        Forms.NotifyIcon notifyIcon = new Forms.NotifyIcon();
+        public static Forms.NotifyIcon notifyIcon = new Forms.NotifyIcon();
         public MainWindow()
         {
             notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\256.ico");
             notifyIcon.Visible = true;
             notifyIcon.Text = "Automatic Power Manager - KTAD";
-            //notifyIcon.Click += Notify_Click;
+            notifyIcon.MouseClick += Notify_Click;
+            notifyIcon.BalloonTipClicked += Baloon_Clicked;
             notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
-            //notifyIcon.ContextMenuStrip.Items.Add("Toggle Monitor Mode", null, TrayIconToggleMonitorModeClicked);
-            notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Toggle Monitor Mode", null, TrayIconToggleMonitorModeClicked));
+
+            // dont need these for first version of the app
+            //notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Show App", null, TrayIconShowApp));
+            //notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Exit", null, TrayIconExit));
 
 
             InitializeComponent();
@@ -37,19 +40,86 @@ namespace AutomaticPowerManager
             UpdateMonListBox(Functions.ReadWatchlist());
             Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
             MonitorPrograms();
-            
+
 
             //GetChargingStatus(); //do this later
 
+        }
 
+        private void Baloon_Clicked(object sender, EventArgs e)
+        {
+            this.Show();
+            notifyIcon.Visible = false;
+            WindowState = WindowState.Normal;
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            //notifyIcon.BalloonTipTitle = "APM Running Minimized";
+            //notifyIcon.BalloonTipText = "Click icon to show app";
+
+            this.Hide();
+
+            notifyIcon.Visible = true;
+            notifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
+
+        }
+
+        private void Notify_Click(object sender, Forms.MouseEventArgs e)
+        {
+            this.Show();
+            notifyIcon.Visible = false;
+            WindowState = WindowState.Normal;
+
+        }
+
+        private void TrayIconShowApp(object sender, EventArgs e)
+        {
+            this.Show();
+            notifyIcon.Visible = false;
+            WindowState = WindowState.Normal;
+        }
+
+        private void TrayIconExit(object sender, EventArgs e)
+        {
+            //MonitorMode.IsChecked = !MonitorMode.IsChecked.Value; 
+            notifyIcon.Dispose();
+            System.Environment.Exit(1);
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            notifyIcon.Dispose();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Do you want to exit? Click \"No\" to minimize to system tray", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+                this.Hide();
+                notifyIcon.Visible = true;
+                notifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
+            }
+            
         }
 
 
 
-        private void TrayIconToggleMonitorModeClicked(object sender, EventArgs e)
+        private void Window_StateChanged(object sender, EventArgs e)
         {
-            MonitorMode.IsChecked = !MonitorMode.IsChecked.Value;
-            
+            if (WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+                notifyIcon.Visible = true;
+                
+                notifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
+                
+            }
+            else if (this.WindowState == WindowState.Normal)
+            {
+                notifyIcon.Visible = false;
+            }
         }
 
         public void GetSettingsAndUpdate(List<string> settingsData)
@@ -630,17 +700,17 @@ namespace AutomaticPowerManager
 
         }
 
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            notifyIcon.Dispose();
-        }
+        //private void Window_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    notifyIcon.BalloonTipTitle = "APM Running Minimized";
+        //    notifyIcon.BalloonTipText = "Click icon to show app";
+            
+        //    this.Hide();
+            
+        //    notifyIcon.Visible = true;
+        //    notifyIcon.ShowBalloonTip(1000);
+        //}
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (MessageBox.Show("Do you want to exit? Click \"No\" to minimize to system tray", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
-            {
-                e.Cancel = true;
-            }
-        }
+        
     }
 }

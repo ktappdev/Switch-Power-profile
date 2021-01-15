@@ -8,12 +8,9 @@ namespace AutomaticPowerManager
 {
     class TrayMenu
     {
-        public static void TrayIconToggleMonitorModeClicked()
-        {
-            throw new NotImplementedException();
-        }
+        
 
-      
+
 
 
     }

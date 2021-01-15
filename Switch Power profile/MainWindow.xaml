@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutomaticPowerManager"
         mc:Ignorable="d"
-        Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize" Closed="Window_Closed" Closing="Window_Closing">
+        Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize" Closed="Window_Closed" Closing="Window_Closing" StateChanged="Window_StateChanged" Initialized="Window_Initialized">
     <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFD5DDDF">
         <Image HorizontalAlignment="Left" Height="146" Margin="10,34,0,0" VerticalAlignment="Top" Width="159" Source="images/logo2.png" Stretch="Fill"/>
 
