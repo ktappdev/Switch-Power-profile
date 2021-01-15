@@ -13,6 +13,16 @@ Start up with Windows – This disable or enable auto startup with windows.
 
 Rate Slider – This chooses how fast the auto switching happens, between 5 seconds up to 20 seconds. Default is 10 seconds.
 
+
+<b>Current Features</b>
+
+Will switch to low powered mode instead of balanced when on battery and no monitored apps are running running.
+
+Notifications when switching power profiles.
+
+Three power profiles required to function properly, (Low,Balanced and High) if any of these don't exist the app will create the missing profiles.
+
+
 <b>Example use case</b>
 
 Ableton and other apps that require real-time effects can stutter while playing the simplest of projects even though you might have a very powerful Laptop. 
