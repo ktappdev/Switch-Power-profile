@@ -38,5 +38,6 @@ https://github.com/KTAppDev/Switch-Power-profile/releases/tag/alpha
 ![Current look of APM](https://github.com/KTAppDev/Switch-Power-profile/blob/master/image.png?raw=true "APM")
 
 PS. The UI looks like crap, I know.
+
 Interested in collaborating on this project please send mail to kentaylorappdev@gmail.com
 
