@@ -1,6 +1,7 @@
 The <b>Automatic Power Manager</b> for Windows 10 allows you to automatically switch to High Performance mode based on what apps you are running, if none of these apps are running it defaults to Balanced Mode.
 
-How to use
+<b>How to use</b>
+
 Start up APM and add a program from the running processes list to the monitor list, if your application isn’t on the running list make sure your program is running and click on refresh running processes list button.
 Now when you run this program in the future your laptop will automatically switch to High Performance Mode.
 
