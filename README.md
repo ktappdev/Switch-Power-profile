@@ -35,7 +35,7 @@ https://github.com/KTAppDev/Switch-Power-profile/releases/tag/alpha
 
 
 
-![Alt text](/relative/path/to/img.jpg?raw=true "APM")
+![Current look of APM](https://github.com/KTAppDev/Switch-Power-profile/blob/master/image.png?raw=true "APM")
 
 PS. The UI looks like crap, I know.
 
