@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+//using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Diagnostics;
 using System.Threading;
-using System.Management;
+//using System.Management;
 using System.IO;
 using Forms = System.Windows.Forms;
-using System.Drawing;
+//using System.Drawing;
 
 namespace AutomaticPowerManager
 {
@@ -17,6 +17,7 @@ namespace AutomaticPowerManager
         //static Dictionary<string, string> guids = Functions.GetAllPowerProfiles();
 
         public static Forms.NotifyIcon notifyIcon = new Forms.NotifyIcon();
+        public static List<string> CurrentlyRunningList = new List<string>();
         public MainWindow()
         {
             notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\256.ico");
@@ -42,7 +43,6 @@ namespace AutomaticPowerManager
             MonitorPrograms();
 
 
-            //GetChargingStatus(); //do this later
 
         }
 
@@ -203,6 +203,7 @@ namespace AutomaticPowerManager
                     LabelLow.Visibility = Visibility.Visible;
                     LabelBalanced.Visibility = Visibility.Hidden;
                     LabelHigh.Visibility = Visibility.Hidden;
+                    notifyIcon.ShowBalloonTip(1000, "System switched to Low Powered", "No monitored program is running and on battery", Forms.ToolTipIcon.Info);
                 }
                 else
                 {
@@ -241,6 +242,8 @@ namespace AutomaticPowerManager
                 LabelBalanced.Visibility = Visibility.Visible;
                 LabelHigh.Visibility = Visibility.Hidden;
                 LabelLow.Visibility = Visibility.Hidden;
+                notifyIcon.ShowBalloonTip(1000, "System switched to Balanced", "No monitored program is running and Power plugged in", Forms.ToolTipIcon.Info);
+
             }
             else
             {
@@ -270,6 +273,7 @@ namespace AutomaticPowerManager
                 LabelHigh.Visibility = Visibility.Visible;
                 LabelLow.Visibility = Visibility.Hidden;
                 LabelBalanced.Visibility = Visibility.Hidden;
+                notifyIcon.ShowBalloonTip(1000, "System switched to High Performane", $"{CurrentlyRunningList[0]} is running", Forms.ToolTipIcon.Info);
             }
             else
             {
@@ -390,7 +394,7 @@ namespace AutomaticPowerManager
             //{
             //    return;
             //}
-            List<string> CurrentlyRunningList = new List<string>();
+            //List<string> CurrentlyRunningList = new List<string>();
             Boolean ListEmpty = false;
             Boolean MonitorModeOnOrOff = true;
             //Boolean NoRunningProgram = false;
@@ -432,14 +436,6 @@ namespace AutomaticPowerManager
                                         {
                                             CurrentlyRunningList.Add(item);
 
-                                            //if the item in the list is running then set to high performance
-                                            //this.Dispatcher.Invoke(() =>
-                                            //{
-                                            //    SetHighProfile();
-                                            //    a = true;
-
-                                            //});
-
                                             break;
 
                                         }
@@ -455,12 +451,25 @@ namespace AutomaticPowerManager
 
                             if (ListEmpty == true || CurrentlyRunningList.Count == 0) // Boss logic :) so simple don't need a list tho
                             {
-                                this.Dispatcher.Invoke(() =>
+                                if (Functions.GetChargingStatus() == false)
                                 {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
 
-                                    SetBalancedProfile();
-                                    //ListEmpty = true;
-                                });
+                                        SetLowProfile();
+                                        //ListEmpty = true;
+                                    });
+                                }
+                                else
+                                {
+                                    this.Dispatcher.Invoke(() =>
+                                    {
+
+                                        SetBalancedProfile();
+                                        //ListEmpty = true;
+                                    });
+                                }
+                                
                             }
                             else
                             {
@@ -479,11 +488,6 @@ namespace AutomaticPowerManager
                             //currently not doing anything with the error, there really isnt any error i can think of o_o
                         }
                     }
-                    //else
-                    //{
-                    //    // monitor mode off functions can go here
-                    //}
-
 
 
                     this.Dispatcher.Invoke(() =>
@@ -700,17 +704,5 @@ namespace AutomaticPowerManager
 
         }
 
-        //private void Window_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    notifyIcon.BalloonTipTitle = "APM Running Minimized";
-        //    notifyIcon.BalloonTipText = "Click icon to show app";
-            
-        //    this.Hide();
-            
-        //    notifyIcon.Visible = true;
-        //    notifyIcon.ShowBalloonTip(1000);
-        //}
-
-        
     }
 }

@@ -8,7 +8,7 @@ using System.Management;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-
+using Forms = System.Windows.Forms;
 
 namespace AutomaticPowerManager
 {
@@ -151,8 +151,7 @@ namespace AutomaticPowerManager
             }
             catch (Exception e)
             {
-                MessageBox.Show("Please add programs to be monitored\nSystem will automatically switch to High Performance when program runs\n" +
-                    "Please set programs that wont always be running");
+                MessageBox.Show("Please add programs to be monitored\nSystem will automatically switch to High Performance when program runs\n");
             }
             finally
             {
@@ -255,29 +254,46 @@ namespace AutomaticPowerManager
 
         public static Boolean GetChargingStatus() //Work in progress, not really implimented
         {
-            SelectQuery Sq = new SelectQuery("Win32_Battery");
-            ManagementObjectSearcher objOSDetails = new ManagementObjectSearcher(Sq);
-            ManagementObjectCollection osDetailsCollection = objOSDetails.Get();
-            StringBuilder sb = new StringBuilder();
+            //SelectQuery Sq = new SelectQuery("Win32_Battery");
+            //ManagementObjectSearcher objOSDetails = new ManagementObjectSearcher(Sq);
+            //ManagementObjectCollection osDetailsCollection = objOSDetails.Get();
+            //StringBuilder sb = new StringBuilder();
 
-            Boolean Charging = false;
+            //Boolean Charging;
 
-            //ListBoxProcesses.Items.Add(osDetailsCollection);
+            ////ListBoxProcesses.Items.Add(osDetailsCollection);
 
-            foreach (ManagementObject mo in osDetailsCollection)
+            //foreach (ManagementObject mo in osDetailsCollection)
+            //{
+            //    if ((ushort)mo["BatteryStatus"] == 2)
+            //    {
+            //        return Charging = true;
+            //    }
+            //    else
+            //    {
+            //        //SetLowProfile();
+            //        return Charging = false;
+            //    }
+
+            //}
+            //return Charging;
+
+
+
+
+            PowerLineStatus status = (PowerLineStatus)Forms.SystemInformation.PowerStatus.PowerLineStatus;
+            if (status == PowerLineStatus.Offline)
             {
-                if ((ushort)mo["BatteryStatus"] == 2)
-                {
-                    return Charging = true;
-                }
-                else
-                {
-                    //SetLowProfile();
-                    return Charging = false;
-                }
-
+                //MessageBox.Show("Running on Battery");
+                return false;
             }
-            return Charging;
+
+            else
+            {
+                //MessageBox.Show("Running on Power");
+                return true;
+            }
+                
 
         }
 
