@@ -32,9 +32,11 @@ When doing a task like music production the CPU clocks can’t/shouldn’t do th
 <b>Requirements: Laptop running Windows 10.</b>
 
 
-<b>Download Here</b>
+Download link below.
 
 https://github.com/KTAppDev/Switch-Power-profile/releases/tag/alpha
+
+to uninstall just use regular windows program uninstaller / add remove programs.
 
 
 
