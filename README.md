@@ -4,7 +4,7 @@ How to use
 Start up APM and add a program from the running processes list to the monitor list, if your application isn’t on the running list make sure your program is running and click on refresh running processes list button.
 Now when you run this program in the future your laptop will automatically switch to High Performance Mode.
 
-<i>(If your app is already on the monitor list it will not show up on the processes list)</i>
+<i>(If your app is already on the monitor list it will not show up on the running processes list)</i>
 
 <b>Options</b>
 
