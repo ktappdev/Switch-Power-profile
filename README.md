@@ -36,7 +36,7 @@ Download link below.
 
 https://github.com/KTAppDev/Switch-Power-profile/releases/tag/alpha
 
-to uninstall just use regular windows program uninstaller / add remove programs.
+To uninstall just use regular windows program uninstaller / add remove programs.
 
 
 
