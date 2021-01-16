@@ -8,6 +8,7 @@ using System.Threading;
 //using System.Management;
 using System.IO;
 using Forms = System.Windows.Forms;
+using System.Reflection;
 //using System.Drawing;
 
 namespace AutomaticPowerManager
@@ -20,7 +21,7 @@ namespace AutomaticPowerManager
         public static List<string> CurrentlyRunningList = new List<string>();
         public MainWindow()
         {
-            notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\256.ico");
+            notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\500White.ico");
             notifyIcon.Visible = true;
             notifyIcon.Text = "Automatic Power Manager - KTAD";
             notifyIcon.MouseClick += Notify_Click;
@@ -33,6 +34,8 @@ namespace AutomaticPowerManager
 
 
             InitializeComponent();
+            RunningInstance(); //works, needs further testing
+
             Functions.CreateAppDir();
             GetSettingsAndUpdate(Functions.ReadSettings());
             Functions.GetAllPowerProfiles();
@@ -46,7 +49,39 @@ namespace AutomaticPowerManager
 
         }
 
-        private void Baloon_Clicked(object sender, EventArgs e)
+
+
+        public static void RunningInstance()
+        {
+            Process current = Process.GetCurrentProcess();
+            Process[] processes = Process.GetProcessesByName(current.ProcessName);
+
+            foreach (Process process in processes)
+            {
+                
+                if (process.Id != current.Id && process.ProcessName == "Automatic Power manager") // find the other instance by name
+                {
+                    if (Assembly.GetExecutingAssembly().Location.
+                         Replace("/", "\\") == current.MainModule.FileName)
+
+                    {
+                          
+                        MessageBox.Show("Already running");
+                        
+                        Environment.Exit(0);
+                        //return process;
+
+                    }
+                }
+            }
+              
+            //return null;
+        }
+
+
+
+
+    private void Baloon_Clicked(object sender, EventArgs e)
         {
             this.Show();
             notifyIcon.Visible = false;
