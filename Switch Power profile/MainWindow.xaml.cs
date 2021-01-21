@@ -24,13 +24,14 @@ namespace AutomaticPowerManager
             notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\500White.ico");
             notifyIcon.Visible = true;
             notifyIcon.Text = "Automatic Power Manager - KTAD";
-            notifyIcon.MouseClick += Notify_Click;
+            notifyIcon.DoubleClick += Notify_DoubleClick; //Notify_Click;
             notifyIcon.BalloonTipClicked += Baloon_Clicked;
             notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
 
-            // dont need these for first version of the app
-            //notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Show App", null, TrayIconShowApp));
-            //notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Exit", null, TrayIconExit));
+            //dont need these for first version of the app
+
+            notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Show App", null, TrayIconShowApp));
+            notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Exit", null, TrayIconExit));
 
 
             InitializeComponent();
@@ -44,9 +45,15 @@ namespace AutomaticPowerManager
             UpdateMonListBox(Functions.ReadWatchlist());
             Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
             MonitorPrograms();
+        }
 
 
 
+        private void Notify_DoubleClick(object sender, EventArgs e)
+        {
+            this.Show();
+            notifyIcon.Visible = false;
+            WindowState = WindowState.Normal;
         }
 
 
@@ -59,23 +66,25 @@ namespace AutomaticPowerManager
             foreach (Process process in processes)
             {
                 
-                if (process.Id != current.Id && process.ProcessName == "Automatic Power manager") // find the other instance by name
+                if (process.Id != current.Id) // find the other instance by name    && process.ProcessName == "Automatic Power manager"
                 {
+                    
                     if (Assembly.GetExecutingAssembly().Location.
                          Replace("/", "\\") == current.MainModule.FileName)
 
                     {
-                          
-                        MessageBox.Show("Already running");
+
+                        //MessageBox.Show("Already running");
+                        //notifyIcon.Dispose();
+                        //process.CloseMainWindow();
+                        process.Kill();
+                        //Environment.Exit(0);
                         
-                        Environment.Exit(0);
-                        //return process;
 
                     }
                 }
             }
               
-            //return null;
         }
 
 
@@ -100,13 +109,16 @@ namespace AutomaticPowerManager
 
         }
 
-        private void Notify_Click(object sender, Forms.MouseEventArgs e)
-        {
-            this.Show();
-            notifyIcon.Visible = false;
-            WindowState = WindowState.Normal;
+        //private void Notify_Click(object sender, Forms.MouseEventArgs e)
+        //{
+        //    this.Show();
+        //    notifyIcon.Visible = false;
+        //    WindowState = WindowState.Normal;
 
-        }
+        //}
+
+
+
 
         private void TrayIconShowApp(object sender, EventArgs e)
         {
@@ -119,7 +131,7 @@ namespace AutomaticPowerManager
         {
             //MonitorMode.IsChecked = !MonitorMode.IsChecked.Value; 
             notifyIcon.Dispose();
-            System.Environment.Exit(1);
+            System.Environment.Exit(0);
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -381,6 +393,7 @@ namespace AutomaticPowerManager
                     && p.ProcessName.ToLower() != "idle"
                     && p.ProcessName.ToLower() != "systemsettings"
                     && p.ProcessName.ToLower() != "wininit"
+                    && p.ProcessName.ToLower() != "armsvc"
                     && !processlist.Contains(p.ProcessName))
                     {
                         processlist.Add(p.ProcessName);
@@ -739,5 +752,9 @@ namespace AutomaticPowerManager
 
         }
 
+        private void Window_Unloaded(object sender, RoutedEventArgs e)
+        {
+            notifyIcon.Dispose();
+        }
     }
 }
