@@ -9,6 +9,7 @@ using System.Threading;
 using System.IO;
 using Forms = System.Windows.Forms;
 using System.Reflection;
+using Switch_Power_profile;
 //using System.Drawing;
 
 namespace AutomaticPowerManager
@@ -394,6 +395,68 @@ namespace AutomaticPowerManager
                     && p.ProcessName.ToLower() != "systemsettings"
                     && p.ProcessName.ToLower() != "wininit"
                     && p.ProcessName.ToLower() != "armsvc"
+                    && p.ProcessName.ToLower() != "winlogon"
+                    && p.ProcessName.ToLower() != "wdfmgr"
+                    && p.ProcessName.ToLower() != "spoolsv"
+                    && p.ProcessName.ToLower() != "explorer"
+                    && p.ProcessName.ToLower() != "fontdrvhost"
+                    && p.ProcessName.ToLower() != "wmiprvse"
+                    && p.ProcessName.ToLower() != "PresentationFontCache".ToLower()
+                    && p.ProcessName.ToLower() != "esif_uf".ToLower()
+                    && p.ProcessName.ToLower() != "IntelCpHDCPSvc".ToLower()
+                    && p.ProcessName.ToLower() != "AsLdrSrv64".ToLower()
+                    && p.ProcessName.ToLower() != "nvcontainer".ToLower()
+                    && p.ProcessName.ToLower() != "ibtsiva".ToLower()
+                    && p.ProcessName.ToLower() != "OfficeClickToRun".ToLower()
+                    && p.ProcessName.ToLower() != "PnkBstrA".ToLower()
+                    && p.ProcessName.ToLower() != "LDSvc".ToLower()
+                    && p.ProcessName.ToLower() != "dasHost".ToLower()
+                    && p.ProcessName.ToLower() != "USBChargerService".ToLower()
+                    && p.ProcessName.ToLower() != "dllhost".ToLower()
+                    && p.ProcessName.ToLower() != "ROGGamingCenterService".ToLower()
+                    && p.ProcessName.ToLower() != "SgrmBroker".ToLower()
+                    && p.ProcessName.ToLower() != "dwm".ToLower()
+                    && p.ProcessName.ToLower() != "taskhostw".ToLower()
+                    && p.ProcessName.ToLower() != "SearchApp".ToLower()
+                    && p.ProcessName.ToLower() != "nvsphelper64".ToLower()
+                    && p.ProcessName.ToLower() != "NVIDIA Share".ToLower()
+                    && p.ProcessName.ToLower() != "conhost".ToLower()
+                    && p.ProcessName.ToLower() != "WUDFHost".ToLower()
+                    && p.ProcessName.ToLower() != "esrv_svc".ToLower()
+                    && p.ProcessName.ToLower() != "applicationframehost".ToLower()
+                    && p.ProcessName.ToLower() != "apsdaemon".ToLower()
+                    && p.ProcessName.ToLower() != "ashidsrv64".ToLower()
+                    && p.ProcessName.ToLower() != "asmonstartuptask64".ToLower()
+                    && p.ProcessName.ToLower() != "atkexcomsvc".ToLower()
+                    && p.ProcessName.ToLower() != "comppkgsrv".ToLower()
+                    && p.ProcessName.ToLower() != "esrv".ToLower()
+                    && p.ProcessName.ToLower() != "iclouddrive".ToLower()
+                    && p.ProcessName.ToLower() != "icloudservices".ToLower()
+                    && p.ProcessName.ToLower() != "intel_pie_service".ToLower()
+                    && p.ProcessName.ToLower() != "memory compression".ToLower()
+                    && p.ProcessName.ToLower() != "nvidia web helper".ToLower()
+                    && p.ProcessName.ToLower() != "nvdisplay.container".ToLower()
+                    && p.ProcessName.ToLower() != "microsoft.servicehub.controller".ToLower()
+                    && p.ProcessName.ToLower() != "msbuild".ToLower()
+                    && p.ProcessName.ToLower() != "perfwatson2".ToLower()
+                    && p.ProcessName.ToLower() != "ravbg64".ToLower()
+                    && p.ProcessName.ToLower() != "registry".ToLower()
+                    && p.ProcessName.ToLower() != "wlanext".ToLower()
+                    && p.ProcessName.ToLower() != "sursvc".ToLower()
+                    && p.ProcessName.ToLower() != "startmenuexperiencehost".ToLower()
+                    && p.ProcessName.ToLower() != "standardcollector.service".ToLower()
+                    && p.ProcessName.ToLower() != "shellexperiencehost".ToLower()
+                    && p.ProcessName.ToLower() != "securesystem".ToLower()
+                    && p.ProcessName.ToLower() != "runtimebroker".ToLower()
+                    && p.ProcessName.ToLower() != "applemobiledeviceprocess".ToLower()
+                    && p.ProcessName.ToLower() != "atkosd2".ToLower()
+                    && p.ProcessName.ToLower() != "googlecrashhandler".ToLower()
+                    && p.ProcessName.ToLower() != "googlecrashhandler64".ToLower()
+                    && p.ProcessName.ToLower() != "hxtsr".ToLower()
+                    && p.ProcessName.ToLower() != "intelcphecisvc".ToLower()
+                    && p.ProcessName.ToLower() != "jhi_service".ToLower()
+                    && p.ProcessName.ToLower() != "cmd".ToLower()
+                    
                     && !processlist.Contains(p.ProcessName))
                     {
                         processlist.Add(p.ProcessName);
@@ -755,6 +818,20 @@ namespace AutomaticPowerManager
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
             notifyIcon.Dispose();
+        }
+
+        private void about_button_Click(object sender, RoutedEventArgs e)
+        {
+            
+           
+            About about = new About();
+            about.ShowDialog();
+
+        }
+
+        private void menuExit_Click(object sender, RoutedEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

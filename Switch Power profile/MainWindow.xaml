@@ -7,6 +7,14 @@
         mc:Ignorable="d"
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize" Closed="Window_Closed" Closing="Window_Closing" StateChanged="Window_StateChanged" Initialized="Window_Initialized" Icon="images/500White.ico" Unloaded="Window_Unloaded">
     <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFD5DDDF">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Background="#FFC3CBCF">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Exit" Click="menuExit_Click" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        
         <Image HorizontalAlignment="Left" Height="146" Margin="10,34,0,0" VerticalAlignment="Top" Width="159" Source="images/logo2.png" Stretch="Fill"/>
 
         <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" Background="#FFA3C9DE">
@@ -20,7 +28,7 @@
             </GroupBox.Effect>
             <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="39,91,0,0" VerticalAlignment="Top" Width="100" TickPlacement="BottomRight" Foreground="#FFE5E5E5" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="6" LargeChange="5" IsSnapToTickEnabled="True" ValueChanged="RateSlider_ValueChanged"/>
         </GroupBox>
-
+        
         <Button Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"/>
         <Button Content="Balanced" HorizontalAlignment="Left" Margin="180,94,0,0" VerticalAlignment="Top" Width="70" Click="SetBalancedButton" ToolTip="Manually set power scheme to Balanced, MONITOR mode will be disabled" Height="20"/>
         <Button Content="High" HorizontalAlignment="Left" Margin="180,54,0,0" VerticalAlignment="Top" Width="70" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled" Height="20"/>
@@ -41,6 +49,7 @@
         <Button Content="Refresh Running Processes" HorizontalAlignment="Left" Margin="40,496,0,0" VerticalAlignment="Top" Width="160" Height="20" Click="GetProcessButton" ToolTip="Manually refresh the running processes list" Background="White" BorderBrush="{x:Null}"/>
         <Button Content="Clear Monitor List" HorizontalAlignment="Left" Margin="371,497,0,0" VerticalAlignment="Top" Width="140" Click="Button_Click" BorderBrush="{x:Null}" Background="White"/>
         <Label x:Name="RateLabel" Content="Update rate, default is 10 seconds" HorizontalAlignment="Left" Margin="376,119,0,0" VerticalAlignment="Top" FontSize="9"/>
+        <Button x:Name="about_button" Content="About" HorizontalAlignment="Left" Margin="463,14,0,0" VerticalAlignment="Top" Width="75" Click="about_button_Click"/>
 
     </Grid>
 </Window>
