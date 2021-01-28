@@ -5,15 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
-        Title="About" Height="400" Width="400">
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF69D1FF" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-                <Label Content="" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Width="125" Height="125">
+        Title="About" Height="400" Width="400" Background="{x:Null}" WindowStyle="ToolWindow">
+    <Grid Background="White">
+        <Label Content="" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Width="125" Height="125">
             <Label.Background>
                 <ImageBrush ImageSource="images/logo2.png"/>
             </Label.Background>

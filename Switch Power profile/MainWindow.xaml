@@ -8,7 +8,7 @@
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize" Closed="Window_Closed" Closing="Window_Closing" StateChanged="Window_StateChanged" Initialized="Window_Initialized" Icon="images/500White.ico" Unloaded="Window_Unloaded">
     <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFD5DDDF">
         <DockPanel>
-            <Menu DockPanel.Dock="Top" Background="#FFC3CBCF">
+            <Menu DockPanel.Dock="Top" Background="White">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Exit" Click="menuExit_Click" />
                 </MenuItem>
