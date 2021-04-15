@@ -59,5 +59,15 @@ namespace Switch_Power_profile.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon _500White {
+            get {
+                object obj = ResourceManager.GetObject("_500White", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
     }
 }

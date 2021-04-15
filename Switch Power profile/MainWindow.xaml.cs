@@ -22,7 +22,8 @@ namespace AutomaticPowerManager
         public static List<string> CurrentlyRunningList = new List<string>();
         public MainWindow()
         {
-            notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\500White.ico");
+            //notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\500White.ico");
+            notifyIcon.Icon = Switch_Power_profile.Properties.Resources._500White; //new System.Drawing.Icon(Switch_Power_profile.Properties.Resources._500White);
             notifyIcon.Visible = true;
             notifyIcon.Text = "Automatic Power Manager - KTAD";
             notifyIcon.DoubleClick += Notify_DoubleClick; //Notify_Click;
@@ -38,7 +39,7 @@ namespace AutomaticPowerManager
             InitializeComponent();
             RunningInstance(); //works, needs further testing
 
-            Functions.CreateAppDir();
+            Functions.CreateAppDir(); //this is where i store the text files containing what apps to monitor and tick rate - AppData\Local\Automatic Power Manager
             GetSettingsAndUpdate(Functions.ReadSettings());
             Functions.GetAllPowerProfiles();
             ReadAndUpdateUi();
@@ -55,6 +56,8 @@ namespace AutomaticPowerManager
             this.Show();
             notifyIcon.Visible = false;
             WindowState = WindowState.Normal;
+            GetProcessesList();
+            ReadAndUpdateUi();
         }
 
 
@@ -220,7 +223,7 @@ namespace AutomaticPowerManager
                     SetHighProfile();
                     break;
                 default:
-                    SetBalancedProfile();
+                    SetBalancedProfile(); 
 
                     break;
             }

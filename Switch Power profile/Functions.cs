@@ -297,7 +297,7 @@ namespace AutomaticPowerManager
         }
 
 
-        public static Dictionary<string, string> GetAllPowerProfiles() // working on this 
+        public static Dictionary<string, string> GetAllPowerProfiles() // working on this - think it's all good now
         {
             Dictionary<string, string> AllProfiles = new Dictionary<string, string>();
 

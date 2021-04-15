@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
         Title="About" Height="400" Width="400" Background="{x:Null}" WindowStyle="ToolWindow">
-    <Grid Background="White">
+    <Grid Background="#FFC3D5DA">
         <Label Content="" HorizontalAlignment="Left" Margin="35,10,0,0" VerticalAlignment="Top" Width="125" Height="125">
             <Label.Background>
                 <ImageBrush ImageSource="images/logo2.png"/>
@@ -14,10 +14,10 @@
         </Label>
         <TextBlock HorizontalAlignment="Left" Margin="25,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" Height="50" TextDecorations="{x:Null}" FontStyle="Italic" FontWeight="Bold"><Run Text="Advanced Power Management"/><LineBreak/><Run Text="Developed by KTAD"/><LineBreak/><Run Text="mail - kentaylorappdev@gmail.com"/></TextBlock>
         <TextBlock HorizontalAlignment="Left" Margin="195,20,0,0" TextWrapping="Wrap" Text="The Automatic Power Manager for Windows 10 allows you to automatically switch to High Performance mode based on what apps you are running, if none of these apps are running it defaults to Balanced Mode." VerticalAlignment="Top" Width="175" Height="115"/>
-        <TextBlock HorizontalAlignment="Left" Margin="25,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345" Height="129"><Run Text="How to use"/><LineBreak/><Run Text="Start up APM and add a program from the running processes list to the monitor list, if your application isn't on the running list make sure your program is running and click on refresh running processes list button. Now when you run this program in the future your laptop will automatically switch to High Performance Mode."/><LineBreak/><Run/><LineBreak/><Run Text="(If your app is already on the monitor list it will not show up on the running processes list)"/></TextBlock>
+        <TextBlock HorizontalAlignment="Left" Margin="25,230,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="345" Height="129"><Run Text="How to use"/><LineBreak/><Run Text="Start up APM and add a program from the running processes list to the monitor list, if your application isn't on the running list make sure your program is running and click on refresh running processes list button. Now when you run your program in the future your laptop will automatically switch to High Performance Mode."/><LineBreak/><Run/><LineBreak/><Run Text="(If your app is already on the monitor list it will not show up on the running processes list)"/></TextBlock>
         <TextBlock Margin="25,190,262,155">           
-    <Hyperlink NavigateUri="http://www.google.com" RequestNavigate="Hyperlink_RequestNavigate">
-        Website
+    <Hyperlink NavigateUri="https://twitter.com/kentaylorappdev" RequestNavigate="Hyperlink_RequestNavigate">
+        Website/Support
     </Hyperlink>
         </TextBlock>
         <Button x:Name="closeAbout" Content="Close" HorizontalAlignment="Left" Margin="295,330,0,0" VerticalAlignment="Top" Width="75" Click="closeAbout_Click"/>

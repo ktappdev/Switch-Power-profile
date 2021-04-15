@@ -8,7 +8,7 @@
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize" Closed="Window_Closed" Closing="Window_Closing" StateChanged="Window_StateChanged" Initialized="Window_Initialized" Icon="images/500White.ico" Unloaded="Window_Unloaded">
     <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFD5DDDF">
         <DockPanel>
-            <Menu DockPanel.Dock="Top" Background="White">
+            <Menu DockPanel.Dock="Top" Background="#FFD6E5E8">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Exit" Click="menuExit_Click" />
                 </MenuItem>
@@ -40,7 +40,7 @@
         <Button Content="Add --&gt;" HorizontalAlignment="Left" Margin="240,309,0,0" VerticalAlignment="Top" Width="80" Click="Add_Monitor" ToolTip="Add a program from processes list to be monitored" FontWeight="Bold" Background="White" BorderThickness="0"/>
         <Button Content="Remove" HorizontalAlignment="Left" Margin="240,371,0,0" VerticalAlignment="Top" Width="80" Click="RemoveMonitorButton" ToolTip="Remove selected program from monitor list" FontWeight="Bold" Background="White" BorderThickness="0"/>
         <CheckBox x:Name="MonitorMode" Content="Enable monitor mode" HorizontalAlignment="Left" Margin="380,62,0,0" VerticalAlignment="Top" ToolTip="Enable or disable the monitor mode." Height="15" Checked="MonitorMode_Checked" Unchecked="MonitorMode_Unchecked" FontWeight="Bold"/>
-        <CheckBox x:Name="Startup" Content="Start With Windows" HorizontalAlignment="Left" Margin="380,94,0,0" VerticalAlignment="Top" ToolTip="Enable or disable the monitor mode." Height="15" Unchecked="startup_Unchecked" Checked="startup_Checked"/>
+        <CheckBox x:Name="Startup" Content="Start With Windows" HorizontalAlignment="Left" Margin="380,80,0,0" VerticalAlignment="Top" ToolTip="Enable or disable the monitor mode." Height="15" Unchecked="startup_Unchecked" Checked="startup_Checked"/>
 
         <Label Content="" HorizontalAlignment="Left" Margin="250,134,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Name="LabelLow" Background="#FF78FF71" Width="70" Height="20" FontSize="8" FontWeight="Bold"/>
         <Label Content="" HorizontalAlignment="Left" Margin="250,94,0,0" VerticalAlignment="Top" Width="70" HorizontalContentAlignment="Center" Name="LabelBalanced" Background="#FF4FACF9" Height="20" ScrollViewer.VerticalScrollBarVisibility="Auto" FontWeight="Bold" FontSize="8"/>
