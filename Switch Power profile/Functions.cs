@@ -212,6 +212,7 @@ namespace AutomaticPowerManager
             }
             catch (Exception)
             {
+                
                 lines.Add("True");
                 lines.Add("True");
                 lines.Add("10");
@@ -331,9 +332,10 @@ namespace AutomaticPowerManager
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    throw;
+                    // MessageBox.Show(e.ToString()); this was crashing the prhogram maybe
+                   // throw;
                     
                 }
 

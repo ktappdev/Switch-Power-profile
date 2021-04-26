@@ -57,7 +57,7 @@ namespace AutomaticPowerManager
             notifyIcon.Visible = false;
             WindowState = WindowState.Normal;
             GetProcessesList();
-            ReadAndUpdateUi();
+            //ReadAndUpdateUi();
         }
 
 
@@ -199,8 +199,9 @@ namespace AutomaticPowerManager
                 RateSlider.Maximum = 20.0;
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                MessageBox.Show(e.ToString()); // show user error
             }
 
         }
