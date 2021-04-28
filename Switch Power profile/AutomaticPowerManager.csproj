@@ -28,10 +28,12 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <SupportUrl>https://twitter.com/kentaylorappdev</SupportUrl>
+    <ErrorReportUrl>https://twitter.com/kentaylorappdev</ErrorReportUrl>
     <TargetCulture>en</TargetCulture>
     <ProductName>Automatic Power Manager</ProductName>
     <PublisherName>KTAD</PublisherName>
-    <ApplicationRevision>9</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>12</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -82,11 +84,12 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>AutomaticPowerManager_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
