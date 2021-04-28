@@ -201,7 +201,7 @@ namespace AutomaticPowerManager
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString()); // show user error
+                //MessageBox.Show(e.ToString()); // Log user error
             }
 
         }
@@ -637,7 +637,7 @@ namespace AutomaticPowerManager
             }
             else
             {
-                MessageBox.Show("Please select a process to monitor");
+                MessageBox.Show("Please select a process to monitor", "Info!");
             }
         }
 
@@ -691,7 +691,7 @@ namespace AutomaticPowerManager
             }
             else
             {
-                MessageBox.Show("No item selected");
+                MessageBox.Show("No item selected", "Info!");
             }
         }
 
