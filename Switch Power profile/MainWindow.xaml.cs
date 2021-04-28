@@ -202,6 +202,7 @@ namespace AutomaticPowerManager
             catch (Exception e)
             {
                 //MessageBox.Show(e.ToString()); // Log user error
+                Functions.WriteErrorToLog(e.ToString());
             }
 
         }
@@ -268,7 +269,7 @@ namespace AutomaticPowerManager
             catch (Exception e)
             {
 
-                throw;
+                Functions.WriteErrorToLog(e.ToString());
             }
             
         }
@@ -601,6 +602,7 @@ namespace AutomaticPowerManager
                         catch (Exception e)
                         {
                             //currently not doing anything with the error, there really isnt any error i can think of o_o
+                            Functions.WriteErrorToLog(e.ToString());
                         }
                     }
 

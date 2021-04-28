@@ -17,6 +17,31 @@ namespace AutomaticPowerManager
         public static string DirPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\AppData\Local\Automatic Power Manager";
         public static string watchlistPath = $@"{DirPath}\watchlist.cfg";
         public static string SettingsPath = $@"{DirPath}\settings.cfg";
+        public static string errorLogPath = $@"{DirPath}\error.log";
+
+
+        public static void WriteErrorToLog(string er)
+        {
+            try
+            {
+                //Open the File
+                StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
+
+                sw.WriteLine(er);
+                //close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
+
+                sw.WriteLine(e);
+                //close the file
+                sw.Close();
+            }
+        }
+
+
 
         public static void CreateAppDir()
         {
@@ -38,8 +63,8 @@ namespace AutomaticPowerManager
             }
             catch (Exception e)
             {
+                Functions.WriteErrorToLog(e.ToString());
             }
-            finally { }
         }
 
         public static void AddApplicationToStartup(Boolean startup)
@@ -115,11 +140,7 @@ namespace AutomaticPowerManager
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-            finally
-            {
-                
+                WriteErrorToLog(e.ToString());
             }
             
         }
@@ -332,11 +353,12 @@ namespace AutomaticPowerManager
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    // MessageBox.Show(e.ToString()); this was crashing the prhogram maybe
-                   // throw;
-                    
+                    // MessageBox.Show(e.ToString()); this was crashing the prhogram maybe 
+                    // throw;
+                    WriteErrorToLog(e.ToString());
+
                 }
 
 
