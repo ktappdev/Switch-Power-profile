@@ -1,6 +1,7 @@
 ﻿using AutomaticPowerManager;
 using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,21 @@ namespace Switch_Power_profile
         public About()
         {
             InitializeComponent();
+
+            string version = null;
+
+            try
+            {
+                //// get deployment version
+                version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                versionLbl.Content = "Version " + version;
+            }
+            catch (InvalidDeploymentException)
+            {
+                //// you cannot read publish version when app isn't installed 
+                //// (e.g. during debug)
+                versionLbl.Content = "not installed";
+            }
         }
 
 

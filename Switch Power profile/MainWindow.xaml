@@ -14,13 +14,14 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        
+
         <Image HorizontalAlignment="Left" Height="146" Margin="10,34,0,0" VerticalAlignment="Top" Width="159" Source="images/logo2.png" Stretch="Fill"/>
 
         <GroupBox Header="Current Profile" HorizontalAlignment="Left" Height="140" Margin="158,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" Background="#FFA3C9DE">
             <GroupBox.Effect>
                 <DropShadowEffect/>
             </GroupBox.Effect>
+            <Label x:Name="modeLbl" Content="Manual Mode Enabled" HorizontalAlignment="Left" Height="25" Margin="22,101,0,-9" VerticalAlignment="Top" Width="143" FontSize="11" Background="{x:Null}"/>
         </GroupBox>
         <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" OpacityMask="Black" Background="#FF7ED4E3">
             <GroupBox.Effect>
@@ -28,10 +29,10 @@
             </GroupBox.Effect>
             <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="39,91,0,0" VerticalAlignment="Top" Width="100" TickPlacement="BottomRight" Foreground="#FFE5E5E5" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="6" LargeChange="5" IsSnapToTickEnabled="True" ValueChanged="RateSlider_ValueChanged"/>
         </GroupBox>
-        
-        <Button Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"/>
-        <Button Content="Balanced" HorizontalAlignment="Left" Margin="180,94,0,0" VerticalAlignment="Top" Width="70" Click="SetBalancedButton" ToolTip="Manually set power scheme to Balanced, MONITOR mode will be disabled" Height="20"/>
-        <Button Content="High" HorizontalAlignment="Left" Margin="180,54,0,0" VerticalAlignment="Top" Width="70" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled" Height="20"/>
+
+        <Button x:Name="setLowButton" Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"/>
+        <Button x:Name="setBalancedButton" Content="Balanced" HorizontalAlignment="Left" Margin="180,94,0,0" VerticalAlignment="Top" Width="70" Click="SetBalancedButton" ToolTip="Manually set power scheme to Balanced, MONITOR mode will be disabled" Height="20"/>
+        <Button x:Name="setHighButton" Content="High" HorizontalAlignment="Left" Margin="180,54,0,0" VerticalAlignment="Top" Width="70" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled" Height="20"/>
         <ListBox HorizontalAlignment="Left" Height="260" Margin="20,231,0,0" VerticalAlignment="Top" Width="201" Name="ListBoxProcesses" BorderBrush="Black" Background="White" Foreground="Black" BorderThickness="1,2,1,1" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
         <ListBox HorizontalAlignment="Left" Height="260" Margin="342,231,0,0" VerticalAlignment="Top" Width="196" Name="ListBoxMonProcesses" FontWeight="Bold" FontStyle="Italic" FontFamily="Segoe UI Black" Foreground="Black" BorderBrush="Black" Background="White" BorderThickness="1,2,1,1" ToolTip="Add your progrm from the running processes list."/>
         <Label Content="Monitor List" HorizontalAlignment="Left" Margin="380,209,0,0" VerticalAlignment="Top" Width="120" HorizontalContentAlignment="Center" Foreground="#FF797979" FontWeight="Bold"/>

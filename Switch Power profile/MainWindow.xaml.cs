@@ -10,6 +10,7 @@ using System.IO;
 using Forms = System.Windows.Forms;
 using System.Reflection;
 using Switch_Power_profile;
+
 //using System.Drawing;
 
 namespace AutomaticPowerManager
@@ -338,7 +339,39 @@ namespace AutomaticPowerManager
         }
 
 
-        
+
+        public void ManualSetHighProfile()
+        {
+            int State = Functions.GetCurrentPowerProfile();
+            if (LabelHigh.Visibility != Visibility.Visible && State != 3)
+            {
+
+                ProcessStartInfo ps = new ProcessStartInfo();
+                ps.CreateNoWindow = true;
+                ps.UseShellExecute = false;
+                ps.FileName = "cmd.exe";
+                ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["High"]}";
+                ps.RedirectStandardOutput = true;
+                var proc = Process.Start(ps);
+                //string s = proc.StandardOutput.ReadToEnd();
+                //MessageBox.Show(s);
+                LabelHigh.Content = "Selected";
+                LabelHigh.Visibility = Visibility.Visible;
+                LabelLow.Visibility = Visibility.Hidden;
+                LabelBalanced.Visibility = Visibility.Hidden;
+                notifyIcon.ShowBalloonTip(1000, "System switched to High Performane", $"Manual Mode", Forms.ToolTipIcon.Info);
+            }
+            else
+            {
+                LabelHigh.Content = "SELCETED";
+                LabelHigh.Visibility = Visibility.Visible;
+                LabelLow.Visibility = Visibility.Hidden;
+                LabelBalanced.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
 
 
 
@@ -658,7 +691,7 @@ namespace AutomaticPowerManager
 
         private void SetHighButton(object sender, RoutedEventArgs e)
         {
-            SetHighProfile();
+            ManualSetHighProfile();
 
         }
 
@@ -727,12 +760,17 @@ namespace AutomaticPowerManager
             {
 
                 Functions.CreateAppDir();
+
             }
 
             Functions.WriteSettings(Startup.IsChecked.Value.ToString());
             Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
             Functions.WriteSettings(RateSlider.Value.ToString());
 
+            setHighButton.IsEnabled = false;
+            setBalancedButton.IsEnabled = false;
+            setLowButton.IsEnabled = false;
+            modeLbl.Content = "Automatic mode enabled";
 
 
 
@@ -759,6 +797,11 @@ namespace AutomaticPowerManager
                 Functions.WriteSettings(Startup.IsChecked.Value.ToString());
                 Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
                 Functions.WriteSettings(RateSlider.Value.ToString());
+
+                setHighButton.IsEnabled = true;
+                setBalancedButton.IsEnabled = true;
+                setLowButton.IsEnabled = true;
+                modeLbl.Content = "Manual Mode Enabled";
 
             }
             
