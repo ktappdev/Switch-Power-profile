@@ -33,7 +33,7 @@
     <ProductName>Automatic Power Manager</ProductName>
     <PublisherName>KTAD</PublisherName>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>18</ApplicationRevision>
+    <ApplicationRevision>19</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -213,7 +213,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </SplashScreen>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="images\BD2.png" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\_500White.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
