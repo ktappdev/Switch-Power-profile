@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 //using System.Management;
 //using System.Text;
 //using System.Threading.Tasks;
@@ -14,10 +15,12 @@ namespace AutomaticPowerManager
 {
     class Functions
     {
+        public static string usernamePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}";
         public static string DirPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\AppData\Local\Automatic Power Manager";
         public static string watchlistPath = $@"{DirPath}\watchlist.cfg";
         public static string SettingsPath = $@"{DirPath}\settings.cfg";
         public static string errorLogPath = $@"{DirPath}\error.log";
+        public static string activationPath = $@"{DirPath}\activation";
 
 
         public static void WriteErrorToLog(string er)
@@ -28,6 +31,28 @@ namespace AutomaticPowerManager
                 StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
 
                 sw.WriteLine(er);
+                //close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
+
+                sw.WriteLine(e);
+                //close the file
+                sw.Close();
+            }
+        }
+
+
+        public static void WriteActivation(string activate)
+        {
+            try
+            {
+                //Open the File
+                StreamWriter sw = new StreamWriter(activationPath); // creates file if it dosen't exist
+
+                sw.WriteLine(activate);
                 //close the file
                 sw.Close();
             }
@@ -317,6 +342,23 @@ namespace AutomaticPowerManager
             }
 
         }
+
+        public static string usernameToAscii()
+        {
+            string usernameAscii = "";
+            var tempLs = usernamePath.Split(Path.DirectorySeparatorChar);
+            byte[] asciiChar = Encoding.ASCII.GetBytes(tempLs[2]);
+            foreach (var item in asciiChar)
+            {
+                usernameAscii += usernameAscii;
+            }
+            long _toDivide = Convert.ToInt64(usernameAscii);
+            long result = _toDivide / 2;
+
+            return result.ToString();
+        }
+
+
 
 
         public static Dictionary<string, string> GetAllPowerProfiles() // working on this - think it's all good now

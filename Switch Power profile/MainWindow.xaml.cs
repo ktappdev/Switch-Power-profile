@@ -882,5 +882,11 @@ namespace AutomaticPowerManager
         {
             Environment.Exit(0);
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            ActivationScreen activationScreen = new ActivationScreen();
+            activationScreen.ShowDialog();
+        }
     }
 }
