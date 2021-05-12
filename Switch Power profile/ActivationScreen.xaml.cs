@@ -21,7 +21,7 @@ namespace Switch_Power_profile
     /// </summary>
     public partial class ActivationScreen : Window
     {
-        const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{14}$";
+        public const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{14}$";
         public ActivationScreen()
         {
             InitializeComponent();
@@ -66,7 +66,7 @@ namespace Switch_Power_profile
                     validLabel.Content = "Valid Serial";
                     
 
-                    Functions.WriteActivation(Functions.usernameToAscii());
+                    Functions.WriteActivation(serialInput);
                     this.Close();
 
                 }

@@ -41,13 +41,23 @@ namespace AutomaticPowerManager
             RunningInstance(); //works, needs further testing
 
             Functions.CreateAppDir(); //this is where i store the text files containing what apps to monitor and tick rate - AppData\Local\Automatic Power Manager
-            GetSettingsAndUpdate(Functions.ReadSettings());
-            Functions.GetAllPowerProfiles();
-            ReadAndUpdateUi();
-            GetProcessesList();
-            UpdateMonListBox(Functions.ReadWatchlist());
-            Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
-            MonitorPrograms();
+
+            if (Functions.isActivated())
+            {
+                GetSettingsAndUpdate(Functions.ReadSettings());
+                Functions.GetAllPowerProfiles();
+                ReadAndUpdateUi();
+                GetProcessesList();
+                UpdateMonListBox(Functions.ReadWatchlist());
+                Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
+                MonitorPrograms();
+            }
+            else
+            {
+                ActivationScreen activationScreen = new ActivationScreen();
+                activationScreen.ShowDialog();
+            }
+            
             
         }
 

@@ -10,6 +10,8 @@ using System.Text;
 //using System.Threading.Tasks;
 using System.Windows;
 using Forms = System.Windows.Forms;
+using Switch_Power_profile;
+using System.Text.RegularExpressions;
 
 namespace AutomaticPowerManager
 {
@@ -44,6 +46,75 @@ namespace AutomaticPowerManager
             }
         }
 
+
+        public static Boolean isActivated()
+        {
+            string keyFromFile = "";
+            try
+            {
+                keyFromFile = ReadActivationFile();
+            }
+            catch (Exception e)
+            {
+
+                WriteErrorToLog(e.ToString());
+            }
+            if ((keyFromFile != "") &
+                    (CheckKey(keyFromFile) == true))
+            {
+                return true;
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static Boolean CheckKey(string key)
+        {
+            Regex reg = new Regex(ActivationScreen.regFormat);
+            bool result = reg.IsMatch(key);
+            //List<string> serialInput = new List<string>();
+            string serialInput = key;
+
+            if (result == true)
+            {
+                if (int.Parse(serialInput[0].ToString()) +
+                    int.Parse(serialInput[1].ToString()) +
+                    int.Parse(serialInput[2].ToString()) +
+                    int.Parse(serialInput[3].ToString()) == 10 &
+                        int.Parse(serialInput[5].ToString()) +
+                        int.Parse(serialInput[6].ToString()) +
+                        int.Parse(serialInput[7].ToString()) +
+                        int.Parse(serialInput[8].ToString()) == 10 &
+                            int.Parse(serialInput[10].ToString()) +
+                            int.Parse(serialInput[11].ToString()) +
+                            int.Parse(serialInput[12].ToString()) +
+                            int.Parse(serialInput[13].ToString()) == 10 &
+                                int.Parse(serialInput[15].ToString()) +
+                                int.Parse(serialInput[16].ToString()) +
+                                int.Parse(serialInput[17].ToString()) +
+                                int.Parse(serialInput[18].ToString()) == 10 &
+                                    serialInput.Substring(20) == Functions.usernameToAscii())
+                {
+
+                    return true;
+                }
+                else
+                {
+
+                    return false;
+                }
+
+            }
+            else
+            {
+
+                return false;
+            }
+        }
+    
 
         public static void WriteActivation(string activate)
         {
