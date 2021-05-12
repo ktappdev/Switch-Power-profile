@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Switch_Power_profile"
         mc:Ignorable="d"
-        Title="Activation Screen" Height="320" Width="620" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" Topmost="True" ShowInTaskbar="False" Background="#FF282828">
+        Title="Activation Screen" Height="320" Width="620" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None" ShowInTaskbar="False" Background="#FF282828">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"></ColumnDefinition>
@@ -28,10 +28,18 @@
             <RowDefinition Height="10"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBox TextChanged="TextChangedEventHandler" x:Name="serialInputBox" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="4" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" AutomationProperties.HelpText="Enter Serial" FontWeight="Bold"/>
-        <Button x:Name="validateBtn" Content="Validate" Grid.Row="5" Grid.Column="5" FontSize="18" Click="Button_Click_1"/>
-        <Button x:Name="demoBtn" Content="Demo" Grid.Row="5" Grid.Column="4" Click="Button_Click" FontSize="18"/>
-        <Label Content="APM Activation" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="4" FontWeight="Bold" FontFamily="Arial Black" Foreground="#FFFFEFA3" FontSize="36" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <Rectangle Grid.Row="2" Grid.Column="1" Grid.RowSpan="5" Grid.ColumnSpan="6" Fill="#FF5479B0"/>
+        <Button x:Name="copyBtn" Content="Copy code" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="1" Height="30" Width="80" HorizontalContentAlignment="Center" Click="copyBtn_Click"/>
+        <Button Grid.Column="5" Grid.Row="1" Grid.ColumnSpan="2" BorderBrush="{x:Null}">
+            <Button.Background>
+                <ImageBrush ImageSource="images/buy-now-button.png"/>
+            </Button.Background>
+        </Button>
+        <TextBox TextChanged="TextChangedEventHandler" x:Name="serialInputBox" Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="4" Height="50" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="18" AutomationProperties.HelpText="Enter Serial" FontWeight="Bold"/>
+        <Button x:Name="validateBtn" Content="Validate" Grid.Row="5" Grid.Column="5" FontSize="18" Click="validateBtn_Click_1"/>
+        <Button x:Name="demoBtn" Content="Demo" Grid.Row="5" Grid.Column="4" Click="demoBtn_Click" FontSize="18"/>
+        <Label Content="APM Activation" Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="4" FontWeight="Bold" FontFamily="Arial Black" Foreground="#FFFFEFA3" FontSize="36" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
         <Label Name="validLabel" Content="Valid/invalid" Grid.Row="5" Grid.Column="2" Grid.ColumnSpan="2" FontSize="18" VerticalContentAlignment="Center" HorizontalContentAlignment="left" Foreground="White"/>
+        <TextBox IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Name="challangeCodeBox" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Height="30" AutomationProperties.HelpText="Challenge Code" />
     </Grid>
 </Window>

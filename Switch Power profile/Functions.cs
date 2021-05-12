@@ -53,6 +53,7 @@ namespace AutomaticPowerManager
                 StreamWriter sw = new StreamWriter(activationPath); // creates file if it dosen't exist
 
                 sw.WriteLine(activate);
+                sw.WriteLine("-Please don't edit - will lose activation");
                 //close the file
                 sw.Close();
             }
@@ -64,6 +65,29 @@ namespace AutomaticPowerManager
                 //close the file
                 sw.Close();
             }
+        }
+
+        public static string ReadActivationFile()
+        {
+            var lines = new List<string>();
+            string line;
+            try
+            {
+                StreamReader sr = new StreamReader(activationPath);
+                line = sr.ReadLine();
+                while (line != null)
+                {
+                    lines.Add(line);
+                    line = sr.ReadLine();
+                }
+                sr.Close();
+            }
+            catch (Exception e)
+            {
+                WriteErrorToLog(e.ToString());
+            }
+
+            return lines[0];
         }
 
 
@@ -346,11 +370,21 @@ namespace AutomaticPowerManager
         public static string usernameToAscii()
         {
             string usernameAscii = "";
+            string choppedUsername = "";
             var tempLs = usernamePath.Split(Path.DirectorySeparatorChar);
-            byte[] asciiChar = Encoding.ASCII.GetBytes(tempLs[2]);
+            if (tempLs[2].Length > 6)
+            {
+                choppedUsername = tempLs[2].Substring(0, 6);
+            }
+            else
+            {
+                choppedUsername = tempLs[2];
+            }
+
+            byte[] asciiChar = Encoding.ASCII.GetBytes(choppedUsername);
             foreach (var item in asciiChar)
             {
-                usernameAscii += usernameAscii;
+                usernameAscii += item;
             }
             long _toDivide = Convert.ToInt64(usernameAscii);
             long result = _toDivide / 2;

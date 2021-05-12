@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using AutomaticPowerManager;
 
 namespace Switch_Power_profile
 {
@@ -20,19 +21,20 @@ namespace Switch_Power_profile
     /// </summary>
     public partial class ActivationScreen : Window
     {
-        const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$";
+        const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{14}$";
         public ActivationScreen()
         {
             InitializeComponent();
             validLabel.Visibility = Visibility.Collapsed;
+            challangeCodeBox.Text = Functions.usernameToAscii();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void demoBtn_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void validateBtn_Click_1(object sender, RoutedEventArgs e)
         {
 
             Regex reg = new Regex(regFormat);
@@ -57,15 +59,22 @@ namespace Switch_Power_profile
                                 int.Parse(serialInput[15].ToString()) +
                                 int.Parse(serialInput[16].ToString()) +
                                 int.Parse(serialInput[17].ToString()) +
-                                int.Parse(serialInput[18].ToString()) == 10)
+                                int.Parse(serialInput[18].ToString()) == 10 &
+                                    serialInput.Substring(20) == Functions.usernameToAscii())
                 {
                     validLabel.Visibility = Visibility.Visible;
                     validLabel.Content = "Valid Serial";
+                    
+
+                    Functions.WriteActivation(Functions.usernameToAscii());
+                    this.Close();
+
                 }
                 else
                 {
                     validLabel.Visibility = Visibility.Visible;
                     validLabel.Content = "Wrong Serial";
+                    Functions.WriteErrorToLog("Wrong serial");
                 }
 
             }
@@ -74,11 +83,17 @@ namespace Switch_Power_profile
                 validLabel.Visibility = Visibility.Visible;
                 //validLabel.Visibility = Visibility.Collapsed;
                 validLabel.Content = "Wrong Serial";
+                Functions.WriteErrorToLog("Wrong serial");
             }
         }
         private void TextChangedEventHandler(object sender, TextChangedEventArgs e) //this was set from the xaml file
         {
             validLabel.Visibility = Visibility.Collapsed;
+        }
+
+        private void copyBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Clipboard.SetText(challangeCodeBox.Text);
         }
     }
 }
