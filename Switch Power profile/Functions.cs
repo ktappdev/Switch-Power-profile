@@ -461,8 +461,16 @@ namespace AutomaticPowerManager
             }
             long _toDivide = Convert.ToInt64(usernameAscii);
             long result = _toDivide / 2;
-
-            return result.ToString();
+            string resultString = result.ToString();
+            if (resultString.Length < 18)
+            {
+                int amount = 18 - resultString.Length;
+                for (int i = 0; i < amount; i++)
+                {
+                    resultString = resultString + "0";
+                }
+            }
+            return resultString;
         }
 
 

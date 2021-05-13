@@ -11,7 +11,7 @@ namespace Switch_Power_profile
     /// </summary>
     public partial class ActivationScreen : Window
     {
-        public const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{14}$";
+        public const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{18}$";
         public ActivationScreen()
         {
             InitializeComponent();
@@ -21,7 +21,7 @@ namespace Switch_Power_profile
 
         private void demoBtn_Click(object sender, RoutedEventArgs e)
         {
-            Functions.WriteActivation("5041-3025-1414-7201-37550555344883");
+            Functions.WriteActivation("5041-3025-1414-7201-" + Functions.usernameToAscii());
             //MainWindow mw = new MainWindow();
             //mw.InitializeComponent();
             //mw.GetSettingsAndUpdate(Functions.ReadSettings());

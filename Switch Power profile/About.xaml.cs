@@ -59,8 +59,6 @@ namespace Switch_Power_profile
         private void closeAbout_Click(object sender, RoutedEventArgs e)
         {
             Close();
-            
-            
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)  //from https://stackoverflow.com/questions/10238694/example-using-hyperlink-in-wpf
