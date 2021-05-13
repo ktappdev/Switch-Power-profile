@@ -31,9 +31,19 @@ namespace Switch_Power_profile
 
             try
             {
+                string registered = "";
+                if (Functions.isActivated())
+                {
+                    registered = "App registered";
+                }
+                else
+                {
+                    registered = "App not registered";
+                }
+
                 //// get deployment version
                 version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-                versionLbl.Content = "Version " + version;
+                versionLbl.Content = "Version " + version + " " + registered;
             }
             catch (InvalidDeploymentException)
             {
