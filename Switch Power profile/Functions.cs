@@ -25,6 +25,8 @@ namespace AutomaticPowerManager
         public static string activationPath = $@"{DirPath}\activation";
 
 
+        
+
         public static void WriteErrorToLog(string er)
         {
             try

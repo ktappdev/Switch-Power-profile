@@ -31,8 +31,30 @@ namespace Switch_Power_profile
 
         private void demoBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Functions.WriteActivation("5041-3025-1414-7201-37550555344883");
+            //MainWindow mw = new MainWindow();
+            //mw.InitializeComponent();
+            //mw.GetSettingsAndUpdate(Functions.ReadSettings());
+            //Functions.GetAllPowerProfiles();
+            //mw.ReadAndUpdateUi();
+            //mw.GetProcessesList();
+            //mw.UpdateMonListBox(Functions.ReadWatchlist());
+            //Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
+            //mw.MonitorPrograms();
+
+            //this.Close();
+            Restart();
+
         }
+
+
+        private void Restart()
+        {
+            // from System.Windows.Forms.dll
+            System.Windows.Forms.Application.Restart();
+            Application.Current.Shutdown();
+        }
+
 
         private void validateBtn_Click_1(object sender, RoutedEventArgs e)
         {
