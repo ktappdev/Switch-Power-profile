@@ -1,9 +1,8 @@
-﻿<Window x:Class="AutomaticPowerManager.MainWindow"
+﻿<Window x:Class="Switch_Power_profile.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AutomaticPowerManager"
         mc:Ignorable="d"
         Title="Automatic Power Manager" Height="570" Width="575" ResizeMode="CanMinimize" Closed="Window_Closed" Closing="Window_Closing" StateChanged="Window_StateChanged" Initialized="Window_Initialized" Icon="images/500White.ico" Unloaded="Window_Unloaded" Background="White" WindowStartupLocation="CenterScreen">
     <Grid x:Name="MainWindowControl" Margin="0,0,-0.2,-6" Background="#FFD5DDDF">
@@ -37,7 +36,7 @@
             <GroupBox.Effect>
                 <DropShadowEffect/>
             </GroupBox.Effect>
-            <Label x:Name="modeLbl" Content="Manual Mode Enabled" HorizontalAlignment="Left" Height="25" Margin="22,101,0,-9" VerticalAlignment="Top" Width="143" FontSize="11" Background="{x:Null}"/>
+            <Label x:Name="ModeLbl" Content="Manual Mode Enabled" HorizontalAlignment="Left" Height="25" Margin="22,101,0,-9" VerticalAlignment="Top" Width="143" FontSize="11" Background="{x:Null}"/>
         </GroupBox>
         <GroupBox Header="Options" HorizontalAlignment="Left" Height="140" Margin="356,34,0,0" VerticalAlignment="Top" Width="182" BorderBrush="Black" Foreground="Black" OpacityMask="Black" Background="#FF7ED4E3">
             <GroupBox.Effect>
@@ -46,7 +45,8 @@
             <Slider x:Name="RateSlider" HorizontalAlignment="Left" Margin="39,57,0,0" VerticalAlignment="Top" Width="100" TickPlacement="BottomRight" Foreground="#FFE5E5E5" TickFrequency="5" AutoToolTipPlacement="BottomRight" SmallChange="6" LargeChange="5" IsSnapToTickEnabled="True" ValueChanged="RateSlider_ValueChanged" Maximum="20"/>
         </GroupBox>
 
-        <Button x:Name="setLowButton" Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"/>
+        <Button x:Name="setLowButton" Content="Low Power" HorizontalAlignment="Left" Margin="180,134,0,0" VerticalAlignment="Top" Width="70" Click="SetLowButton" ToolTip="Manually set power scheme to Low Powered, MONITOR mode will be disabled" Height="20"
+                x:FieldModifier="public" />
         <Button x:Name="setBalancedButton" Content="Balanced" HorizontalAlignment="Left" Margin="180,94,0,0" VerticalAlignment="Top" Width="70" Click="SetBalancedButton" ToolTip="Manually set power scheme to Balanced, MONITOR mode will be disabled" Height="20"/>
         <Button x:Name="setHighButton" Content="High" HorizontalAlignment="Left" Margin="180,54,0,0" VerticalAlignment="Top" Width="70" Click="SetHighButton" ToolTip="Manually set power scheme to High, MONITOR mode will be disabled" Height="20"/>
         <ListBox HorizontalAlignment="Left" Height="260" Margin="20,231,0,0" VerticalAlignment="Top" Width="201" Name="ListBoxProcesses" BorderBrush="Black" Background="#FFF1F1F1" Foreground="Black" BorderThickness="1,2,1,1" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
@@ -66,8 +66,8 @@
         <Button Content="Refresh Running Processes" HorizontalAlignment="Left" Margin="40,496,0,0" VerticalAlignment="Top" Width="160" Height="20" Click="GetProcessButton" ToolTip="Manually refresh the running processes list" Background="White" BorderBrush="{x:Null}"/>
         <Button Content="Clear Monitor List" HorizontalAlignment="Left" Margin="371,497,0,0" VerticalAlignment="Top" Width="140" Click="Button_Click" BorderBrush="{x:Null}" Background="White"/>
         <Label x:Name="RateLabel" Content="Update rate, default is 10 seconds" HorizontalAlignment="Left" Margin="378,132,0,0" VerticalAlignment="Top" FontSize="9"/>
-        <Button x:Name="about_button" Content="About" HorizontalAlignment="Left" Margin="463,14,0,0" VerticalAlignment="Top" Width="75" Click="about_button_Click" Background="#FF7ED4E3"/>
+        <Button x:Name="AboutButton" Content="About" HorizontalAlignment="Left" Margin="463,14,0,0" VerticalAlignment="Top" Width="75" Click="about_button_Click" Background="#FF7ED4E3"/>
         <Button Content="Activate" HorizontalAlignment="Left" Margin="371,14,0,0" VerticalAlignment="Top" Width="75" Background="#FFFFA866" Click="Button_Click_1" Visibility="Hidden"/>
-        
+
     </Grid>
 </Window>

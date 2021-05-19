@@ -1,38 +1,23 @@
-﻿using AutomaticPowerManager;
-using System;
-using System.Collections.Generic;
-using System.Deployment.Application;
+﻿using System.Deployment.Application;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Switch_Power_profile
 {
     /// <summary>
     /// Interaction logic for About.xaml
     /// </summary>
-    public partial class About : Window
+    public partial class About
     {
         public About()
         {
             InitializeComponent();
 
-            string version = null;
-
             try
             {
-                string registered = "";
-                if (Functions.isActivated())
+                string registered;
+                if (Functions.IsActivated())
                 {
                     registered = "App registered";
                 }
@@ -42,14 +27,14 @@ namespace Switch_Power_profile
                 }
 
                 //// get deployment version
-                version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-                versionLbl.Content = "Version " + version + " " + registered;
+                var version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+                VersionLbl.Content = "Version " + version + " " + registered;
             }
             catch (InvalidDeploymentException)
             {
                 //// you cannot read publish version when app isn't installed 
                 //// (e.g. during debug)
-                versionLbl.Content = "not installed";
+                VersionLbl.Content = "not installed";
             }
         }
 

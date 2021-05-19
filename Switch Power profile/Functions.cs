@@ -1,28 +1,27 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-//using System.Management;
+using System.Text.RegularExpressions;
+using Microsoft.Win32; //using System.Management;
 //using System.Text;
 //using System.Threading.Tasks;
-using System.Windows;
 using Forms = System.Windows.Forms;
-using Switch_Power_profile;
-using System.Text.RegularExpressions;
+using MessageBox = System.Windows.MessageBox;
+using PowerLineStatus = System.Windows.PowerLineStatus;
 
-namespace AutomaticPowerManager
+namespace Switch_Power_profile
 {
     class Functions
     {
-        public static string usernamePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}";
+        public static string UsernamePath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}";
         public static string DirPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\AppData\Local\Automatic Power Manager";
-        public static string watchlistPath = $@"{DirPath}\watchlist.cfg";
+        public static string WatchlistPath = $@"{DirPath}\watchlist.cfg";
         public static string SettingsPath = $@"{DirPath}\settings.cfg";
-        public static string errorLogPath = $@"{DirPath}\error.log";
-        public static string activationPath = $@"{DirPath}\activation";
+        public static string ErrorLogPath = $@"{DirPath}\error.log";
+        public static string ActivationPath = $@"{DirPath}\activation";
 
 
         
@@ -32,7 +31,7 @@ namespace AutomaticPowerManager
             try
             {
                 //Open the File
-                StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
+                var sw = new StreamWriter(ErrorLogPath, true); // creates file if it doesn't exist
 
                 sw.WriteLine(er);
                 //close the file
@@ -40,7 +39,7 @@ namespace AutomaticPowerManager
             }
             catch (Exception e)
             {
-                StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
+                var sw = new StreamWriter(ErrorLogPath, true); // creates file if it doesn't exist
 
                 sw.WriteLine(e);
                 //close the file
@@ -49,9 +48,9 @@ namespace AutomaticPowerManager
         }
 
 
-        public static Boolean isActivated()
+        public static Boolean IsActivated()
         {
-            string keyFromFile = "";
+            var keyFromFile = "";
             try
             {
                 keyFromFile = ReadActivationFile();
@@ -62,7 +61,7 @@ namespace AutomaticPowerManager
                 WriteErrorToLog(e.ToString());
             }
             if ((keyFromFile != "") &
-                    (CheckKey(keyFromFile) == true))
+                    CheckKey(keyFromFile))
             {
                 return true;
 
@@ -75,12 +74,12 @@ namespace AutomaticPowerManager
 
         private static Boolean CheckKey(string key)
         {
-            Regex reg = new Regex(ActivationScreen.regFormat);
-            bool result = reg.IsMatch(key);
+            var reg = new Regex(ActivationScreen.RegFormat);
+            var result = reg.IsMatch(key);
             //List<string> serialInput = new List<string>();
-            string serialInput = key;
+            var serialInput = key;
 
-            if (result == true)
+            if (result)
             {
                 if (int.Parse(serialInput[0].ToString()) +
                     int.Parse(serialInput[1].ToString()) +
@@ -98,7 +97,7 @@ namespace AutomaticPowerManager
                                 int.Parse(serialInput[16].ToString()) +
                                 int.Parse(serialInput[17].ToString()) +
                                 int.Parse(serialInput[18].ToString()) == 10 &
-                                    serialInput.Substring(20) == Functions.usernameToAscii())
+                                    serialInput.Substring(20) == UsernameToAscii())
                 {
 
                     return true;
@@ -123,7 +122,7 @@ namespace AutomaticPowerManager
             try
             {
                 //Open the File
-                StreamWriter sw = new StreamWriter(activationPath); // creates file if it dosen't exist
+                var sw = new StreamWriter(ActivationPath); // creates file if it dosen't exist
 
                 sw.WriteLine(activate);
                 sw.WriteLine("-Please don't edit - will lose activation");
@@ -132,7 +131,7 @@ namespace AutomaticPowerManager
             }
             catch (Exception e)
             {
-                StreamWriter sw = new StreamWriter(errorLogPath, true); // creates file if it dosen't exist
+                var sw = new StreamWriter(ErrorLogPath, true); // creates file if it dosen't exist
 
                 sw.WriteLine(e);
                 //close the file
@@ -146,7 +145,7 @@ namespace AutomaticPowerManager
             string line;
             try
             {
-                StreamReader sr = new StreamReader(activationPath);
+                var sr = new StreamReader(ActivationPath);
                 line = sr.ReadLine();
                 while (line != null)
                 {
@@ -177,71 +176,79 @@ namespace AutomaticPowerManager
                 }
 
                 //create the directory.
-                DirectoryInfo dir = Directory.CreateDirectory(DirPath);
+                Directory.CreateDirectory(DirPath);
 
                 // Delete the directory.
                 //dir.Delete();
-
             }
             catch (Exception e)
             {
-                Functions.WriteErrorToLog(e.ToString());
+                WriteErrorToLog(e.ToString());
             }
         }
 
-        public static void AddApplicationToStartup(Boolean startup)
+        public static void AddApplicationToStartup(bool startup)
             {
-                string AppPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                var appPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                using (var key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true))
+                {
+                    switch (startup)
                     {
-                        if(startup == true)
-                        {
-                            key.SetValue("KTAD - APM", AppPath);
-                            key.Close();
-                        }
-                        if(startup == false)
-                        {
-                    key.DeleteValue("KTAD - APM", false);
-                        }
-                        
+                        case true:
+                            if (key != null)
+                            {
+                                key.SetValue("KTAD - APM", appPath);
+                                key.Close();
+                            }
 
+                            break;
+                        case false:
+                            if (key != null) key.DeleteValue("KTAD - APM", false);
+                            break;
                     }
+                }
 
             }
 
 
         public static void CreateMissingSchemes(string schemeName)
         {
-            if(schemeName == "MakePower")
+            switch (schemeName)
             {
-                ProcessStartInfo ps = new ProcessStartInfo();
-                ps.CreateNoWindow = true;
-                ps.UseShellExecute = false;
-                ps.FileName = "cmd.exe";
-                ps.Arguments = @"/c powercfg -duplicatescheme a1841308-3541-4fab-bc81-f71556f20b4a";
-                ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);   
-            }
-            if(schemeName == "MakeBalanced")
-            {
-                ProcessStartInfo ps = new ProcessStartInfo();
-                ps.CreateNoWindow = true;
-                ps.UseShellExecute = false;
-                ps.FileName = "cmd.exe";
-                ps.Arguments = @"/c powercfg /duplicatescheme 381b4222-f694-41f0-9685-ff5bb260df2e";
-                ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);
-            }
-            if(schemeName == "MakeHigh")
-            {
-                ProcessStartInfo ps = new ProcessStartInfo();
-                ps.CreateNoWindow = true;
-                ps.UseShellExecute = false;
-                ps.FileName = "cmd.exe";
-                ps.Arguments = @"/c powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
-                ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);
+                case "MakePower":
+                {
+                    var ps = new ProcessStartInfo();
+                    ps.CreateNoWindow = true;
+                    ps.UseShellExecute = false;
+                    ps.FileName = "cmd.exe";
+                    ps.Arguments = @"/c powercfg -duplicatescheme a1841308-3541-4fab-bc81-f71556f20b4a";
+                    ps.RedirectStandardOutput = true;
+                    Process.Start(ps);
+                    break;
+                }
+                case "MakeBalanced":
+                {
+                    var ps = new ProcessStartInfo();
+                    ps.CreateNoWindow = true;
+                    ps.UseShellExecute = false;
+                    ps.FileName = "cmd.exe";
+                    ps.Arguments = @"/c powercfg /duplicatescheme 381b4222-f694-41f0-9685-ff5bb260df2e";
+                    ps.RedirectStandardOutput = true;
+                    Process.Start(ps);
+                    break;
+                }
+                case "MakeHigh":
+                {
+                    var ps = new ProcessStartInfo();
+                    ps.CreateNoWindow = true;
+                    ps.UseShellExecute = false;
+                    ps.FileName = "cmd.exe";
+                    ps.Arguments = @"/c powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c";
+                    ps.RedirectStandardOutput = true;
+                    Process.Start(ps);
+                    break;
+                }
             }
         }
 
@@ -254,7 +261,7 @@ namespace AutomaticPowerManager
             try
             {
                 //Open the File
-                StreamWriter sw = new StreamWriter(watchlistPath, true); // creates file if it dosen't exist
+                var sw = new StreamWriter(WatchlistPath, true); // creates file if it dosen't exist
 
                 sw.WriteLine(prog);
                 //close the file
@@ -271,13 +278,12 @@ namespace AutomaticPowerManager
         public static List<string> ReadWatchlist()
         {
             var lines = new List<string>();
-            string line;
             try
             {
                 //Pass the file path and file name to the StreamReader constructor
-                StreamReader sr = new StreamReader(watchlistPath);
+                var sr = new StreamReader(WatchlistPath);
                 //Read the first line of text
-                line = sr.ReadLine();
+                var line = sr.ReadLine();
                 //Continue to read until you reach end of file
                 while (line != null)
                 {
@@ -292,16 +298,10 @@ namespace AutomaticPowerManager
 
                 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Please add programs to be monitored\nSystem will automatically switch to High Performance when program runs\n");
             }
-            finally
-            {
-              
-                //lines.Add("Please add a program");
-            }
-
 
 
             return lines;
@@ -319,20 +319,17 @@ namespace AutomaticPowerManager
             try
             {
                 //Open the File
-                StreamWriter sw = new StreamWriter(SettingsPath, true); // creates file if it dosen't exist
+                var sw = new StreamWriter(SettingsPath, true); // creates file if it dosen't exist
 
                 sw.WriteLine(setting);
                 //close the file
                 sw.Close();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                //Console.WriteLine("Exception: " + e.Message);
             }
-            finally
-            {
-
-            }
+            
 
         }
 
@@ -343,7 +340,7 @@ namespace AutomaticPowerManager
             string line;
             try
             {
-                StreamReader sr = new StreamReader(SettingsPath);
+                var sr = new StreamReader(SettingsPath);
                 line = sr.ReadLine();
                 while (line != null)
                 {
@@ -367,7 +364,7 @@ namespace AutomaticPowerManager
 
         public static int GetCurrentPowerProfile()
         {
-            ProcessStartInfo ps = new ProcessStartInfo();
+            var ps = new ProcessStartInfo();
             ps.CreateNoWindow = true;
             ps.UseShellExecute = false;
             ps.FileName = "cmd.exe";
@@ -375,20 +372,24 @@ namespace AutomaticPowerManager
             ps.RedirectStandardOutput = true;
             var proc = Process.Start(ps);
 
-            string s = proc.StandardOutput.ReadToEnd();
+            if (proc != null)
+            {
+                var s = proc.StandardOutput.ReadToEnd();
 
-            if (s.Contains(GetAllPowerProfiles()["Power"]))
-            {
-                return 1;
+                if (s.Contains(GetAllPowerProfiles()["Power"]))
+                {
+                    return 1;
+                }
+                else if (s.Contains(GetAllPowerProfiles()["Balanced"]))
+                {
+                    return 2;
+                }
+                else if (s.Contains(GetAllPowerProfiles()["High"]))
+                {
+                    return 3;
+                }
             }
-            else if (s.Contains(GetAllPowerProfiles()["Balanced"]))
-            {
-                return 2;
-            }
-            else if (s.Contains(GetAllPowerProfiles()["High"]))
-            {
-                return 3;
-            }
+
             return 0;
 
         }
@@ -425,7 +426,7 @@ namespace AutomaticPowerManager
 
 
 
-            PowerLineStatus status = (PowerLineStatus)Forms.SystemInformation.PowerStatus.PowerLineStatus;
+            var status = (PowerLineStatus)Forms.SystemInformation.PowerStatus.PowerLineStatus;
             if (status == PowerLineStatus.Offline)
             {
                 //MessageBox.Show("Running on Battery");
@@ -440,11 +441,11 @@ namespace AutomaticPowerManager
 
         }
 
-        public static string usernameToAscii()
+        public static string UsernameToAscii()
         {
-            string usernameAscii = "";
-            string choppedUsername = "";
-            var tempLs = usernamePath.Split(Path.DirectorySeparatorChar);
+            var usernameAscii = "";
+            string choppedUsername;
+            var tempLs = UsernamePath.Split(Path.DirectorySeparatorChar);
             if (tempLs[2].Length > 6)
             {
                 choppedUsername = tempLs[2].Substring(0, 6);
@@ -454,18 +455,18 @@ namespace AutomaticPowerManager
                 choppedUsername = tempLs[2];
             }
 
-            byte[] asciiChar = Encoding.ASCII.GetBytes(choppedUsername);
+            var asciiChar = Encoding.ASCII.GetBytes(choppedUsername);
             foreach (var item in asciiChar)
             {
                 usernameAscii += item;
             }
-            long _toDivide = Convert.ToInt64(usernameAscii);
-            long result = _toDivide / 2;
-            string resultString = result.ToString();
+            var toDivide = Convert.ToInt64(usernameAscii);
+            var result = toDivide / 2;
+            var resultString = result.ToString();
             if (resultString.Length < 18)
             {
-                int amount = 18 - resultString.Length;
-                for (int i = 0; i < amount; i++)
+                var amount = 18 - resultString.Length;
+                for (var i = 0; i < amount; i++)
                 {
                     resultString = resultString + "0";
                 }
@@ -478,9 +479,9 @@ namespace AutomaticPowerManager
 
         public static Dictionary<string, string> GetAllPowerProfiles() // working on this - think it's all good now
         {
-            Dictionary<string, string> AllProfiles = new Dictionary<string, string>();
+            var allProfiles = new Dictionary<string, string>();
 
-            ProcessStartInfo ps = new ProcessStartInfo();
+            var ps = new ProcessStartInfo();
             ps.CreateNoWindow = true;
             ps.UseShellExecute = false;
             ps.FileName = "cmd.exe";
@@ -488,56 +489,59 @@ namespace AutomaticPowerManager
             ps.RedirectStandardOutput = true;
             var proc = Process.Start(ps);
 
-            string s = proc.StandardOutput.ReadToEnd();
-            string[] result = s.Split('\n');
-           
-            for (var i = 0; i < result.Length; i++)
+            if (proc != null)
             {
-                try
+                var s = proc.StandardOutput.ReadToEnd();
+                var result = s.Split('\n');
+           
+                for (var i = 0; i < result.Length; i++)
                 {
-                    if (result[i].ToLower().Contains("power saver")
-                    || result[i].ToLower().Replace(")", "").Contains("balanced")
-                    || result[i].ToLower().Contains("high performance"))
+                    try
                     {
-                        
-                        
-
-                        string[] parts = result[i].Split();
-
-                        if (!AllProfiles.Keys.Contains(parts[5].Remove(0, 1).Replace(")", ""))) // if the current one to add does not exist then
+                        if (result[i].ToLower().Contains("power saver")
+                            || result[i].ToLower().Replace(")", "").Contains("balanced")
+                            || result[i].ToLower().Contains("high performance"))
                         {
-                            AllProfiles.Add($"{parts[5].Remove(0, 1).Replace(")", "")}", parts[3]); //did some clean upwith replcae and remove
+                        
+                        
+
+                            var parts = result[i].Split();
+
+                            if (!allProfiles.Keys.Contains(parts[5].Remove(0, 1).Replace(")", ""))) // if the current one to add does not exist then
+                            {
+                                allProfiles.Add($"{parts[5].Remove(0, 1).Replace(")", "")}", parts[3]); //did some clean upwith replcae and remove
+                            }
                         }
                     }
-                }
-                catch (Exception e)
-                {
-                    // MessageBox.Show(e.ToString()); this was crashing the prhogram maybe 
-                    // throw;
-                    WriteErrorToLog(e.ToString());
+                    catch (Exception e)
+                    {
+                        // MessageBox.Show(e.ToString()); this was crashing the prhogram maybe 
+                        // throw;
+                        WriteErrorToLog(e.ToString());
+
+                    }
+
 
                 }
-
-
             }
 
-            if (!AllProfiles.Keys.Contains("Power"))
+            if (!allProfiles.Keys.Contains("Power"))
             {
                 CreateMissingSchemes("MakePower");
 
             }
-            if (!AllProfiles.Keys.Contains("Balanced"))
+            if (!allProfiles.Keys.Contains("Balanced"))
             {
                 CreateMissingSchemes("MakeBalanced");
 
             }
-            if (!AllProfiles.Keys.Contains("High"))
+            if (!allProfiles.Keys.Contains("High"))
             {
                 CreateMissingSchemes("MakeHigh");
 
             }
 
-            return AllProfiles;
+            return allProfiles;
         }
     }
 }

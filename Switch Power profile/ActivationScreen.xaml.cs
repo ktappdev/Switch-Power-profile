@@ -2,26 +2,25 @@
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using AutomaticPowerManager;
 
 namespace Switch_Power_profile
 {
     /// <summary>
     /// Interaction logic for ActivationScreen.xaml
     /// </summary>
-    public partial class ActivationScreen : Window
+    public partial class ActivationScreen
     {
-        public const string regFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{18}$";
+        public const string RegFormat = "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{18}$";
         public ActivationScreen()
         {
             InitializeComponent();
-            validLabel.Visibility = Visibility.Collapsed;
-            challangeCodeBox.Text = Functions.usernameToAscii();
+            ValidLabel.Visibility = Visibility.Collapsed;
+            ChallangeCodeBox.Text = Functions.UsernameToAscii();
         }
 
         private void demoBtn_Click(object sender, RoutedEventArgs e)
         {
-            Functions.WriteActivation("5041-3025-1414-7201-" + Functions.usernameToAscii());
+            Functions.WriteActivation("5041-3025-1414-7201-" + Functions.UsernameToAscii());
             //MainWindow mw = new MainWindow();
             //mw.InitializeComponent();
             //mw.GetSettingsAndUpdate(Functions.ReadSettings());
@@ -45,15 +44,15 @@ namespace Switch_Power_profile
         }
 
 
-        private void validateBtn_Click_1(object sender, RoutedEventArgs e)
+        private void ValidateBtn_Click_1(object sender, RoutedEventArgs e)
         {
 
-            Regex reg = new Regex(regFormat);
-            bool result = reg.IsMatch(serialInputBox.Text);
+            var reg = new Regex(RegFormat);
+            var result = reg.IsMatch(SerialInputBox.Text);
             //List<string> serialInput = new List<string>();
-            string serialInput = serialInputBox.Text;
+            var serialInput = SerialInputBox.Text;
 
-            if (result == true)
+            if (result)
             {
                 if (int.Parse(serialInput[0].ToString()) +
                     int.Parse(serialInput[1].ToString()) +
@@ -71,40 +70,40 @@ namespace Switch_Power_profile
                                 int.Parse(serialInput[16].ToString()) +
                                 int.Parse(serialInput[17].ToString()) +
                                 int.Parse(serialInput[18].ToString()) == 10 &
-                                    serialInput.Substring(20) == Functions.usernameToAscii())
+                                    serialInput.Substring(20) == Functions.UsernameToAscii())
                 {
-                    validLabel.Visibility = Visibility.Visible;
-                    validLabel.Content = "Valid Serial";
+                    ValidLabel.Visibility = Visibility.Visible;
+                    ValidLabel.Content = "Valid Serial";
                     
 
                     Functions.WriteActivation(serialInput);
-                    this.Close();
+                    Close();
 
                 }
                 else
                 {
-                    validLabel.Visibility = Visibility.Visible;
-                    validLabel.Content = "Wrong Serial";
+                    ValidLabel.Visibility = Visibility.Visible;
+                    ValidLabel.Content = "Wrong Serial";
                     Functions.WriteErrorToLog("Wrong serial");
                 }
 
             }
             else
             {
-                validLabel.Visibility = Visibility.Visible;
+                ValidLabel.Visibility = Visibility.Visible;
                 //validLabel.Visibility = Visibility.Collapsed;
-                validLabel.Content = "Wrong Serial";
+                ValidLabel.Content = "Wrong Serial";
                 Functions.WriteErrorToLog("Wrong serial");
             }
         }
         private void TextChangedEventHandler(object sender, TextChangedEventArgs e) //this was set from the xaml file
         {
-            validLabel.Visibility = Visibility.Collapsed;
+            ValidLabel.Visibility = Visibility.Collapsed;
         }
 
         private void copyBtn_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText(challangeCodeBox.Text);
+            Clipboard.SetText(ChallangeCodeBox.Text);
         }
     }
 }

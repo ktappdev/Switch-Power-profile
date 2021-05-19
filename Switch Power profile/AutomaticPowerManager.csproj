@@ -32,7 +32,8 @@
     <TargetCulture>en</TargetCulture>
     <ProductName>Automatic Power Manager</ProductName>
     <PublisherName>KTAD</PublisherName>
-    <ApplicationRevision>29</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>30</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -63,7 +64,7 @@
     <ApplicationIcon>images\256White.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>AutomaticPowerManager.App</StartupObject>
+    <StartupObject>Switch_Power_profile.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>8AC20A4539990C71815A36A69FC92F26F1EA323E</ManifestCertificateThumbprint>

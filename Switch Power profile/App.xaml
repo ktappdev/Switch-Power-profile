@@ -1,7 +1,6 @@
-﻿<Application x:Class="AutomaticPowerManager.App"
+﻿<Application x:Class="Switch_Power_profile.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AutomaticPowerManager"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

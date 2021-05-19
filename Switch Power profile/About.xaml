@@ -20,8 +20,8 @@
         Website/Support
     </Hyperlink>
         </TextBlock>
-        <Button x:Name="closeAbout" Content="Close" HorizontalAlignment="Left" Margin="295,364,0,0" VerticalAlignment="Top" Width="75" Click="closeAbout_Click"/>
-        <Label Name = "versionLbl" Content="Version" HorizontalAlignment="Left" Margin="20,204,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="CloseAbout" Content="Close" HorizontalAlignment="Left" Margin="295,364,0,0" VerticalAlignment="Top" Width="75" Click="closeAbout_Click"/>
+        <Label Name = "VersionLbl" Content="Version" HorizontalAlignment="Left" Margin="20,204,0,0" VerticalAlignment="Top"/>
 
 
     </Grid>

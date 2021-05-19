@@ -1,40 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Diagnostics;
-using System.Threading;
 //using System.Management;
-using System.IO;
 using Forms = System.Windows.Forms;
-using System.Reflection;
-using Switch_Power_profile;
+using MessageBox = System.Windows.MessageBox;
 
 //using System.Drawing;
 
-namespace AutomaticPowerManager
+namespace Switch_Power_profile
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         //static Dictionary<string, string> guids = Functions.GetAllPowerProfiles();
 
-        public static Forms.NotifyIcon notifyIcon = new Forms.NotifyIcon();
+        public static Forms.NotifyIcon NotifyIcon = new Forms.NotifyIcon();
         public static List<string> CurrentlyRunningList = new List<string>();
         public MainWindow()
         {
             //notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\500White.ico");
-            notifyIcon.Icon = Switch_Power_profile.Properties.Resources._500White; //new System.Drawing.Icon(Switch_Power_profile.Properties.Resources._500White);
-            notifyIcon.Visible = true;
-            notifyIcon.Text = "Automatic Power Manager - KTAD";
-            notifyIcon.DoubleClick += Notify_DoubleClick; //Notify_Click;
-            notifyIcon.BalloonTipClicked += Baloon_Clicked;
-            notifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
+            NotifyIcon.Icon = Properties.Resources._500White; //new System.Drawing.Icon(Switch_Power_profile.Properties.Resources._500White);
+            NotifyIcon.Visible = true;
+            NotifyIcon.Text = "Automatic Power Manager - KTAD";
+            NotifyIcon.DoubleClick += Notify_DoubleClick; //Notify_Click;
+            NotifyIcon.BalloonTipClicked += Baloon_Clicked;
+            NotifyIcon.ContextMenuStrip = new Forms.ContextMenuStrip();
 
             //dont need these for first version of the app
 
-            notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Show App", null, TrayIconShowApp));
-            notifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Exit", null, TrayIconExit));
+            NotifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Show App", null, TrayIconShowApp));
+            NotifyIcon.ContextMenuStrip.Items.Add(new Forms.ToolStripMenuItem("Exit", null, TrayIconExit));
 
 
             InitializeComponent();
@@ -49,7 +49,7 @@ namespace AutomaticPowerManager
             Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
             //MonitorPrograms();
 
-            if (Functions.isActivated())
+            if (Functions.IsActivated())
             {
 
                 MonitorPrograms();
@@ -57,9 +57,9 @@ namespace AutomaticPowerManager
             else
             {
 
-                notifyIcon.Visible = false;
+                NotifyIcon.Visible = false;
                 WindowState = WindowState.Normal;
-                ActivationScreen activationScreen = new ActivationScreen();
+                var activationScreen = new ActivationScreen();
                 activationScreen.ShowDialog();
             }
             
@@ -70,8 +70,8 @@ namespace AutomaticPowerManager
 
         private void Notify_DoubleClick(object sender, EventArgs e)
         {
-            this.Show();
-            notifyIcon.Visible = false;
+            Show();
+            NotifyIcon.Visible = false;
             WindowState = WindowState.Normal;
             GetProcessesList();
             //ReadAndUpdateUi();
@@ -81,17 +81,17 @@ namespace AutomaticPowerManager
 
         public static void RunningInstance()
         {
-            Process current = Process.GetCurrentProcess();
-            Process[] processes = Process.GetProcessesByName(current.ProcessName);
+            var current = Process.GetCurrentProcess();
+            var processes = Process.GetProcessesByName(current.ProcessName);
 
-            foreach (Process process in processes)
+            foreach (var process in processes)
             {
                 
                 if (process.Id != current.Id) // find the other instance by name    && process.ProcessName == "Automatic Power manager"
                 {
                     
-                    if (Assembly.GetExecutingAssembly().Location.
-                         Replace("/", "\\") == current.MainModule.FileName)
+                    if (current.MainModule != null && Assembly.GetExecutingAssembly().Location.
+                        Replace("/", "\\") == current.MainModule.FileName)
 
                     {
 
@@ -113,8 +113,8 @@ namespace AutomaticPowerManager
 
     private void Baloon_Clicked(object sender, EventArgs e)
         {
-            this.Show();
-            notifyIcon.Visible = false;
+            Show();
+            NotifyIcon.Visible = false;
             WindowState = WindowState.Normal;
         }
 
@@ -123,10 +123,10 @@ namespace AutomaticPowerManager
             //notifyIcon.BalloonTipTitle = "APM Running Minimized";
             //notifyIcon.BalloonTipText = "Click icon to show app";
 
-            this.Hide();
+            Hide();
 
-            notifyIcon.Visible = true;
-            notifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
+            NotifyIcon.Visible = true;
+            NotifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
 
         }
 
@@ -143,21 +143,21 @@ namespace AutomaticPowerManager
 
         private void TrayIconShowApp(object sender, EventArgs e)
         {
-            this.Show();
-            notifyIcon.Visible = false;
+            Show();
+            NotifyIcon.Visible = false;
             WindowState = WindowState.Normal;
         }
 
         private void TrayIconExit(object sender, EventArgs e)
         {
             //MonitorMode.IsChecked = !MonitorMode.IsChecked.Value; 
-            notifyIcon.Dispose();
-            System.Environment.Exit(0);
+            NotifyIcon.Dispose();
+            Environment.Exit(0);
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            notifyIcon.Dispose();
+            NotifyIcon.Dispose();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -165,9 +165,9 @@ namespace AutomaticPowerManager
             if (MessageBox.Show("Do you want to exit? Click \"No\" to minimize to system tray", "Exit?", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 e.Cancel = true;
-                this.Hide();
-                notifyIcon.Visible = true;
-                notifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
+                Hide();
+                NotifyIcon.Visible = true;
+                NotifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
             }
             
         }
@@ -178,15 +178,15 @@ namespace AutomaticPowerManager
         {
             if (WindowState == WindowState.Minimized)
             {
-                this.Hide();
-                notifyIcon.Visible = true;
+                Hide();
+                NotifyIcon.Visible = true;
                 
-                notifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
+                NotifyIcon.ShowBalloonTip(500, "APM Running Minimized", "Click icon to show app", Forms.ToolTipIcon.Info);
                 
             }
-            else if (this.WindowState == WindowState.Normal)
+            else if (WindowState == WindowState.Normal)
             {
-                notifyIcon.Visible = false;
+                NotifyIcon.Visible = false;
             }
         }
 
@@ -228,9 +228,9 @@ namespace AutomaticPowerManager
 
         public void ReadAndUpdateUi()
         {
-            int State = Functions.GetCurrentPowerProfile();
+            var state = Functions.GetCurrentPowerProfile();
 
-            switch (State)
+            switch (state)
             {
                 case 1:
                     SetLowProfile();
@@ -253,18 +253,18 @@ namespace AutomaticPowerManager
 
         public void SetLowProfile()
         {
-            int State = Functions.GetCurrentPowerProfile();
+            var state = Functions.GetCurrentPowerProfile();
             try
             {
-                if (LabelLow.Visibility != Visibility.Visible && State != 1)
+                if (LabelLow.Visibility != Visibility.Visible && state != 1)
                 {
-                    ProcessStartInfo ps = new ProcessStartInfo();
+                    var ps = new ProcessStartInfo();
                     ps.CreateNoWindow = true;
                     ps.UseShellExecute = false;
                     ps.FileName = "cmd.exe";
                     ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["Power"]}";
                     ps.RedirectStandardOutput = true;
-                    var proc = Process.Start(ps);
+                    Process.Start(ps);
 
                     //string s = proc.StandardOutput.ReadToEnd();
                     //MessageBox.Show(s);
@@ -273,7 +273,7 @@ namespace AutomaticPowerManager
                     LabelLow.Visibility = Visibility.Visible;
                     LabelBalanced.Visibility = Visibility.Hidden;
                     LabelHigh.Visibility = Visibility.Hidden;
-                    notifyIcon.ShowBalloonTip(1000, "System switched to Low Powered", "No monitored program is running and on battery", Forms.ToolTipIcon.Info);
+                    NotifyIcon.ShowBalloonTip(1000, "System switched to Low Powered", "No monitored program is running and on battery", Forms.ToolTipIcon.Info);
                 }
                 else
                 {
@@ -294,17 +294,17 @@ namespace AutomaticPowerManager
 
         public void SetBalancedProfile()
         {
-            int State = Functions.GetCurrentPowerProfile();
+            var state = Functions.GetCurrentPowerProfile();
 
-            if (LabelBalanced.Visibility != Visibility.Visible && State != 2)
+            if (LabelBalanced.Visibility != Visibility.Visible && state != 2)
             {
-                ProcessStartInfo ps = new ProcessStartInfo();
+                var ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
                 ps.UseShellExecute = false;
                 ps.FileName = "cmd.exe";
                 ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["Balanced"]}";
                 ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);
+                Process.Start(ps);
                 
                 //string s = proc.StandardOutput.ReadToEnd();
                 //MessageBox.Show(s);
@@ -312,7 +312,7 @@ namespace AutomaticPowerManager
                 LabelBalanced.Visibility = Visibility.Visible;
                 LabelHigh.Visibility = Visibility.Hidden;
                 LabelLow.Visibility = Visibility.Hidden;
-                notifyIcon.ShowBalloonTip(1000, "System switched to Balanced", "No monitored program is running and Power plugged in", Forms.ToolTipIcon.Info);
+                NotifyIcon.ShowBalloonTip(1000, "System switched to Balanced", "No monitored program is running and Power plugged in", Forms.ToolTipIcon.Info);
 
             }
             else
@@ -326,24 +326,24 @@ namespace AutomaticPowerManager
 
         public void SetHighProfile()
         {
-            int State = Functions.GetCurrentPowerProfile();
-            if (LabelHigh.Visibility != Visibility.Visible && State != 3)
+            var state = Functions.GetCurrentPowerProfile();
+            if (LabelHigh.Visibility != Visibility.Visible && state != 3)
             {
 
-                ProcessStartInfo ps = new ProcessStartInfo();
+                var ps = new ProcessStartInfo();
                 ps.CreateNoWindow = true;
                 ps.UseShellExecute = false;
                 ps.FileName = "cmd.exe";
                 ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["High"]}";
                 ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);
+                Process.Start(ps);
                 //string s = proc.StandardOutput.ReadToEnd();
                 //MessageBox.Show(s);
                 LabelHigh.Content = "Selected";
                 LabelHigh.Visibility = Visibility.Visible;
                 LabelLow.Visibility = Visibility.Hidden;
                 LabelBalanced.Visibility = Visibility.Hidden;
-                notifyIcon.ShowBalloonTip(1000, "System switched to High Performane", $"{CurrentlyRunningList[0]} is running", Forms.ToolTipIcon.Info);
+                NotifyIcon.ShowBalloonTip(1000, "System switched to High Performane", $"{CurrentlyRunningList[0]} is running", Forms.ToolTipIcon.Info);
             }
             else
             {
@@ -358,28 +358,30 @@ namespace AutomaticPowerManager
 
         public void ManualSetHighProfile()
         {
-            int State = Functions.GetCurrentPowerProfile();
-            if (LabelHigh.Visibility != Visibility.Visible && State != 3)
+            var state = Functions.GetCurrentPowerProfile();
+            if (LabelHigh.Visibility != Visibility.Visible && state != 3)
             {
 
-                ProcessStartInfo ps = new ProcessStartInfo();
-                ps.CreateNoWindow = true;
-                ps.UseShellExecute = false;
-                ps.FileName = "cmd.exe";
-                ps.Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["High"]}";
-                ps.RedirectStandardOutput = true;
-                var proc = Process.Start(ps);
+                var ps = new ProcessStartInfo
+                {
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    FileName = "cmd.exe",
+                    Arguments = $@"/c powercfg -setactive {Functions.GetAllPowerProfiles()["High"]}",
+                    RedirectStandardOutput = true
+                };
+                Process.Start(ps);
                 //string s = proc.StandardOutput.ReadToEnd();
                 //MessageBox.Show(s);
                 LabelHigh.Content = "Selected";
                 LabelHigh.Visibility = Visibility.Visible;
                 LabelLow.Visibility = Visibility.Hidden;
                 LabelBalanced.Visibility = Visibility.Hidden;
-                notifyIcon.ShowBalloonTip(1000, "System switched to High Performane", $"Manual Mode", Forms.ToolTipIcon.Info);
+                NotifyIcon.ShowBalloonTip(1000, "System switched to High Performance", $"Manual Mode", Forms.ToolTipIcon.Info);
             }
             else
             {
-                LabelHigh.Content = "SELCETED";
+                LabelHigh.Content = "SELECTED";
                 LabelHigh.Visibility = Visibility.Visible;
                 LabelLow.Visibility = Visibility.Hidden;
                 LabelBalanced.Visibility = Visibility.Hidden;
@@ -393,9 +395,9 @@ namespace AutomaticPowerManager
 
         public void SetProfileOnConnect()
         {
-            this.Dispatcher.Invoke((Action)(() =>
+            Dispatcher.Invoke(() =>
             {
-                if (Functions.GetChargingStatus() == true)
+                if (Functions.GetChargingStatus())
                 {
                     if (Functions.GetCurrentPowerProfile() != 3)
                     {
@@ -406,7 +408,7 @@ namespace AutomaticPowerManager
                 {
                     SetLowProfile();
                 }
-            }));
+            });
         }
 
 
@@ -414,7 +416,7 @@ namespace AutomaticPowerManager
         public void UpdateMonListBox(List<string> lines)
         {
             ListBoxMonProcesses.Items.Clear();
-            foreach (string line in lines)
+            foreach (var line in lines)
             {
                 ListBoxMonProcesses.Items.Add(line); // populate a listbox or setup a return
             }
@@ -425,13 +427,13 @@ namespace AutomaticPowerManager
 
         public void GetProcessesList()
         {
-            Task task = new Task(() =>
+            var task = new Task(() =>
             {
 
-                List<string> processlist = new List<string>();
+                var processlist = new List<string>();
 
-                Process[] processCollection = Process.GetProcesses();
-                foreach (Process p in processCollection)
+                var processCollection = Process.GetProcesses();
+                foreach (var p in processCollection)
                 {
 
                     if (p.ProcessName.ToLower() != "svchost"
@@ -523,14 +525,14 @@ namespace AutomaticPowerManager
                         processlist.Remove(item);
                     }
                 }
-                this.Dispatcher.Invoke(() =>
+                Dispatcher.Invoke(() =>
                 {
                     ListBoxProcesses.Items.Clear();
                 });
                 processlist.Sort();
                 foreach (var process in processlist)
                 {
-                    this.Dispatcher.Invoke(() =>
+                    Dispatcher.Invoke(() =>
                     {
                         ListBoxProcesses.Items.Add(process); // populate a listbox or setup a return
                         //if (process.ToLower() == "simplenote")
@@ -560,40 +562,37 @@ namespace AutomaticPowerManager
             //    return;
             //}
             //List<string> CurrentlyRunningList = new List<string>();
-            Boolean ListEmpty = false;
-            Boolean MonitorModeOnOrOff = true;
+            var listEmpty = false;
+            var monitorModeOnOrOff = true;
             //Boolean NoRunningProgram = false;
-            int t = 10000;
-            Task task = new Task(() => //run these commands on another thread
+            var t = 10000;
+            var task = new Task(() => //run these commands on another thread
             {
                 while (true)
                 {
                     
 
-                    this.Dispatcher.Invoke(() =>
+                    Dispatcher.Invoke(() =>
                     {
-                        
-                        MonitorModeOnOrOff = (bool)MonitorMode.IsChecked;
-                        
-
+                        if (MonitorMode.IsChecked != null) monitorModeOnOrOff = (bool) MonitorMode.IsChecked;
                     });
 
                     
-                    if(MonitorModeOnOrOff == true)
+                    if(monitorModeOnOrOff)
                     {
                         try
                         {
 
                             if (ListBoxMonProcesses.Items.Count == 0)
                             {
-                                ListEmpty = true; //check to see if the list is empty and set this to true if it is
+                                listEmpty = true; //check to see if the list is empty and set this to true if it is
                             }
                             if (ListBoxMonProcesses.Items.Count > 0)
                             {
                                 CurrentlyRunningList.Clear(); 
-                                ListEmpty = false;
-                                Process[] processCollection = Process.GetProcesses();
-                                foreach (Process p in processCollection)
+                                listEmpty = false;
+                                var processCollection = Process.GetProcesses();
+                                foreach (var p in processCollection)
                                 {
                                     foreach (string item in ListBoxMonProcesses.Items)
                                     {
@@ -614,11 +613,11 @@ namespace AutomaticPowerManager
                             }
                             
 
-                            if (ListEmpty == true || CurrentlyRunningList.Count == 0) // Boss logic :) so simple don't need a list tho
+                            if (listEmpty || CurrentlyRunningList.Count == 0) // Boss logic :) so simple don't need a list tho
                             {
                                 if (Functions.GetChargingStatus() == false)
                                 {
-                                    this.Dispatcher.Invoke(() =>
+                                    Dispatcher.Invoke(() =>
                                     {
 
                                         SetLowProfile();
@@ -627,7 +626,7 @@ namespace AutomaticPowerManager
                                 }
                                 else
                                 {
-                                    this.Dispatcher.Invoke(() =>
+                                    Dispatcher.Invoke(() =>
                                     {
 
                                         SetBalancedProfile();
@@ -638,7 +637,7 @@ namespace AutomaticPowerManager
                             }
                             else
                             {
-                                this.Dispatcher.Invoke(() =>
+                                Dispatcher.Invoke(() =>
                                 {
                                     SetHighProfile();
                                    
@@ -656,7 +655,7 @@ namespace AutomaticPowerManager
                     }
 
 
-                    this.Dispatcher.Invoke(() =>
+                    Dispatcher.Invoke(() =>
                     {
                         t = (int)RateSlider.Value * 1000;
 
@@ -723,7 +722,7 @@ namespace AutomaticPowerManager
 
         private void RemoveMonitorButton(object sender, RoutedEventArgs e)
         {
-            List<string> NewMonItems = new List<string>();
+            var newMonItems = new List<string>();
 
             if (ListBoxMonProcesses.SelectedItem != null)
             {
@@ -733,11 +732,11 @@ namespace AutomaticPowerManager
                 
                 foreach (string item in ListBoxMonProcesses.Items) // create a temp list of current items in listbox
                 {                    
-                    NewMonItems.Add(item);
+                    newMonItems.Add(item);
                 }
 
-                File.Delete(Functions.watchlistPath);
-                File.AppendAllLines(Functions.watchlistPath, NewMonItems.ToArray()); //make a new file with the items from the listbox
+                File.Delete(Functions.WatchlistPath);
+                File.AppendAllLines(Functions.WatchlistPath, newMonItems.ToArray()); //make a new file with the items from the listbox
                 //UpdateMonListBox(Functions.Readdb());
             }
             else
@@ -754,7 +753,7 @@ namespace AutomaticPowerManager
             if (MessageBox.Show("Clear Monitor List?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 ListBoxMonProcesses.Items.Clear();
-                File.Delete(Functions.watchlistPath);
+                File.Delete(Functions.WatchlistPath);
             }
 
         }
@@ -779,14 +778,14 @@ namespace AutomaticPowerManager
 
             }
 
-            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
-            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
-            Functions.WriteSettings(RateSlider.Value.ToString());
+            Functions.WriteSettings((Startup.IsChecked != null && Startup.IsChecked.Value).ToString());
+            Functions.WriteSettings((MonitorMode.IsChecked != null && MonitorMode.IsChecked.Value).ToString());
+            Functions.WriteSettings(RateSlider.Value.ToString(CultureInfo.InvariantCulture));
 
             setHighButton.IsEnabled = false;
             setBalancedButton.IsEnabled = false;
             setLowButton.IsEnabled = false;
-            modeLbl.Content = "Automatic mode enabled";
+            ModeLbl.Content = "Automatic mode enabled";
 
 
 
@@ -810,14 +809,14 @@ namespace AutomaticPowerManager
                     Functions.CreateAppDir();
                 }
 
-                Functions.WriteSettings(Startup.IsChecked.Value.ToString());
-                Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
-                Functions.WriteSettings(RateSlider.Value.ToString());
+                Functions.WriteSettings((Startup.IsChecked != null && Startup.IsChecked.Value).ToString());
+                Functions.WriteSettings((MonitorMode.IsChecked != null && MonitorMode.IsChecked.Value).ToString());
+                Functions.WriteSettings(RateSlider.Value.ToString(CultureInfo.InvariantCulture));
 
                 setHighButton.IsEnabled = true;
                 setBalancedButton.IsEnabled = true;
                 setLowButton.IsEnabled = true;
-                modeLbl.Content = "Manual Mode Enabled";
+                ModeLbl.Content = "Manual Mode Enabled";
 
             }
             
@@ -837,9 +836,9 @@ namespace AutomaticPowerManager
                 Functions.CreateAppDir();
             }
 
-            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
-            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
-            Functions.WriteSettings(RateSlider.Value.ToString());
+            Functions.WriteSettings((Startup.IsChecked != null && Startup.IsChecked.Value).ToString());
+            Functions.WriteSettings((MonitorMode.IsChecked != null && MonitorMode.IsChecked.Value).ToString());
+            Functions.WriteSettings(RateSlider.Value.ToString(CultureInfo.InvariantCulture));
 
         }
 
@@ -856,9 +855,9 @@ namespace AutomaticPowerManager
                 Functions.CreateAppDir();
             }
 
-            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
-            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
-            Functions.WriteSettings(RateSlider.Value.ToString());
+            Functions.WriteSettings((Startup.IsChecked != null && Startup.IsChecked.Value).ToString());
+            Functions.WriteSettings((MonitorMode.IsChecked != null && MonitorMode.IsChecked.Value).ToString());
+            Functions.WriteSettings(RateSlider.Value.ToString(CultureInfo.InvariantCulture));
         }
 
         private void RateSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -874,22 +873,22 @@ namespace AutomaticPowerManager
                 Functions.CreateAppDir();
             }
 
-            Functions.WriteSettings(Startup.IsChecked.Value.ToString());
-            Functions.WriteSettings(MonitorMode.IsChecked.Value.ToString());
-            Functions.WriteSettings(RateSlider.Value.ToString());
+            Functions.WriteSettings((Startup.IsChecked != null && Startup.IsChecked.Value).ToString());
+            Functions.WriteSettings((MonitorMode.IsChecked != null && MonitorMode.IsChecked.Value).ToString());
+            Functions.WriteSettings(RateSlider.Value.ToString(CultureInfo.InvariantCulture));
 
         }
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            notifyIcon.Dispose();
+            NotifyIcon.Dispose();
         }
 
         private void about_button_Click(object sender, RoutedEventArgs e)
         {
             
            
-            About about = new About();
+            var about = new About();
             about.ShowDialog();
 
         }
@@ -901,7 +900,7 @@ namespace AutomaticPowerManager
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            ActivationScreen activationScreen = new ActivationScreen();
+            var activationScreen = new ActivationScreen();
             activationScreen.ShowDialog();
         }
     }
