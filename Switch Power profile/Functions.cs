@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -542,6 +543,42 @@ namespace Switch_Power_profile
             }
 
             return allProfiles;
+        }
+
+        public string SetDemo()
+        {
+            string demoKey = "";
+            var installDate = DateTime.Now;
+            //Console.WriteLine(newDate2.ToString());
+
+            var firstPartOfDate = installDate.ToString(CultureInfo.InvariantCulture).Split()[0];
+
+            //Console.WriteLine($"{firstPartOfDate[0]} This is the proper now {firstPartOfDate[0].Length}");
+
+            //var newDate22 = newDate2.AddDays(22);
+            //var t = newDate22.ToString().Split();
+
+            //Console.WriteLine($"{t[0]} This is plus 1 day");
+
+            //var newDate3 = new DateTime(2021, 05, 30);
+
+            ////Thread.Sleep(2000);
+
+            //var newDate = DateTime.Now;
+
+            //var timePassed = newDate3.Subtract(newDate);
+
+            //Console.WriteLine(timePassed);
+
+
+            byte[] dateAsAscii = Encoding.ASCII.GetBytes(firstPartOfDate);
+
+            foreach (var item in dateAsAscii)
+            {
+                demoKey += item;
+            }
+            
+            return demoKey;
         }
     }
 }
