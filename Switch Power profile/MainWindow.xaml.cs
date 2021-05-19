@@ -21,6 +21,8 @@ namespace Switch_Power_profile
 
         public static Forms.NotifyIcon NotifyIcon = new Forms.NotifyIcon();
         public static List<string> CurrentlyRunningList = new List<string>();
+        readonly string applicationName = Application.ResourceAssembly.GetName().Name;
+
         public MainWindow()
         {
             //notifyIcon.Icon = new System.Drawing.Icon(@"C:\Users\KenDaBeatMaker\source\repos\Switch Power profile\Switch Power profile\images\500White.ico");
@@ -38,6 +40,7 @@ namespace Switch_Power_profile
 
 
             InitializeComponent();
+            
             RunningInstance(); //works, needs further testing
 
             Functions.CreateAppDir(); //this is where i store the text files containing what apps to monitor and tick rate - AppData\Local\Automatic Power Manager
@@ -447,6 +450,7 @@ namespace Switch_Power_profile
                     && p.ProcessName.ToLower() != "rundll32"
                     && p.ProcessName.ToLower() != "system"
                     && p.ProcessName.ToLower() != "automatic power manager"
+                    && p.ProcessName.ToLower() != applicationName.ToLower()
                     && p.ProcessName.ToLower() != "idle"
                     && p.ProcessName.ToLower() != "systemsettings"
                     && p.ProcessName.ToLower() != "wininit"
@@ -456,6 +460,7 @@ namespace Switch_Power_profile
                     && p.ProcessName.ToLower() != "spoolsv"
                     && p.ProcessName.ToLower() != "explorer"
                     && p.ProcessName.ToLower() != "fontdrvhost"
+                    && p.ProcessName.ToLower() != "secure system"
                     && p.ProcessName.ToLower() != "wmiprvse"
                     && p.ProcessName.ToLower() != "PresentationFontCache".ToLower()
                     && p.ProcessName.ToLower() != "esif_uf".ToLower()
