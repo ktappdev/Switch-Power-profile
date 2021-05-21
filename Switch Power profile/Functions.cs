@@ -73,48 +73,65 @@ namespace Switch_Power_profile
             }
         }
 
-        private static Boolean CheckKey(string key)
+        public static Boolean CheckKey(string key)
         {
-            var reg = new Regex(ActivationScreen.RegFormat);
-            var result = reg.IsMatch(key);
-            //List<string> serialInput = new List<string>();
-            var serialInput = key;
-
-            if (result)
+            if (key.Length == 10)
             {
-                if (int.Parse(serialInput[0].ToString()) +
-                    int.Parse(serialInput[1].ToString()) +
-                    int.Parse(serialInput[2].ToString()) +
-                    int.Parse(serialInput[3].ToString()) == 10 &
+                DateTime CurrentDate = DateTime.Now;
+                DateTime installDate = Convert.ToDateTime(key);
+                DateTime installDatePlusOne = installDate.AddDays(1);
+                return true;
+
+                // Need to do a return here // compare dates return true or false
+            }
+            else if (key.Length == 38)
+            {
+                var reg = new Regex(ActivationScreen.RegFormat);
+                var result = reg.IsMatch(key);
+                //List<string> serialInput = new List<string>();
+                var serialInput = key;
+
+                if (result)
+                {
+                    if (int.Parse(serialInput[0].ToString()) +
+                        int.Parse(serialInput[1].ToString()) +
+                        int.Parse(serialInput[2].ToString()) +
+                        int.Parse(serialInput[3].ToString()) == 10 &
                         int.Parse(serialInput[5].ToString()) +
                         int.Parse(serialInput[6].ToString()) +
                         int.Parse(serialInput[7].ToString()) +
                         int.Parse(serialInput[8].ToString()) == 10 &
-                            int.Parse(serialInput[10].ToString()) +
-                            int.Parse(serialInput[11].ToString()) +
-                            int.Parse(serialInput[12].ToString()) +
-                            int.Parse(serialInput[13].ToString()) == 10 &
-                                int.Parse(serialInput[15].ToString()) +
-                                int.Parse(serialInput[16].ToString()) +
-                                int.Parse(serialInput[17].ToString()) +
-                                int.Parse(serialInput[18].ToString()) == 10 &
-                                    serialInput.Substring(20) == UsernameToAscii())
-                {
+                        int.Parse(serialInput[10].ToString()) +
+                        int.Parse(serialInput[11].ToString()) +
+                        int.Parse(serialInput[12].ToString()) +
+                        int.Parse(serialInput[13].ToString()) == 10 &
+                        int.Parse(serialInput[15].ToString()) +
+                        int.Parse(serialInput[16].ToString()) +
+                        int.Parse(serialInput[17].ToString()) +
+                        int.Parse(serialInput[18].ToString()) == 10 &
+                        serialInput.Substring(20) == UsernameToAscii())
+                    {
 
-                    return true;
+                        return true;
+                    }
+                    else
+                    {
+
+                        return false;
+                    }
+
                 }
                 else
                 {
 
                     return false;
                 }
-
             }
             else
             {
-
                 return false;
             }
+            
         }
     
 
@@ -545,7 +562,7 @@ namespace Switch_Power_profile
             return allProfiles;
         }
 
-        public string SetDemo()
+        public static string MakeDemoKey()
         {
             string demoKey = "";
             var installDate = DateTime.Now;
@@ -571,14 +588,14 @@ namespace Switch_Power_profile
             //Console.WriteLine(timePassed);
 
 
-            byte[] dateAsAscii = Encoding.ASCII.GetBytes(firstPartOfDate);
+            //byte[] dateAsAscii = Encoding.ASCII.GetBytes(firstPartOfDate);
 
-            foreach (var item in dateAsAscii)
-            {
-                demoKey += item;
-            }
+            //foreach (var item in dateAsAscii)
+            //{
+            //    demoKey += item;
+            //}
             
-            return demoKey;
+            return firstPartOfDate;
         }
     }
 }

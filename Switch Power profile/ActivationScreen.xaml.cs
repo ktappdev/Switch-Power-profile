@@ -20,7 +20,8 @@ namespace Switch_Power_profile
 
         private void demoBtn_Click(object sender, RoutedEventArgs e)
         {
-            Functions.WriteActivation("5041-3025-1414-7201-" + Functions.UsernameToAscii());
+            Functions.WriteActivation(Functions.MakeDemoKey());
+            //Functions.WriteActivation("5041-3025-1414-7201-" + Functions.UsernameToAscii());
             //MainWindow mw = new MainWindow();
             //mw.InitializeComponent();
             //mw.GetSettingsAndUpdate(Functions.ReadSettings());
@@ -77,6 +78,7 @@ namespace Switch_Power_profile
                     
 
                     Functions.WriteActivation(serialInput);
+                    Restart();
                     Close();
 
                 }
