@@ -48,7 +48,7 @@ To uninstall just use regular windows program uninstaller / add remove programs.
 
 
 
-![Current look of APM](image.png "APM")
+![Current look of APM](Screenshot.jpg "APM")
 
 PS. The UI looks like crap, I know.
 
