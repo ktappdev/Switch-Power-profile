@@ -42,7 +42,7 @@ This app fixes that issue for you automatically.
 
 Download link below.
 
-https://github.com/KTAppDev/Switch-Power-profile/releases/tag/alpha
+https://github.com/KTAppDev/Switch-Power-profile/releases/tag/1.09
 
 To uninstall just use regular windows program uninstaller / add remove programs.
 
