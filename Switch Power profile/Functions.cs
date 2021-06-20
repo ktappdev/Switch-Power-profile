@@ -61,6 +61,7 @@ namespace Switch_Power_profile
 
                 WriteErrorToLog(e.ToString());
             }
+
             if ((keyFromFile != "") &
                     CheckKey(keyFromFile))
             {

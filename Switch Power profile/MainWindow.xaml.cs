@@ -76,7 +76,7 @@ namespace Switch_Power_profile
             Show();
             NotifyIcon.Visible = false;
             WindowState = WindowState.Normal;
-            GetProcessesList();
+            //GetProcessesList();
             //ReadAndUpdateUi();
         }
 
@@ -118,6 +118,7 @@ namespace Switch_Power_profile
         {
             Show();
             NotifyIcon.Visible = false;
+            //GetProcessesList(); //findthis
             WindowState = WindowState.Normal;
         }
 
@@ -148,6 +149,7 @@ namespace Switch_Power_profile
         {
             Show();
             NotifyIcon.Visible = false;
+            //GetProcessesList(); //findthis
             WindowState = WindowState.Normal;
         }
 
@@ -190,6 +192,7 @@ namespace Switch_Power_profile
             else if (WindowState == WindowState.Normal)
             {
                 NotifyIcon.Visible = false;
+                GetProcessesList();
             }
         }
 

@@ -31,7 +31,6 @@ namespace Switch_Power_profile
             //mw.UpdateMonListBox(Functions.ReadWatchlist());
             //Functions.AddApplicationToStartup(Convert.ToBoolean(Functions.ReadSettings()[0]));
             //mw.MonitorPrograms();
-
             //this.Close();
             Restart();
 
