@@ -19,10 +19,7 @@
         </Rectangle>
         <Rectangle Fill="#FF52A9F8" Stroke="Black" Margin="295,101,179.2,429"/>
         <DockPanel>
-            <Menu DockPanel.Dock="Top">
-                <Menu.Background>
-                    <ImageBrush ImageSource="images/BD2.png"/>
-                </Menu.Background>
+            <Menu DockPanel.Dock="Top" Background="{x:Null}">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Exit" Click="menuExit_Click" />
                 </MenuItem>
