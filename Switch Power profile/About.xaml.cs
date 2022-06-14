@@ -34,7 +34,7 @@ namespace Switch_Power_profile
             {
                 //// you cannot read publish version when app isn't installed 
                 //// (e.g. during debug)
-                VersionLbl.Content = "not installed";
+                VersionLbl.Content = "not installed or debug mode";
             }
         }
 

@@ -70,7 +70,7 @@ namespace Switch_Power_profile
             }
             else
             {
-                return false;
+                return true; // Will switch this from false to true to make the program always activated
             }
         }
 
@@ -177,8 +177,15 @@ namespace Switch_Power_profile
             {
                 WriteErrorToLog(e.ToString());
             }
-
-            return lines[0];
+            if (lines != null)
+            {
+                return lines[0];
+            }
+            else
+            {
+                return null;
+            }
+            
         }
 
 
@@ -319,7 +326,8 @@ namespace Switch_Power_profile
             }
             catch (Exception)
             {
-                MessageBox.Show("Please add programs to be monitored\nSystem will automatically switch to High Performance when program runs\n");
+                Functions.WriteErrorToLog("Please add programs to be monitored");
+                //MessageBox.Show("Please add programs to be monitored\nSystem will automatically switch to High Performance when program runs\n");
             }
 
 

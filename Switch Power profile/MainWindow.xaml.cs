@@ -444,6 +444,10 @@ namespace Switch_Power_profile
 
                     if (p.ProcessName.ToLower() != "svchost"
                     && p.ProcessName.ToLower() != "taskmgr"
+                    && p.ProcessName.ToLower() != "yourphone"
+                    && p.ProcessName.ToLower() != "softwareupdate"
+                    && p.ProcessName.ToLower() != "gamebar"
+                    && p.ProcessName.ToLower() != "ctfmon"
                     && p.ProcessName.ToLower() != "spoolsv"
                     && p.ProcessName.ToLower() != "lsass"
                     && p.ProcessName.ToLower() != "csrss"

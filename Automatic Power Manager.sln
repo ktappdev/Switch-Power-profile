@@ -5,8 +5,6 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticPowerManager", "Switch Power profile\AutomaticPowerManager.csproj", "{CA468395-738A-464B-B4DD-6AF5FF5C76B0}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Auto Power Manager", "Auto Power Manager\Auto Power Manager.vdproj", "{415EA9D4-7695-4D08-B4F8-EE725603FE1F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{CA468395-738A-464B-B4DD-6AF5FF5C76B0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA468395-738A-464B-B4DD-6AF5FF5C76B0}.Release|x64.ActiveCfg = Release|x64
 		{CA468395-738A-464B-B4DD-6AF5FF5C76B0}.Release|x64.Build.0 = Release|x64
-		{415EA9D4-7695-4D08-B4F8-EE725603FE1F}.Debug|Any CPU.ActiveCfg = Release
-		{415EA9D4-7695-4D08-B4F8-EE725603FE1F}.Debug|x64.ActiveCfg = Release
-		{415EA9D4-7695-4D08-B4F8-EE725603FE1F}.Release|Any CPU.ActiveCfg = Release
-		{415EA9D4-7695-4D08-B4F8-EE725603FE1F}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
