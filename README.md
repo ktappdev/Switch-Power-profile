@@ -1,29 +1,31 @@
-The Automatic Power Manager for Windows 10 provides the ability to switch to High Performance mode automatically based on the running apps. If none of these apps are running, it defaults to Balanced Mode.
+Sure! Here's the revised version with HTML bold tags added to the headings:
 
-How to Use:
+<b>The Automatic Power Manager for Windows 10</b> allows you to automatically switch to High Performance mode based on what apps you are running. If none of these apps are running, it defaults to Balanced Mode.
 
-1. Launch APM and add a program from the running processes list to the monitor list. If your application isn't on the running list, ensure your program is running and click the "Refresh Running Processes" button. From now on, when you run this program, your laptop will automatically switch to High Performance Mode.
-(Note: If your app is already on the monitor list, it will not appear in the running processes list.)
+<b>How to Use:</b>
 
-Options:
+Start up APM and add a program from the running processes list to the monitor list. If your application isn't on the running list, make sure your program is running and click on the <i>refresh running processes list</i> button. Now, when you run this program in the future, your laptop will automatically switch to High Performance Mode.
+(If your app is already on the monitor list, it will not show up on the running processes list.)
 
-This section offers three options:
+<b>Options:</b>
 
-1. Monitor Mode: Enable or disable the automatic switching of power profiles.
-2. Start up with Windows: Enable or disable automatic startup with Windows.
-3. Rate Slider: Choose the speed of the auto-switching process, ranging from 5 to 20 seconds. The default is set to 10 seconds.
+There are currently 3 options in this section.
 
-Current Features:
+1. <b>Monitor mode enabled or disabled:</b> Enable or disable auto switching of power profile.
+2. <b>Start up with Windows:</b> This disables or enables auto startup with Windows.
+3. <b>Rate Slider:</b> This chooses how fast the auto switching happens, between 5 seconds up to 20 seconds. Default is 10 seconds.
 
-1. When running on battery power and no monitored apps are active, the app will switch to Low Power mode instead of Balanced.
-2. Receive notifications when switching between power profiles.
-3. The app requires three power profiles (Low, Balanced, and High) to function correctly. If any of these profiles are missing, the app will create them.
+<b>Current Features:</b>
 
-Example Use Case:
+- Will switch to Low powered mode instead of Balanced when on battery power when no monitored apps are running.
+- Notifications when switching between power profiles.
+- Three power profiles required to function properly (Low, Balanced, and High). If any of these don't exist, the app will create the missing profiles.
 
-Applications like Ableton and others that require real-time effects may experience stuttering when performing even simple projects, despite being used on a powerful laptop. The reason is straightforward: the balanced power profile on your laptop adjusts the CPU core clock to maintain cooling and efficiency. However, during tasks like music production, this fluctuation in CPU clock should be avoided to prevent glitches and disruptions. While you can manually set your laptop to High Performance mode for such tasks, there's a risk of forgetting to do so and potentially ruining a good take. Additionally, it's easy to forget to switch back to an efficient power profile like 'Balanced' once you're finished. This app resolves these issues automatically.
+<b>Example Use Case:</b>
 
-Requirements: Windows 10 laptop.
+Ableton and other apps that require real-time effects can stutter while playing the simplest of projects, even though you might have a very powerful laptop. The reason is simple: the balanced profile on your laptop will ramp up and down the CPU core clock to keep the laptop cool and efficient. When doing a task like music production, the CPU clocks shouldn't be allowed to do this ramp up or down; this is how the clips and blips happen. You can manually set your laptop to High Performance mode when doing these tasks, but you will either forget to set it up before starting a recording and probably ruin a good take or forget to set your system back to an efficient power profile like 'Balanced' when done. This app fixes that issue for you automatically.
+
+<b>Requirements:</b> Laptop running Windows 10.
 
 
 Download link below.
