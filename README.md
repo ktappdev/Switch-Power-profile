@@ -1,5 +1,3 @@
-Sure! Here's the revised version with HTML bold tags added to the headings:
-
 <b>The Automatic Power Manager for Windows 10</b> allows you to automatically switch to High Performance mode based on what apps you are running. If none of these apps are running, it defaults to Balanced Mode.
 
 <b>How to Use:</b>
